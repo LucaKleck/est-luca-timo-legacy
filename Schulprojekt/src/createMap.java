@@ -29,29 +29,25 @@ public class createMap {
 		return map;
 	}
 	private static void placeEverywhere(MapTile[][] map, int type) {
-		
-		switch(type) {
+		for(int y=0; y < map.length; y++) {
+			for(int x=0; x < map[0].length; x++) {
+				switch(type) {
 				
-			case 0: placePlains(map);		
-					break;
-			case 1: placeForest(map);
-					break;
+				case 0: placePlains(x,y,map);		
+						break;
+				case 1: placeForest(x,y,map);
+						break;
+			}
+			}
 		}
+		
 			
 	}
-	private static void placeForest(MapTile[][] map) {
-		for(int y=0; y < map.length; y++) {
-			for(int x=0; x < map[0].length; x++) {
-				map[x][y] = new MapTileForest();
-			}
-		}
+	private static void placeForest(int x,int y, MapTile[][] map) {
+		map[x][y] = new MapTileForest();
 	}
-	private static void placePlains(MapTile[][] map) {
-		for(int y=0; y < map.length; y++) {
-			for(int x=0; x < map[0].length; x++) {
+	private static void placePlains(int x,int y, MapTile[][] map) {
 				map[x][y] = new MapTilePlains();
-			}
-		}
 	}
 	
 	
