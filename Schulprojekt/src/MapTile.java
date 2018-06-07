@@ -1,6 +1,10 @@
 
 public class MapTile {
+	/*
+	 * An array of this object is a map, subclasses specify type, behaviour and commands that can be used
+	 */
 	private int type;
+	private boolean searched = false;
 	private String name;
 	
 	public MapTile() {
@@ -17,6 +21,8 @@ public class MapTile {
 	public String getName() {
 		return name;
 	}
-	
+	public boolean getSearched() {
+		return searched;
+	}
 }
 

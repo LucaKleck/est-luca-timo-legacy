@@ -1,7 +1,12 @@
 
 public class map {
+	/*
+	 * Class map is for loading an existing map or creating a new one, then having special functions related to map movement or editing.
+	 */
 	private MapTile[][] map;
-	
+	public map() {
+		copyMap(createMap.createDefault(map));
+	}
 	public map(MapTile[][] tempMap) {
 		copyMap(tempMap);
 	}

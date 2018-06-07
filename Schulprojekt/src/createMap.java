@@ -12,12 +12,16 @@ public class createMap {
  */
 	public static MapTile[][] createCustom( int x, int y) {
 		MapTile[][] map = new MapTile[x][y];
+		placeForest(map);
 		return map;
 	}
-	public static void createDefault(int[][] map) {
+	public static MapTile[][] createDefault(MapTile[][] map) {
+		map = new MapTile[20][20];
+		return map;
+	}
+	private static void placeForest(MapTile[][] map) {
 		
 	}
-	
 	
 	
 	
