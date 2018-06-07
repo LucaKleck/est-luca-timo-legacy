@@ -15,7 +15,7 @@ public class MapTile {
 	private String name;
 	
 	public MapTile() {
-		this.type = 0;
+		this.type = 69;
 		this.name = "NoType";
 	}
 	public MapTile(int type, String name) {

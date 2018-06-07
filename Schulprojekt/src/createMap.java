@@ -25,13 +25,14 @@ public class createMap {
 	}
 	public static MapTile[][] createDefault(MapTile[][] map) {
 		map = new MapTile[20][20];
+		placeEverywhere(map,0);
 		return map;
 	}
 	private static void placeEverywhere(MapTile[][] map, int type) {
 		
 		switch(type) {
 				
-			case 0: 		
+			case 0: placePlains(map);		
 					break;
 			case 1: placeForest(map);
 					break;
@@ -45,7 +46,13 @@ public class createMap {
 			}
 		}
 	}
-	
+	private static void placePlains(MapTile[][] map) {
+		for(int y=0; y < map.length; y++) {
+			for(int x=0; x < map[0].length; x++) {
+				map[x][y] = new MapTilePlains();
+			}
+		}
+	}
 	
 	
 }
