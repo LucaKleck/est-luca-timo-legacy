@@ -1,4 +1,11 @@
-
+/**
+ * @Classname MapTile
+ * 
+ * @version Alpha
+ * 
+ * @author Luca Kleck, Timo Bauermeister
+ * 
+ */
 public class MapTile {
 	/*
 	 * An array of this object is a map, subclasses specify type, behaviour and commands that can be used

@@ -1,15 +1,27 @@
-
+/**
+ * @Classname map
+ * 
+ * @version Alpha
+ * 
+ * @author Luca Kleck, Timo Bauermeister
+ * 
+ */
 public class map {
 	/*
 	 * Class map is for loading an existing map or creating a new one, then having special functions related to map movement or editing.
 	 */
+	
 	private MapTile[][] map;
+	
+	// Constructors
 	public map() {
 		copyMap(createMap.createDefault(map));
 	}
 	public map(MapTile[][] tempMap) {
 		copyMap(tempMap);
 	}
+	
+	// Methods
 	public MapTile[][] getMap() {
 		return map;
 	}

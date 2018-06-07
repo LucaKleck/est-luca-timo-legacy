@@ -1,4 +1,11 @@
-
+/**
+ * @Classname createMap
+ * 
+ * @version Alpha
+ * 
+ * @author Luca Kleck, Timo Bauermeister
+ * 
+ */
 public class createMap {
 /*
  * 1. Size
