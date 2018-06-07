@@ -19,7 +19,7 @@ public class createMap {
  */
 	public static MapTile[][] createCustom( int x, int y) {
 		MapTile[][] map = new MapTile[x][y];
-		placeEverywhere(map,0);
+		placeEverywhere(map,1);
 		return map;
 
 	}
@@ -28,14 +28,22 @@ public class createMap {
 		return map;
 	}
 	private static void placeEverywhere(MapTile[][] map, int type) {
-		for(int y=0; y < map.length; y++) {
-			for(int x=0; x < map[0].length; x++) {
+		
+		switch(type) {
 				
-			}
+			case 0: 		
+					break;
+			case 1: placeForest(map);
+					break;
 		}
+			
 	}
 	private static void placeForest(MapTile[][] map) {
-		
+		for(int y=0; y < map.length; y++) {
+			for(int x=0; x < map[0].length; x++) {
+				map[x][y] = new MapTileForest();
+			}
+		}
 	}
 	
 	

@@ -8,7 +8,7 @@
  */
 public class MapTile {
 	/*
-	 * An array of this object is a map, subclasses specify type, behaviour and commands that can be used
+	 * An array of this object is a map, subclasses specify type, behavior and commands that can be used
 	 */
 	private int type;
 	private boolean searched = false;
@@ -16,7 +16,7 @@ public class MapTile {
 	
 	public MapTile() {
 		this.type = 0;
-		this.name = "Grassland";
+		this.name = "NoType";
 	}
 	public MapTile(int type, String name) {
 		this.type = type;
