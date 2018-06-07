@@ -19,12 +19,16 @@ public class createMap {
  */
 	public static MapTile[][] createCustom( int x, int y) {
 		MapTile[][] map = new MapTile[x][y];
-		placeForest(map);
+		placeEverywhere(map,0);
 		return map;
+
 	}
 	public static MapTile[][] createDefault(MapTile[][] map) {
 		map = new MapTile[20][20];
 		return map;
+	}
+	private static void placeEverywhere(MapTile[][] map, int type) {
+		
 	}
 	private static void placeForest(MapTile[][] map) {
 		
