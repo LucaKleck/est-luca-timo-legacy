@@ -6,7 +6,6 @@ public class MapTileForest extends MapTile {
 	private String name;
 	
 	public MapTileForest() {
-		super();
 		this.type = 1;
 		this.name = "Forest";
 	}
