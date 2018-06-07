@@ -28,7 +28,7 @@ public class createMap {
 		return map;
 	}
 	private static void placeEverywhere(MapTile[][] map, int type) {
-		
+		int i = 0;
 	}
 	private static void placeForest(MapTile[][] map) {
 		
