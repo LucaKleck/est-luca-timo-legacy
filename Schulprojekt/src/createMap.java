@@ -9,7 +9,7 @@
 public class createMap {
 /*
  * 1. Size
- * 2. Run method forest and so on...
+ * 2. Create MapTiles
  * 3. Run river
  * 4. Run mountain
  * 5. Run points of interest
@@ -31,24 +31,13 @@ public class createMap {
 	private static void placeEverywhere(MapTile[][] map, int type) {
 		for(int y=0; y < map.length; y++) {
 			for(int x=0; x < map[0].length; x++) {
-				switch(type) {
-				
-				case 0: placePlains(x,y,map);		
-						break;
-				case 1: placeForest(x,y,map);
-						break;
+					map[x][y] = new MapTile();
+				}
 			}
-			}
-		}
+	}
 		
 			
-	}
-	private static void placeForest(int x,int y, MapTile[][] map) {
-		map[x][y] = new MapTileForest();
-	}
-	private static void placePlains(int x,int y, MapTile[][] map) {
-				map[x][y] = new MapTilePlains();
-	}
+	
 	
 	
 }
