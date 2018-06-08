@@ -8,7 +8,7 @@
  */
 public class MapTile {
 	/*
-	 * An array of this object is a map, behavior and commands are changed by type of the MapTile
+	 * An array of this object is a map. Behavior and commands are changed by type of the MapTile
 	 * type 0 = Plains
 	 * type 1 = xx
 	 * type 2 = xx
