@@ -28,7 +28,7 @@ public class createMap {
 	public static MapTile[][] createDefault(MapTile[][] map) {
 		map = new MapTile[20][20];
 		placeEverywhere(map,0); // Type for debug, remove in final build
-		placeForest(map);
+		placeForests(map);
 		return map;
 	}
 	private static void placeEverywhere(MapTile[][] map, int type) {
@@ -38,16 +38,18 @@ public class createMap {
 			}
 		}
 	}
-	private static void placeForest(MapTile[][] map) {
+	private static void placeForests(MapTile[][] map) {
 		Random random = new Random();
-		// add radius
-		int radius = radiusBase + random.nextInt(3);		
+			
+		// first for is going over the map to scan everything, then if it's in bounds, give it a random chance to create a forest, place forests sporadically.
 		for(int y=0; y < map.length; y++) {
 			for(int x=0; x < map[0].length; x++) {
-				if((x - radius) >= 0 && (y-radius) >= 0 || (x+radius) < map.length && (y+radius) < map[0].length) {
-					/*if(random.nextInt(100) > 30) {
-						map[x][y] = new MapTile(1);
-					}*/
+				int radius = radiusBase + random.nextInt(3);
+				if((x - radius) >= 0 && (y-radius) >= 0 && (x+radius) < map.length && (y+radius) < map[0].length && (random.nextInt(100)+1) <= 5 ) {
+					
+						/*if((random.nextInt(100)+1) > 30) {
+							map[x][y] = new MapTile(1);
+						}*/
 				}
 			}
 		}
