@@ -18,6 +18,7 @@ public class createMap {
  * 7. Run story points
  * 8. Call class map, copy finished MapTile[][] map to object map.
  */
+	private static final int radiusBase = 4;
 	public static MapTile[][] createCustom( int x, int y) {
 		MapTile[][] map = new MapTile[x][y];
 		placeEverywhere(map,1);
@@ -39,11 +40,14 @@ public class createMap {
 	}
 	private static void placeForest(MapTile[][] map) {
 		Random random = new Random();
+		// add radius
+		int radius = radiusBase + random.nextInt(3);		
 		for(int y=0; y < map.length; y++) {
 			for(int x=0; x < map[0].length; x++) {
-					if(random.nextInt(100) > 30) {
-						map[x][y] = new MapTile(1);
-					}
+				if((x - radius) >= 0 && (y-radius) >= 0) ;
+				/*if(random.nextInt(100) > 30) {
+					map[x][y] = new MapTile(1);
+				}*/
 			}
 		}
 	}
