@@ -9,7 +9,8 @@
 public class boot {
 
 	public static void main(String[] args) {
-		
+		ObjectMap map = new ObjectMap();
+		map.printMap();
 	}
-
+	
 }

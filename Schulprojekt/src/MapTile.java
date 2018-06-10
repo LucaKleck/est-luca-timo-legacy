@@ -31,11 +31,15 @@ public class MapTile {
 		switch(type) {
 		case 0:	this.name = "Plains";
 				break;
-		case 1: this.name = "xx";
+		case 1: this.name = "Forest";
 				break;
 		case 2: this.name = "xx";
 				break;
-		default:this.name = "ERR";
+		/*
+		 * Insert all types here.
+		 */
+		case 69: this.name = "Debug";
+		default:this.name = "MissingType";
 		}
 	}
 	// getter

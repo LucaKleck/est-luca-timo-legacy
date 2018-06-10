@@ -6,6 +6,7 @@
  * @author Luca Kleck, Timo Bauermeister
  * 
  */
+import java.util.Random;
 public class createMap {
 /*
  * 1. Size
@@ -25,17 +26,27 @@ public class createMap {
 	}
 	public static MapTile[][] createDefault(MapTile[][] map) {
 		map = new MapTile[20][20];
-		placeEverywhere(map,0);
+		placeEverywhere(map,0); // Type for debug, remove in final build
+		placeForest(map);
 		return map;
 	}
 	private static void placeEverywhere(MapTile[][] map, int type) {
 		for(int y=0; y < map.length; y++) {
 			for(int x=0; x < map[0].length; x++) {
-					map[x][y] = new MapTile();
+					map[x][y] = new MapTile(type);
 			}
 		}
 	}
-		
+	private static void placeForest(MapTile[][] map) {
+		Random random = new Random();
+		for(int y=0; y < map.length; y++) {
+			for(int x=0; x < map[0].length; x++) {
+					if(random.nextInt(100) > 30) {
+						map[x][y] = new MapTile(1);
+					}
+			}
+		}
+	}
 			
 	
 	
