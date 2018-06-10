@@ -26,6 +26,18 @@ public class MapTile {
 		this.type = type;
 		this.name = name;
 	}
+	public MapTile(int type) {
+		this.type = type;
+		switch(type) {
+		case 0:	this.name = "Plains";
+				break;
+		case 1: this.name = "xx";
+				break;
+		case 2: this.name = "xx";
+				break;
+		default:this.name = "ERR";
+		}
+	}
 	// getter
 	public int getType() {
 		return type;
