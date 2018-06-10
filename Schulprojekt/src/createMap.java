@@ -44,10 +44,11 @@ public class createMap {
 		int radius = radiusBase + random.nextInt(3);		
 		for(int y=0; y < map.length; y++) {
 			for(int x=0; x < map[0].length; x++) {
-				if((x - radius) >= 0 && (y-radius) >= 0 || (x+radius) < map.length && (y+radius) < map[0].length) ;
-				/*if(random.nextInt(100) > 30) {
-					map[x][y] = new MapTile(1);
-				}*/
+				if((x - radius) >= 0 && (y-radius) >= 0 || (x+radius) < map.length && (y+radius) < map[0].length) {
+					/*if(random.nextInt(100) > 30) {
+						map[x][y] = new MapTile(1);
+					}*/
+				}
 			}
 		}
 	}
