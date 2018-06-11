@@ -26,7 +26,7 @@ public class createMap {
 
 	}
 	public static MapTile[][] createDefault(MapTile[][] map) {
-		map = new MapTile[20][20];
+		map = new MapTile[200][200];
 		doStuff(map,0);
 		return map;
 	}
@@ -48,17 +48,13 @@ public class createMap {
 		for(int y=0; y < map.length; y++) {
 			for(int x=0; x < map[0].length; x++) {
 				int radius = radiusBase + random.nextInt(3);
-				if((x-radius) >= 0 && (y-radius) >= 0 && (x-radius) < map.length && (y-radius) < map[0].length && (random.nextInt(100)+1) <= 5 ) { // chance is currently 100, change soon!
-					
-					
+				if((x-radius) >= 0 && (y-radius) >= 0 && (x-radius) < map.length && (y-radius) < map[0].length && (random.nextInt(100)+1) <= 10 ) { 
 					for(int yRadius = 0; yRadius < radius; yRadius++) {
 						for( int xRadius = 0; xRadius < radius; xRadius++ ) {
-							if((random.nextInt(100)+1) <= 60) {
+							if((random.nextInt(100)+1) <= 30) {
 								map[xRadius+x-radius][yRadius+y-radius] = new MapTile(1);
 							}
 						}
-						
-						
 					}	
 				}
 			}
