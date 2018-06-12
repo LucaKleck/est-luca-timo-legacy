@@ -1,5 +1,5 @@
 /**
- * @Classname map
+ * @Classname ObjectMap
  * 
  * @version Alpha
  * 

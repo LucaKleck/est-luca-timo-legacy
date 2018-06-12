@@ -1,8 +1,8 @@
 /MapTile.class
+/ObjectMap.class
 /boot.class
 /createMap.class
-/map.class
-/Forest.class
-/MapTileForest.class
-/MapTilePlains.class
-/ObjectMap.class
+/drawGui.class
+/DrawGui.class
+/CreateJFrame.class
+/ChangeJFrame.class
