@@ -43,7 +43,7 @@ public class createMap {
 		for( int type = 0; type <= typeAmount; type++) {
 			placeX(map, type);
 		}
-		placeRiverType(map,20,3);
+		placeRiverType(map,20,3,0);
 	}
 	private static void placeX(MapTile[][] map, int type) {
 		switch(type) {
@@ -76,11 +76,10 @@ public class createMap {
 		}
 	}
 	// Placement of a river (could become a lava type challenge)
-	private static void placeRiverType(MapTile[][] map, int type, int spawnChance) {
+	private static void placeRiverType(MapTile[][] map, int type, int spawnChance, int rivers) {
 		Random random = new Random();
-		int rivers = 0;
 		for( int yFirstRow = 0; yFirstRow < map[0].length; yFirstRow++) {
-			while(rivers < maxRivers || rivers == 1) {
+			while(rivers < maxRivers) {
 				System.out.println("rivers: "+rivers);
 				if(random.nextInt(100) <= spawnChance) {
 					int y = yFirstRow;
@@ -132,6 +131,9 @@ public class createMap {
 						}
 					}
 				}
+			}
+			if( rivers == 0) {
+				placeRiverType(map,20,3,rivers);
 			}
 		}
 	}
