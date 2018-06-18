@@ -11,9 +11,9 @@ import javax.swing.JFrame;
 public class boot {
 
 	public static void main(String[] args) {
-		ObjectMap map = new ObjectMap();
-		map.printMap();
+		ObjectMap objectMap = new ObjectMap();
+		objectMap.printMap();
 		JFrame f = new JFrame("Schulprojekt");
-		ChangeJFrame.change(f);
+		ChangeJFrame.change(f,objectMap);
 	}
 }

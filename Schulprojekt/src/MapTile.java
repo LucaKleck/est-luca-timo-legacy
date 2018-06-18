@@ -17,17 +17,23 @@ public class MapTile {
 	private int type;
 	private boolean searched = false;
 	private String name;
+	private int x;
+	private int y;
 	
 	public MapTile() {
 		this.type = 0;
 		this.name = "Plains";
 	}
-	public MapTile(int type, String name) {
+	public MapTile(int type, String name, int x, int y) {
 		this.type = type;
 		this.name = name;
+		this.x = x;
+		this.y = y;
 	}
-	public MapTile(int type) {
+	public MapTile(int type, int x, int y) {
 		this.type = type;
+		this.x = x;
+		this.y = y;
 		switch(type) {
 		case 0:	this.name = "Plains";
 				break;
@@ -51,6 +57,12 @@ public class MapTile {
 	}
 	public boolean getSearched() {
 		return searched;
+	}
+	public int getX() {
+		return x;
+	}
+	public int getY() {
+		return y;
 	}
 	// setter
 	

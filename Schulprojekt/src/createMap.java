@@ -33,7 +33,7 @@ public class createMap {
 	private static void placeEverywhere(MapTile[][] map, int type) { // Remove type in final build.
 		for(int y=0; y < map.length; y++) {
 			for(int x=0; x < map[0].length; x++) {
-					map[x][y] = new MapTile(type);
+					map[x][y] = new MapTile(type,x,y);
 			}
 		}
 	}
@@ -63,7 +63,7 @@ public class createMap {
 					for(int yRadius = 0; yRadius <= radius; yRadius++) {
 						for( int xRadius = 0; xRadius <= radius; xRadius++ ) {
 							if((random.nextInt(100)+1) <= tileChance) {
-								map[xRadius+x-radius][yRadius+y-radius] = new MapTile(type);
+								map[xRadius+x-radius][yRadius+y-radius] = new MapTile(type, x, y);
 							}
 						}
 					}	

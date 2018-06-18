@@ -12,20 +12,21 @@ public class ObjectMap {
 	 */
 	
 	private MapTile[][] map;
-	
+	private int width;
+	private int height;
 	// Constructors
 	public ObjectMap() {
 		copyMap(createMap.createDefault(map));
+		width = 20;
+		height = 20;
 	}
-	public ObjectMap(MapTile[][] loadMap) {
+	public ObjectMap(MapTile[][] loadMap, int width, int height) {
 		copyMap(loadMap);
+		this.width = width;
+		this.height = height;
 	}
-	
 	// Methods
 	// public
-	public MapTile[][] getMap() {
-		return map;
-	}
 	public void printMap() {
 		for(int y=0; y < map[0].length; y++) {
 			for(int x=0; x < map.length; x++) {
@@ -33,6 +34,16 @@ public class ObjectMap {
 			}
 			System.out.println("");
 		}
+	}
+	// getter
+	public MapTile[][] getMap() {
+		return map;
+	}
+	public int getHeight() {
+		return height;
+	}
+	public int getWidth() {
+		return width;
 	}
 	// private
 	private void copyMap(MapTile[][] tempMap) {
