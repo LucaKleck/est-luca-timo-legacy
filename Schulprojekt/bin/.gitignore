@@ -1,8 +1,9 @@
+/ChangeJFrame.class
+/DrawGui.class
 /MapTile.class
 /ObjectMap.class
 /boot.class
 /createMap.class
-/drawGui.class
-/DrawGui.class
-/CreateJFrame.class
-/ChangeJFrame.class
+/Calc.class
+/Calc/
+/Sinus.class

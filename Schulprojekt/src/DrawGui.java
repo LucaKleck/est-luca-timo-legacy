@@ -11,21 +11,18 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.LinearGradientPaint;
 import java.awt.geom.Rectangle2D;
-
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 public class DrawGui extends JPanel {
-	private JFrame f;
-	public DrawGui( JFrame f ) {
-		this.f = f;
-	}
 	private static final long serialVersionUID = 1L;
 	public void paint(Graphics g) {
 		Graphics2D g2 = (Graphics2D) g;
-		System.out.println("f Width: " + f.getWidth() + "  f Height: " + f.getHeight());
-		Rectangle2D r = new Rectangle2D.Double(0, 0, f.getWidth(), f.getHeight());
-		Paint(g2, r);
-		
+		System.out.println("Width: " + this.getWidth() + "  Height: " + this.getHeight());
+		//Rectangle2D r = new Rectangle2D.Double(0, 0, this.getWidth(), this.getHeight());
+		//Paint(g2, r);
+		for(int x=0; x<=this.getWidth();x++) {
+			int y = Calc.Sinus.getYofX(this.getHeight(),this.getWidth(),x));
+			g.drawLine(x, y, x, y;
+		}
 		
 	}
 	void Paint(Graphics2D g, Rectangle2D r) {
