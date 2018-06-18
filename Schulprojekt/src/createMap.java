@@ -19,28 +19,30 @@ public class createMap {
  * 8. Call class map, copy finished MapTile[][] map to object map.
  */
 	private static final int radiusBase = 4;
+	private static final int typeAmount = 2;
 	public static MapTile[][] createCustom( int x, int y) {
 		MapTile[][] map = new MapTile[x][y];
-		buildMap(map,0);
+		buildMap(map);
 		return map;
 
 	}
 	public static MapTile[][] createDefault(MapTile[][] map) {
 		map = new MapTile[100][100];
-		buildMap(map,0);
+		buildMap(map);
 		return map;
 	}
 	private static void placeEverywhere(MapTile[][] map, int type) { // Remove type in final build.
-		for(int y=0; y < map.length; y++) {
-			for(int x=0; x < map[0].length; x++) {
+		for(int y=0; y < map[0].length; y++) {
+			for(int x=0; x < map.length; x++) {
 					map[x][y] = new MapTile(type,x,y);
 			}
 		}
 	}
-	private static void buildMap(MapTile[][] map, int type) {
-		placeX(map,0);
-		placeX(map,1);
-		placeX(map,2);
+	private static void buildMap(MapTile[][] map) {
+		for( int type = 0; type <= typeAmount; type++) {
+			placeX(map, type);
+		}
+		placeRiverType(map,20,3);
 	}
 	private static void placeX(MapTile[][] map, int type) {
 		switch(type) {
@@ -52,12 +54,13 @@ public class createMap {
 				break;
 		default:placeRadialType(map, 0, 0, 0);
 		}
-	}		
+	}	
+	// Placement method with two types of chances
 	private static void placeRadialType(MapTile[][] map, int type, int spawnChance, int tileChance) {
 		Random random = new Random();
 		// first for is going over the map to scan everything, then, if it's in bounds, give it a random chance to create a forest, place forests sporadically.
-		for(int y=0; y < map.length; y++) {
-			for(int x=0; x < map[0].length; x++) {
+		for(int y=0; y < map[0].length; y++) {
+			for(int x=0; x < map.length; x++) {
 				int radius = radiusBase + random.nextInt(3);
 				if((x-radius) >= 0 && (y-radius) >= 0 && (x-radius) < map.length && (y-radius) < map[0].length && (random.nextInt(100)+1) <= spawnChance ) { 
 					for(int yRadius = 0; yRadius <= radius; yRadius++) {
@@ -71,6 +74,24 @@ public class createMap {
 			}
 		}
 	}
-	
+	// Placement of a river (could become a lava type challenge)
+	private static void placeRiverType(MapTile[][] map, int type, int spawnChance) {
+		Random random = new Random();
+		for( int yFirstRow = 0; yFirstRow < map[0].length; yFirstRow++) {
+			if(random.nextInt(100) <= spawnChance) {
+				int y = yFirstRow;
+				for( int x = 0; x < map.length; x++) {
+					map[x][y] = new MapTile(20,x,y);
+					switch (random.nextInt(4)+1) {
+					case 1: if(y+1 < map[0].length) y++;
+							break;
+					case 2: if(y-1 > 0) y--;
+							break;
+					case 3:	case 4: break;
+					}
+				}
+			}
+		}
+	}
 	
 }

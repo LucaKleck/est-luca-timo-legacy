@@ -25,6 +25,9 @@ public class DrawMap extends JPanel {
 				case 2: g.setColor(new Color(200,200,200));
 						g.fillRect(x*width, y*height, width, height);
 						break;
+				case 20:g.setColor(new Color(0,30,255));
+						g.fillRect(x*width, y*height, width, height);
+						break;
 				default:g.setColor(Color.BLACK);
 						g.fillRect(x*width, y*height, width, height);
 						break;
