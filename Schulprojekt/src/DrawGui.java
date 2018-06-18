@@ -20,8 +20,8 @@ public class DrawGui extends JPanel {
 		//Rectangle2D r = new Rectangle2D.Double(0, 0, this.getWidth(), this.getHeight());
 		//Paint(g2, r);
 		for(int x=0; x<=this.getWidth();x++) {
-			int y = Calc.Sinus.getYofX(this.getHeight(),this.getWidth(),x));
-			g.drawLine(x, y, x, y;
+			int y = Calc.Sinus.getYofX(this.getHeight(),this.getWidth(),x);
+			g.drawLine(0, 0, x, y);
 		}
 		
 	}
