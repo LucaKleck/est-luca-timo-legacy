@@ -12,7 +12,7 @@ public class boot {
 
 	public static void main(String[] args) {
 		ObjectMap objectMap = new ObjectMap();
-		objectMap.printMap();
+		//objectMap.printMap();
 		JFrame f = new JFrame("Schulprojekt");
 		ChangeJFrame.change(f,objectMap);
 	}

@@ -25,8 +25,7 @@ public class ObjectMap {
 		this.width = width;
 		this.height = height;
 	}
-	// Methods
-	// public
+	// Methods public
 	public void printMap() {
 		for(int y=0; y < map[0].length; y++) {
 			for(int x=0; x < map.length; x++) {

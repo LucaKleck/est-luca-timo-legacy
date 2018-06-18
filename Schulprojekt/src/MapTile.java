@@ -20,7 +20,7 @@ public class MapTile {
 	private int xPos;
 	private int yPos;
 	
-	public MapTile() {
+	public MapTile(int xPos, int yPos) {
 		this.type = 0;
 		this.name = "Plains";
 	}

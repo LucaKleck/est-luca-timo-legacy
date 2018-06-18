@@ -20,6 +20,7 @@ public class createMap {
  */
 	private static final int radiusBase = 4;
 	private static final int typeAmount = 2;
+	private static final int maxRivers = 4;
 	public static MapTile[][] createCustom( int x, int y) {
 		MapTile[][] map = new MapTile[x][y];
 		buildMap(map);
@@ -77,17 +78,58 @@ public class createMap {
 	// Placement of a river (could become a lava type challenge)
 	private static void placeRiverType(MapTile[][] map, int type, int spawnChance) {
 		Random random = new Random();
+		int rivers = 0;
 		for( int yFirstRow = 0; yFirstRow < map[0].length; yFirstRow++) {
-			if(random.nextInt(100) <= spawnChance) {
-				int y = yFirstRow;
-				for( int x = 0; x < map.length; x++) {
-					map[x][y] = new MapTile(20,x,y);
-					switch (random.nextInt(4)+1) {
-					case 1: if(y+1 < map[0].length) y++;
-							break;
-					case 2: if(y-1 > 0) y--;
-							break;
-					case 3:	case 4: break;
+			while(rivers < maxRivers || rivers == 1) {
+				System.out.println("rivers: "+rivers);
+				if(random.nextInt(100) <= spawnChance) {
+					int y = yFirstRow;
+					rivers++;
+					// 3 types of rivers (central, up, down)
+					switch (random.nextInt(3)+1) {
+					case 1: 
+						for( int x = 0; x < map.length; x++) {
+							map[x][y] = new MapTile(20,x,y);
+							switch (random.nextInt(4)+1) {
+							case 1: if(y+1 < map[0].length) y++;
+									break;
+							case 2: if(y-1 > 0) y--;
+									break;
+							case 3:	case 4: break;
+							}
+						}
+					case 2: 
+						for( int x = 0; x < map.length; x++) {
+							map[x][y] = new MapTile(20,x,y);
+							switch (random.nextInt(7)+1) {
+							case 1:	case 2:	case 3: if(y+1 < map[0].length) {
+									y++;
+							}
+							else	return;
+									break;
+							case 4: if(y-1 > 0) y--;
+									break;
+							case 5:	case 6: case 7:
+									break;
+							}
+						}
+					case 3: 
+						for( int x = 0; x < map.length; x++) {
+							map[x][y] = new MapTile(20,x,y);
+							switch (random.nextInt(7)+1) {
+							case 1:	case 2:	case 3: if(y-1 > 0) {
+									y--;
+							}
+							else {
+								return;
+							}
+									break;
+							case 4: if(y+1 < map[0].length) y++;
+									break;
+							case 5:	case 6: case 7: 
+									break;
+							}
+						}
 					}
 				}
 			}
