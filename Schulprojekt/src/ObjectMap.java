@@ -17,8 +17,8 @@ public class ObjectMap {
 	// Constructors
 	public ObjectMap() {
 		copyMap(createMap.createDefault(map));
-		width = 20;
-		height = 20;
+		width = 100;
+		height = 100;
 	}
 	public ObjectMap(MapTile[][] loadMap, int width, int height) {
 		copyMap(loadMap);

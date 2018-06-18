@@ -1,6 +1,5 @@
 import java.awt.Color;
 import java.awt.Graphics;
-
 import javax.swing.JPanel;
 
 public class DrawMap extends JPanel {
@@ -20,8 +19,15 @@ public class DrawMap extends JPanel {
 				case 0:	g.setColor(Color.GREEN);
 						g.fillRect(x*width, y*height, width, height);
 						break;
-				case 1: g.setColor(Color.RED);
+				case 1: g.setColor(new Color(66,147,33));
 						g.fillRect(x*width, y*height, width, height);
+						break;
+				case 2: g.setColor(new Color(200,200,200));
+						g.fillRect(x*width, y*height, width, height);
+						break;
+				default:g.setColor(Color.BLACK);
+						g.fillRect(x*width, y*height, width, height);
+						break;
 				}
 			}
 		}

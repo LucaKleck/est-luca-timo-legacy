@@ -26,7 +26,7 @@ public class createMap {
 
 	}
 	public static MapTile[][] createDefault(MapTile[][] map) {
-		map = new MapTile[20][20];
+		map = new MapTile[100][100];
 		buildMap(map,0);
 		return map;
 	}
@@ -40,7 +40,7 @@ public class createMap {
 	private static void buildMap(MapTile[][] map, int type) {
 		placeX(map,0);
 		placeX(map,1);
-		//placeX(map,2);
+		placeX(map,2);
 	}
 	private static void placeX(MapTile[][] map, int type) {
 		switch(type) {
