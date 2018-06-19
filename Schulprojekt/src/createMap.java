@@ -20,8 +20,9 @@ public class createMap {
  */
 	private static final int radiusBase = 4;
 	private static final int typeAmount = 2;
-	private static final int maxRivers = 4;
+	private static final int maxRivers = 3;
 	private static final int minRivers = 3;
+	private static final int minRiverLengthPercent = 20;
 	public static MapTile[][] createCustom( int x, int y) {
 		MapTile[][] map = new MapTile[x][y];
 		buildMap(map);
@@ -44,7 +45,7 @@ public class createMap {
 		for( int type = 0; type <= typeAmount; type++) {
 			placeX(map, type);
 		}
-		placeRiverType(map,20,3,0);
+		placeRiverType(map,20,3);
 	}
 	private static void placeX(MapTile[][] map, int type) {
 		switch(type) {
@@ -77,65 +78,73 @@ public class createMap {
 		}
 	}
 	// Placement of a river (could become a lava type challenge)
-	private static void placeRiverType(MapTile[][] map, int type, int spawnChance, int rivers) {
+	private static void placeRiverType(MapTile[][] map, int type, int spawnChance) {
 		Random random = new Random();
-		if(rivers < maxRivers) {
-			for( int yFirstRow = 0; yFirstRow < map[0].length && rivers < maxRivers; yFirstRow++) {
-					if(random.nextInt(100) <= spawnChance) {
-						int y = yFirstRow;
-						rivers++;
-						System.out.println("rivers: "+rivers);
-						// 3 types of rivers (central, up, down)
-						switch (random.nextInt(3)+1) {
-						case 1: 
+		int rivers = 0;
+		int minRiverLength = minRiverLengthPercent*(map.length/100);
+		for(int yFirstRow = 0; yFirstRow < map[0].length && rivers < maxRivers; yFirstRow++) {
+			if(rivers < maxRivers) {
+				if(rivers < minRivers && yFirstRow == (map[0].length-2)) {
+					yFirstRow=0;
+					System.out.println("firstRowReset");
+				}
+				if(random.nextInt(100) <= spawnChance) {
+					int y = yFirstRow;
+					int riverType = (random.nextInt(3)+1);
+					// 3 types of rivers (central, up, down)
+					switch ((random.nextInt(3)+1)) {
+						case 1: rivers++; System.out.println("---------"+"\n"+"riverType: "+riverType+"\n"+"rivers: "+rivers );
 							for( int x = 0; x < map.length; x++) {
 								map[x][y] = new MapTile(20,x,y);
 								switch (random.nextInt(4)+1) {
-								case 1: if(y+1 < map[0].length) y++;
+									case 1: 
+										if(y+1 < map[0].length) y++;
+										else { if(x <= minRiverLength) {rivers-=1; System.out.println("TEST:"+minRiverLength);} x=map.length;  }
 										break;
-								case 2: if(y-1 > 0) y--;
+									case 2: 
+										if(y-1 >= 0)	y--;
+										else { if(x <= minRiverLength) {rivers-=1; System.out.println("TEST:"+minRiverLength);} x=map.length;  }
 										break;
-								case 3:	case 4: break;
+									case 3:	case 4: 
+										break;
 								}
 							}
-						case 2: 
+						case 2: rivers++; System.out.println("---------"+"\n"+"riverType: "+riverType+"\n"+"rivers: "+rivers );
 							for( int x = 0; x < map.length; x++) {
 								map[x][y] = new MapTile(20,x,y);
 								switch (random.nextInt(7)+1) {
-								case 1:	case 2:	case 3: if(y+1 < map[0].length) {
-										y++;
-								}
-								else	return;
+									case 1:	case 2:	case 3: 
+										if(y+1 < map[0].length) y++;
+										else { if(x <= minRiverLength) {rivers-=1; System.out.println("TEST:"+minRiverLength);} x=map.length;  }
 										break;
-								case 4: if(y-1 > 0) y--;
+									case 4: 
+										if(y-1 >= 0) y--;
+										else { if(x <= minRiverLength) {rivers-=1; System.out.println("TEST:"+minRiverLength);} x=map.length;  }
 										break;
-								case 5:	case 6: case 7:
+									case 5:	case 6: case 7:
 										break;
 								}
 							}
-						case 3: 
+						case 3: rivers++; System.out.println("---------"+"\n"+"riverType: "+riverType+"\n"+"rivers: "+rivers );
 							for( int x = 0; x < map.length; x++) {
 								map[x][y] = new MapTile(20,x,y);
 								switch (random.nextInt(7)+1) {
-								case 1:	case 2:	case 3: if(y-1 > 0) {
-										y--;
-								}
-								else {
-									return;
-								}
+									case 1:	case 2:	case 3: 
+										if(y-1 >= 0) y--;
+										else { if(x <= minRiverLength) {rivers-=1; System.out.println("TEST:"+minRiverLength);} x=map.length;  }
 										break;
-								case 4: if(y+1 < map[0].length) y++;
+									case 4: 
+										if(y+1 < map[0].length) y++;
+										else { if(x <= minRiverLength) {rivers-=1; System.out.println("TEST:"+minRiverLength);} x=map.length;  }
 										break;
-								case 5:	case 6: case 7: 
+									case 5:	case 6: case 7: 
 										break;
 								}
 							}
-						}
 					}
+				}
 			}
-		}
-		if( rivers < minRivers) {
-			placeRiverType(map,type,spawnChance,rivers);
+			
 		}
 	}
 	
