@@ -86,66 +86,63 @@ public class createMap {
 			if(rivers < maxRivers) {
 				if(rivers < minRivers && yFirstRow == (map[0].length-2)) {
 					yFirstRow=0;
-					System.out.println("firstRowReset");
+					System.err.println("firstRowReset");
 				}
 				if(random.nextInt(100) <= spawnChance) {
 					int y = yFirstRow;
 					int riverType = (random.nextInt(3)+1);
 					// 3 types of rivers (central, up, down)
 					switch ((random.nextInt(3)+1)) {
-						case 1: rivers++; System.out.println("---------"+"\n"+"riverType: "+riverType+"\n"+"rivers: "+rivers );
-							for( int x = 0; x < map.length; x++) {
-								map[x][y] = new MapTile(20,x,y);
-								switch (random.nextInt(4)+1) {
-									case 1: 
-										if(y+1 < map[0].length) y++;
-										else { if(x <= minRiverLength) {rivers-=1; System.out.println("TEST:"+minRiverLength);} x=map.length;  }
-										break;
-									case 2: 
-										if(y-1 >= 0)	y--;
-										else { if(x <= minRiverLength) {rivers-=1; System.out.println("TEST:"+minRiverLength);} x=map.length;  }
-										break;
-									case 3:	case 4: 
-										break;
-								}
-							}
-						case 2: rivers++; System.out.println("---------"+"\n"+"riverType: "+riverType+"\n"+"rivers: "+rivers );
-							for( int x = 0; x < map.length; x++) {
-								map[x][y] = new MapTile(20,x,y);
-								switch (random.nextInt(7)+1) {
-									case 1:	case 2:	case 3: 
-										if(y+1 < map[0].length) y++;
-										else { if(x <= minRiverLength) {rivers-=1; System.out.println("TEST:"+minRiverLength);} x=map.length;  }
-										break;
-									case 4: 
-										if(y-1 >= 0) y--;
-										else { if(x <= minRiverLength) {rivers-=1; System.out.println("TEST:"+minRiverLength);} x=map.length;  }
-										break;
-									case 5:	case 6: case 7:
-										break;
-								}
-							}
-						case 3: rivers++; System.out.println("---------"+"\n"+"riverType: "+riverType+"\n"+"rivers: "+rivers );
-							for( int x = 0; x < map.length; x++) {
-								map[x][y] = new MapTile(20,x,y);
-								switch (random.nextInt(7)+1) {
-									case 1:	case 2:	case 3: 
-										if(y-1 >= 0) y--;
-										else { if(x <= minRiverLength) {rivers-=1; System.out.println("TEST:"+minRiverLength);} x=map.length;  }
-										break;
-									case 4: 
-										if(y+1 < map[0].length) y++;
-										else { if(x <= minRiverLength) {rivers-=1; System.out.println("TEST:"+minRiverLength);} x=map.length;  }
-										break;
-									case 5:	case 6: case 7: 
-										break;
-								}
-							}
+						case 1: rivers++; System.err.println("---------"+"\n"+"riverType: "+riverType+"\n"+"rivers: "+rivers );
+							rivers = riverWithChance(map, y, minRiverLength, rivers, 25, 25, random);
+							break;
+						case 2: rivers++; System.err.println("---------"+"\n"+"riverType: "+riverType+"\n"+"rivers: "+rivers );
+							rivers = riverWithChance(map, y, minRiverLength, rivers, 50, 25, random);
+							break;
+						case 3: rivers++; System.err.println("---------"+"\n"+"riverType: "+riverType+"\n"+"rivers: "+rivers );
+							rivers = riverWithChance(map, y, minRiverLength, rivers, 25, 50, random);
+							break;
 					}
 				}
 			}
 			
 		}
 	}
-	
+	@SuppressWarnings("unused") // Probably can delete this method
+	private static int riverTypeOneMoveY(MapTile[][] map, int x, int y, int minRiverLength, int rivers, Random random) {
+		switch (random.nextInt(4)+1) {
+			case 1: 
+				if(y+1 < map[0].length) y++;
+				else { if(x <= minRiverLength) {rivers-=1;} x=map.length; }
+				break;
+			case 2: 
+				if(y-1 >= 0)	y--;
+				else { if(x <= minRiverLength) {rivers-=1;} x=map.length; }
+				break;
+			case 3:	case 4: 
+				break;
+		}
+		return y;
+	}
+	private static int riverWithChance(MapTile[][] map, int y, int minRiverLength, int rivers, int upChance, int downChance, Random random) {
+		upChance = upChance+downChance;
+		for( int x = 0; x < map.length; x++) {
+			map[x][y] = new MapTile(20,x,y);
+			int upDownOrNothing = (random.nextInt(100)+1);
+			//System.err.println("upDownOrNothing: " + upDownOrNothing +"\n"+"upChance: "+upChance+"\n"+"downChance"+downChance);
+			if(upChance > 100 || downChance > 100) return rivers;
+			if(upDownOrNothing <= downChance) {
+				if(y-1 >= 0)	y--;
+				else { if(x <= minRiverLength) {rivers-=1;} x=map.length; }
+			}
+			else {
+				if(upDownOrNothing <= upChance) {
+					if(y+1 < map[0].length) y++;
+					else { if(x <= minRiverLength) {rivers-=1;} x=map.length; }
+				}
+			}
+		}
+		return rivers;
+	}
+// createMap class end
 }
