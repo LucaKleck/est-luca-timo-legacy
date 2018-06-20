@@ -8,7 +8,7 @@
  */
 import java.util.Random;
 
-import mapTiles.MapTile;
+import mapTiles.*;
 public class createMap {
 /*
  * 1. Size
@@ -134,7 +134,8 @@ public class createMap {
 	}
 	private static MapTile createCustomMapTile (int type,int x, int y) {
 		switch(type) {
-			case 1: return new MapTile(type,x,y);
+			case 0: return new MapTile(0,x,y);
+			case 1: return new MapTileForest(x,y);
 			default:return new MapTile(0,x,y);
 		}
 	}

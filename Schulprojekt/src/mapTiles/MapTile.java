@@ -21,34 +21,24 @@ public class MapTile {
 	private String name;
 	private int xPos;
 	private int yPos;
-	
-	public MapTile(int xPos, int yPos) {
-		this.type = 0;
-		this.name = "Plains";
-	}
-	public MapTile(int type, String name, int xPos, int yPos) {
-		this.type = type;
-		this.name = name;
-		this.xPos = xPos;
-		this.yPos = yPos;
-	}
+	// Constructor
 	public MapTile(int type, int xPos, int yPos) {
 		this.type = type;
 		this.xPos = xPos;
 		this.yPos = yPos;
 		switch(type) {
-		case 0:	this.name = "Plains";
-				break;
-		case 1: this.name = "Forest";
-				break;
-		case 2: this.name = "xx";
-				break;
-		/*
-		 * Insert all types here.
-		 */
-		case 20: this.name = "River";
-		case 69: this.name = "Debug";
-		default:this.name = "MissingType";
+			case 0:	this.name = "Plains";
+					break;
+			case 1: this.name = "Forest"; System.err.println("This is Forest");
+					break;
+			case 2: this.name = "xx";
+					break;
+			/*
+			 * Insert all types here.
+			 */
+			case 20: this.name = "River";
+			case 69: this.name = "Debug";
+			default:this.name = "MissingType";
 		}
 	}
 	// getter
