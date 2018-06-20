@@ -27,9 +27,9 @@ public class MapTile {
 		this.xPos = xPos;
 		this.yPos = yPos;
 		switch(type) {
-			case 0:	this.name = "Plains";
+			case 0:	this.name = "Plain"; //System.err.println("This is Plain");
 					break;
-			case 1: this.name = "Forest"; System.err.println("This is Forest");
+			case 1: this.name = "Forest"; //System.err.println("This is Forest");
 					break;
 			case 2: this.name = "xx";
 					break;

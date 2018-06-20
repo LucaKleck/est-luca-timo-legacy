@@ -1,4 +1,5 @@
 import mapTiles.MapTile;
+import mapTiles.MapTileForest;
 
 /**
  * @Classname ObjectMap
@@ -46,6 +47,9 @@ public class ObjectMap {
 	public int getWidth() {
 		return width;
 	}
+	public void getTestMethod(int x, int y) {
+		if(map[x][y].getClass().equals(MapTileForest.class)) ((MapTileForest) map[x][y]).TestMethod();
+	}
 	// private
 	private void copyMap(MapTile[][] tempMap) {
 		map = new MapTile[tempMap.length][tempMap[0].length];
@@ -56,5 +60,4 @@ public class ObjectMap {
 			}
 		}
 	}
-	
 }

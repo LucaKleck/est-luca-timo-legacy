@@ -90,20 +90,20 @@ public class createMap {
 			if(rivers < maxRivers) {
 				if(rivers < minRivers && yFirstRow == (map[0].length-2)) {
 					yFirstRow=0;
-					System.err.println("firstRowReset");
+					//System.err.println("firstRowReset");
 				}
 				if(random.nextInt(100) <= spawnChance) {
 					int y = yFirstRow;
-					int riverType = (random.nextInt(3)+1);
+					random = new Random();
 					// 3 types of rivers (central, up, down)
 					switch ((random.nextInt(3)+1)) {
-						case 1: rivers++; System.err.println("---------"+"\n"+"riverType: "+riverType+"\n"+"rivers: "+rivers );
+						case 1: rivers++; //System.err.println("---------"+"\n"+"riverType: "+riverType+"\n"+"rivers: "+rivers );
 							rivers = riverWithChance(map, y, minRiverLength, rivers, 25, 25, random);
 							break;
-						case 2: rivers++; System.err.println("---------"+"\n"+"riverType: "+riverType+"\n"+"rivers: "+rivers );
+						case 2: rivers++; //System.err.println("---------"+"\n"+"riverType: "+riverType+"\n"+"rivers: "+rivers );
 							rivers = riverWithChance(map, y, minRiverLength, rivers, 50, 25, random);
 							break;
-						case 3: rivers++; System.err.println("---------"+"\n"+"riverType: "+riverType+"\n"+"rivers: "+rivers );
+						case 3: rivers++; //System.err.println("---------"+"\n"+"riverType: "+riverType+"\n"+"rivers: "+rivers );
 							rivers = riverWithChance(map, y, minRiverLength, rivers, 25, 50, random);
 							break;
 					}
