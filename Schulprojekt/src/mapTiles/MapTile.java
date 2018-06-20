@@ -31,7 +31,7 @@ public class MapTile {
 					break;
 			case 1: this.name = "Forest"; //System.err.println("This is Forest");
 					break;
-			case 2: this.name = "xx";
+			case 2: this.name = "Jungle";
 					break;
 			/*
 			 * Insert all types here.

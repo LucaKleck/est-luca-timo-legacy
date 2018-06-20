@@ -22,8 +22,8 @@ public class createMap {
  */
 	private static final int radiusBase = 4;
 	private static final int typeAmount = 2;
-	private static final int maxRivers = 3;
-	private static final int minRivers = 3;
+	private static final int maxRivers = 5;
+	private static final int minRivers = 3; // Should be a % of map.length 
 	private static final int minRiverLengthPercent = 20;
 	public static MapTile[][] createCustom( int x, int y) {
 		MapTile[][] map = new MapTile[x][y];
@@ -36,10 +36,10 @@ public class createMap {
 		buildMap(map);
 		return map;
 	}
-	private static void placeEverywhere(MapTile[][] map, int type) { // Remove type in final build.
+	private static void createGreatPlain(MapTile[][] map) {
 		for(int y=0; y < map[0].length; y++) {
 			for(int x=0; x < map.length; x++) {
-					map[x][y] = new MapTile(type,x,y);
+					map[x][y] = createCustomMapTile(0,x,y);
 			}
 		}
 	}
@@ -51,11 +51,11 @@ public class createMap {
 	}
 	private static void placeX(MapTile[][] map, int type) {
 		switch(type) {
-			case 0: placeEverywhere(map,type);
+			case 0: createGreatPlain(map);
 					break;
-			case 1: placeRadialType(map, type, 10, 30);
+			case 1: placeRadialType(map, type, 10, 22);
 					break;
-			case 2: placeRadialType(map, type, 20, 5);
+			case 2: placeRadialType(map, type, 1, 50);
 					break;
 			case 20: placeRiverType(map,20,3);
 					break;
@@ -92,19 +92,20 @@ public class createMap {
 					yFirstRow=0;
 					//System.err.println("firstRowReset");
 				}
+				random = new Random();
 				if(random.nextInt(100) <= spawnChance) {
 					int y = yFirstRow;
 					random = new Random();
 					// 3 types of rivers (central, up, down)
 					switch ((random.nextInt(3)+1)) {
-						case 1: rivers++; //System.err.println("---------"+"\n"+"riverType: "+riverType+"\n"+"rivers: "+rivers );
-							rivers = riverWithChance(map, y, minRiverLength, rivers, 25, 25, random);
+						case 1: rivers++; //System.err.println("---------"+"\n"+"riverType: "+1+"\n"+"rivers: "+rivers );
+							rivers = riverWithChance(map, y, minRiverLength, rivers, 25, 25, type);
 							break;
-						case 2: rivers++; //System.err.println("---------"+"\n"+"riverType: "+riverType+"\n"+"rivers: "+rivers );
-							rivers = riverWithChance(map, y, minRiverLength, rivers, 50, 25, random);
+						case 2: rivers++; //System.err.println("---------"+"\n"+"riverType: "+2+"\n"+"rivers: "+rivers );
+							rivers = riverWithChance(map, y, minRiverLength, rivers, 50, 25, type);
 							break;
-						case 3: rivers++; //System.err.println("---------"+"\n"+"riverType: "+riverType+"\n"+"rivers: "+rivers );
-							rivers = riverWithChance(map, y, minRiverLength, rivers, 25, 50, random);
+						case 3: rivers++; //System.err.println("---------"+"\n"+"riverType: "+3+"\n"+"rivers: "+rivers );
+							rivers = riverWithChance(map, y, minRiverLength, rivers, 25, 50, type);
 							break;
 					}
 				}
@@ -112,10 +113,11 @@ public class createMap {
 			
 		}
 	}
-	private static int riverWithChance(MapTile[][] map, int y, int minRiverLength, int rivers, int upChance, int downChance, Random random) {
+	private static int riverWithChance(MapTile[][] map, int y, int minRiverLength, int rivers, int upChance, int downChance, int type) {
 		upChance = upChance+downChance;
 		for( int x = 0; x < map.length; x++) {
-			map[x][y] = new MapTile(20,x,y);
+			map[x][y] = createCustomMapTile(type,x,y);
+			Random random = new Random();
 			int upDownOrNothing = (random.nextInt(100)+1);
 			//System.err.println("upDownOrNothing: " + upDownOrNothing +"\n"+"upChance: "+upChance+"\n"+"downChance"+downChance);
 			if(upChance > 100 || downChance > 100) return rivers;
@@ -134,8 +136,10 @@ public class createMap {
 	}
 	private static MapTile createCustomMapTile (int type,int x, int y) {
 		switch(type) {
-			case 0: return new MapTile(0,x,y);
+			case 0: return new MapTilePlain(x,y);
 			case 1: return new MapTileForest(x,y);
+			case 2: return new MapTileJungle(x,y);
+			case 20:return new MapTileRiver(x,y);
 			default:return new MapTile(0,x,y);
 		}
 	}

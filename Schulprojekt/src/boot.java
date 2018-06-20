@@ -15,6 +15,6 @@ public class boot {
 		//objectMap.printMap();
 		JFrame f = new JFrame("Schulprojekt");
 		ChangeJFrame.change(f,objectMap);
-		objectMap.getTestMethod(10, 10);
+		//objectMap.getTestMethod(10, 10);
 	}
 }
