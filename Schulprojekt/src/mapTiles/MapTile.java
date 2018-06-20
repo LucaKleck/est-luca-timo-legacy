@@ -6,6 +6,7 @@
  * @author Luca Kleck, Timo Bauermeister
  * 
  */
+package mapTiles;
 public class MapTile {
 	/*
 	 * An array of this object is a map. Behavior and commands are changed by type of the MapTile
@@ -16,6 +17,7 @@ public class MapTile {
 	 */
 	private int type;
 	private boolean searched = false;
+	private boolean traversable = true;
 	private String name;
 	private int xPos;
 	private int yPos;
@@ -30,10 +32,10 @@ public class MapTile {
 		this.xPos = xPos;
 		this.yPos = yPos;
 	}
-	public MapTile(int type, int x, int y) {
+	public MapTile(int type, int xPos, int yPos) {
 		this.type = type;
-		this.xPos = x;
-		this.yPos = y;
+		this.xPos = xPos;
+		this.yPos = yPos;
 		switch(type) {
 		case 0:	this.name = "Plains";
 				break;
@@ -64,6 +66,9 @@ public class MapTile {
 	}
 	public int getYPos() {
 		return yPos;
+	}
+	public boolean getTraversable() {
+		return traversable;
 	}
 	// setter
 	

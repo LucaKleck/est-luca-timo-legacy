@@ -1,3 +1,5 @@
+import mapTiles.MapTile;
+
 /**
  * @Classname ObjectMap
  * 

@@ -7,6 +7,8 @@
  * 
  */
 import java.util.Random;
+
+import mapTiles.MapTile;
 public class createMap {
 /*
  * 1. Size
@@ -45,17 +47,19 @@ public class createMap {
 		for( int type = 0; type <= typeAmount; type++) {
 			placeX(map, type);
 		}
-		placeRiverType(map,20,3);
+		placeX(map, 20);
 	}
 	private static void placeX(MapTile[][] map, int type) {
 		switch(type) {
-		case 0: placeEverywhere(map,type);
-				break;
-		case 1: placeRadialType(map, type, 10, 30);
-				break;
-		case 2: placeRadialType(map, type, 20, 5);
-				break;
-		default:placeRadialType(map, 0, 0, 0);
+			case 0: placeEverywhere(map,type);
+					break;
+			case 1: placeRadialType(map, type, 10, 30);
+					break;
+			case 2: placeRadialType(map, type, 20, 5);
+					break;
+			case 20: placeRiverType(map,20,3);
+					break;
+			default:placeRadialType(map, 0, 0, 0);
 		}
 	}	
 	// Placement method with two types of chances
@@ -69,7 +73,7 @@ public class createMap {
 					for(int yRadius = 0; yRadius <= radius; yRadius++) {
 						for( int xRadius = 0; xRadius <= radius; xRadius++ ) {
 							if((random.nextInt(100)+1) <= tileChance) {
-								map[xRadius+x-radius][yRadius+y-radius] = new MapTile(type, x, y);
+								map[xRadius+x-radius][yRadius+y-radius] = createCustomMapTile(type, x, y);
 							}
 						}
 					}	
@@ -108,22 +112,6 @@ public class createMap {
 			
 		}
 	}
-	@SuppressWarnings("unused") // Probably can delete this method
-	private static int riverTypeOneMoveY(MapTile[][] map, int x, int y, int minRiverLength, int rivers, Random random) {
-		switch (random.nextInt(4)+1) {
-			case 1: 
-				if(y+1 < map[0].length) y++;
-				else { if(x <= minRiverLength) {rivers-=1;} x=map.length; }
-				break;
-			case 2: 
-				if(y-1 >= 0)	y--;
-				else { if(x <= minRiverLength) {rivers-=1;} x=map.length; }
-				break;
-			case 3:	case 4: 
-				break;
-		}
-		return y;
-	}
 	private static int riverWithChance(MapTile[][] map, int y, int minRiverLength, int rivers, int upChance, int downChance, Random random) {
 		upChance = upChance+downChance;
 		for( int x = 0; x < map.length; x++) {
@@ -143,6 +131,12 @@ public class createMap {
 			}
 		}
 		return rivers;
+	}
+	private static MapTile createCustomMapTile (int type,int x, int y) {
+		switch(type) {
+			case 1: return new MapTile(type,x,y);
+			default:return new MapTile(0,x,y);
+		}
 	}
 // createMap class end
 }
