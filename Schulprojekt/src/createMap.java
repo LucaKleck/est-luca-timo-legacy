@@ -21,7 +21,7 @@ public class createMap {
  * 8. Call class map, copy finished MapTile[][] map to object map.
  */
 	private static final int radiusBase = 4;
-	private static final int typeAmount = 2;
+	private static final int typeAmount = 3;
 	private static final int maxRivers = 5;
 	private static final int minRivers = 3; // Should be a % of map.length 
 	private static final int minRiverLengthPercent = 20;
@@ -53,11 +53,13 @@ public class createMap {
 		switch(type) {
 			case 0: createGreatPlain(map);
 					break;
-			case 1: placeRadialType(map, type, 10, 22);
+			case 1: placeRadialType(map, type, 10, 10);
 					break;
-			case 2: placeRadialType(map, type, 1, 50);
+			case 2: placeRadialType(map, type, 11, 22);
 					break;
-			case 20: placeRiverType(map,20,3);
+			case 3: placeRadialType(map,type,1,50);
+					break;
+			case 20:placeRiverType(map,20,3);
 					break;
 			default:placeRadialType(map, 0, 0, 0);
 		}
@@ -73,7 +75,7 @@ public class createMap {
 					for(int yRadius = 0; yRadius <= radius; yRadius++) {
 						for( int xRadius = 0; xRadius <= radius; xRadius++ ) {
 							if((random.nextInt(100)+1) <= tileChance) {
-								map[xRadius+x-radius][yRadius+y-radius] = createCustomMapTile(type, x, y);
+								map[xRadius+x-radius][yRadius+y-radius] = createCustomMapTile(type,x,y);
 							}
 						}
 					}	
@@ -134,11 +136,34 @@ public class createMap {
 		}
 		return rivers;
 	}
+	@SuppressWarnings("unused")
+	private static int mountainWithChance(MapTile[][] map, int x, int minMountainLength, int mountainRanges, int upChance, int downChance, int type) {
+		upChance = upChance+downChance;
+		for( int y = 0; y < map.length; y++) {
+			map[x][y] = createCustomMapTile(type,x,y);
+			Random random = new Random();
+			int upDownOrNothing = (random.nextInt(100)+1);
+			//System.err.println("upDownOrNothing: " + upDownOrNothing +"\n"+"upChance: "+upChance+"\n"+"downChance"+downChance);
+			if(upChance > 100 || downChance > 100) return mountainRanges;
+			if(upDownOrNothing <= downChance) {
+				if(x-1 >= 0)	x--;
+				else { if(y <= minMountainLength) {mountainRanges-=1;} y=map.length; }
+			}
+			else {
+				if(upDownOrNothing <= upChance) {
+					if(x+1 < map[0].length) x++;
+					else { if(y <= minMountainLength) {mountainRanges-=1;} y=map.length; }
+				}
+			}
+		}
+		return mountainRanges;
+	}
 	private static MapTile createCustomMapTile (int type,int x, int y) {
 		switch(type) {
 			case 0: return new MapTilePlain(x,y);
 			case 1: return new MapTileForest(x,y);
-			case 2: return new MapTileJungle(x,y);
+			case 2: return new MapTileLightForest(x,y);
+			case 3: return new MapTileJungle(x,y);
 			case 20:return new MapTileRiver(x,y);
 			default:return new MapTile(0,x,y);
 		}

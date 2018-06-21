@@ -1,4 +1,4 @@
-package Calc;
+package calc;
 
 public class Sinus {
 	public static int getYofX(int maxY, int maxX, int x) {
