@@ -20,22 +20,22 @@ public class DrawMap extends JPanel {
 				double height = (double)this.getHeight()/objectMap.getHeight();
 				switch (map[x][y].getType()) {
 				case 0:	g.setColor(new Color(56, 216, 59));
-						g.fillRect((int)(x*width), (int)(y*height), (int)width, (int)height);
+						g.fillRect((int)(x*width), (int)(y*height), (int)width+1, (int)height+1);
 						break;
 				case 1: g.setColor(new Color(66,147,33));
-						g.fillRect((int)(x*width), (int)(y*height), (int)width, (int)height);
+						g.fillRect((int)(x*width), (int)(y*height), (int)width+1, (int)height+1);
 						break;
 				case 2: g.setColor(new Color(10,130,10));
-						g.fillRect((int)(x*width), (int)(y*height), (int)width, (int)height);
+						g.fillRect((int)(x*width), (int)(y*height), (int)width+1, (int)height+1);
 						break;
 				case 3: g.setColor(new Color(0,100,0));
-						g.fillRect((int)(x*width), (int)(y*height), (int)width, (int)height);
+						g.fillRect((int)(x*width), (int)(y*height), (int)width+1, (int)height+1);
 						break;
 				case 20:g.setColor(new Color(0,30,255));
-						g.fillRect((int)(x*width), (int)(y*height), (int)width, (int)height);
+						g.fillRect((int)(x*width), (int)(y*height), (int)width+1, (int)height+1);
 						break;
 				default:g.setColor(Color.BLACK);
-						g.fillRect((int)(x*width), (int)(y*height), (int)width, (int)height);
+						g.fillRect((int)(x*width), (int)(y*height), (int)width+1, (int)height+1);
 						break;
 				}
 			}

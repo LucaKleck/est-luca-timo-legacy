@@ -19,14 +19,21 @@ public class ObjectMap {
 	private int height;
 	// Constructors
 	public ObjectMap() {
-		copyMap(createMap.createDefault(map));
-		width = 100;
-		height = 100;
+		this.width = 20;
+		this.height = 20;
+		copyMap(createMap.createCustom(width,height));
+		
 	}
-	public ObjectMap(MapTile[][] loadMap, int width, int height) {
-		copyMap(loadMap);
+	public ObjectMap(int width, int height) {
 		this.width = width;
 		this.height = height;
+		copyMap(createMap.createCustom(width,height));
+		
+	}
+	public ObjectMap(MapTile[][] loadMap) {
+		copyMap(loadMap);
+		this.width = loadMap.length;
+		this.height = loadMap[0].length;
 	}
 	// Methods public
 	public void printMap() {

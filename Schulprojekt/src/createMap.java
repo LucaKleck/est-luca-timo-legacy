@@ -30,12 +30,6 @@ public class createMap {
 		MapTile[][] map = new MapTile[x][y];
 		buildMap(map);
 		return map;
-
-	}
-	public static MapTile[][] createDefault(MapTile[][] map) {
-		map = new MapTile[100][100];
-		buildMap(map);
-		return map;
 	}
 	private static void createGreatPlain(MapTile[][] map) {
 		for(int y=0; y < map[0].length; y++) {
@@ -136,38 +130,6 @@ public class createMap {
 			}
 		}
 		return rivers;
-	}
-	@SuppressWarnings("unused")
-	private static int mountainWithChance(MapTile[][] map, int x, int minMountainLength, int mountainRanges, int upChance, int downChance, int type) {
-		upChance = upChance+downChance;
-		Random random = new Random();
-		for( int y = 0; y < map.length; y++) {
-			int radius = (random.nextInt(2)+MOUNTAINRANGERADIUSBASE);
-			for(int yRadius = 0; yRadius <= radius; yRadius++) {
-				for( int xRadius = 0; xRadius <= radius; xRadius++ ) {
-					random = new Random();
-					if((random.nextInt(100)+1) <= 100) {
-						map[xRadius+x-radius][yRadius+y-radius] = createCustomMapTile(type,x,y);
-					}
-				}
-			} 
-			map[x][y] = createCustomMapTile(type,x,y);
-			random = new Random();
-			int upDownOrNothing = (random.nextInt(100)+1);
-			//System.err.println("upDownOrNothing: " + upDownOrNothing +"\n"+"upChance: "+upChance+"\n"+"downChance"+downChance);
-			if(upChance > 100 || downChance > 100) return mountainRanges;
-			if(upDownOrNothing <= downChance) {
-				if(x-1 >= 0)	x--;
-				else { if(y <= minMountainLength) {mountainRanges-=1;} y=map.length; }
-			}
-			else {
-				if(upDownOrNothing <= upChance) {
-					if(x+1 < map[0].length) x++;
-					else { if(y <= minMountainLength) {mountainRanges-=1;} y=map.length; }
-				}
-			}
-		}
-		return mountainRanges;
 	}
 	private static MapTile createCustomMapTile (int type,int x, int y) {
 		switch(type) {
