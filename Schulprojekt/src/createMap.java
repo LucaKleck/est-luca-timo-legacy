@@ -10,18 +10,7 @@ import java.util.Random;
 
 import mapTiles.*;
 public class createMap {
-/*
- * 1. Size
- * 2. Create MapTiles
- * 3. Run river
- * 4. Run mountain
- * 5. Run points of interest
- * 6. Run cities
- * 7. Run story points
- * 8. Call class map, copy finished MapTile[][] map to object map.
- */
-	private static final int MOUNTAINRANGERADIUSBASE = 3;
-	private static final int MAPTILERADIUSBASE = 4;
+    private static final int MAPTILERADIUSBASE = 4;
 	private static final int TYPEAMOUNT = 3;
 	private static final int MAXRIVERS = 5;
 	private static final int MINRIVERS = 3; // Should be a % of map.length 
@@ -131,14 +120,14 @@ public class createMap {
 		}
 		return rivers;
 	}
-	private static MapTile createCustomMapTile (int type,int x, int y) {
+	private static MapTile createCustomMapTile (int type, int x, int y) {
 		switch(type) {
 			case 0: return new MapTilePlain(x,y);
 			case 1: return new MapTileForest(x,y);
 			case 2: return new MapTileLightForest(x,y);
 			case 3: return new MapTileJungle(x,y);
 			case 20:return new MapTileRiver(x,y);
-			default:return new MapTile(0,x,y);
+			default:return new MapTilePlain(x,y);
 		}
 	}
 // createMap class end

@@ -1,12 +1,16 @@
 package mapTiles;
 
 public class MapTileForest extends MapTile {
+	private static final int TYPE = 1;
+	private static final int[] TOWERTYPES = {0};
+	private static final boolean TRAVERSABLE = false;
 	
-	private static final int type = 1;
 	public MapTileForest(int xPos, int yPos) {
-		super(type, xPos, yPos);
+		super(TYPE, xPos, yPos, TOWERTYPES, TRAVERSABLE);
 	}
+
 	public void TestMethod() {
-		System.out.println("This is the output of the TestMethod");
+		System.out.println("Tree");
 	}
+
 }
