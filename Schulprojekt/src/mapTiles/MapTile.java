@@ -35,9 +35,9 @@ public class MapTile {
 		this.towerTypes = towerTypes;
 		this.traversable = traversable;
 		switch(type) {
-			case 0:	this.name = "Plain"; //System.err.println("This is Plain");
+			case 0:	this.name = "Plain";
 					break;
-			case 1: this.name = "Forest"; //System.err.println("This is Forest");
+			case 1: this.name = "Forest";
 					break;
 			case 2: this.name = "Jungle";
 					break;
