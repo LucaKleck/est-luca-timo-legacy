@@ -1,6 +1,6 @@
 import mapTiles.MapTile;
 import mapTiles.MapTileForest;
-import units.units;
+import units.unit;
 
 /**
  * @Classname ObjectMap
@@ -17,7 +17,7 @@ public class ObjectMap {
 	
 	private MapTile[][] map;
 	@SuppressWarnings("unused")
-	private units[][][] enemieMap;
+	private unit[][][] enemieMap;
 	private int width;
 	private int height;
 	// Constructors
