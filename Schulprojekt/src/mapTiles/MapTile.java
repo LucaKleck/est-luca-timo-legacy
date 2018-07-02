@@ -42,7 +42,7 @@ public class MapTile {
 			case 2: this.name = "Jungle";
 					break;
 			/*
-			 * Insert all types here.
+			 * TODO add types
 			 */
 			case 20: this.name = "River";
 			case 69: this.name = "Debug";
