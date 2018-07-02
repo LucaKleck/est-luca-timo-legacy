@@ -21,6 +21,7 @@ public class MapTile {
 	 * type 1: water
 	 * type 3: xx
 	 */
+	//DOIT add resource and efficiency
 	private int type;
 	private boolean traversable;
 	private String name;
