@@ -11,11 +11,11 @@ public class MapTile {
 	/*
 	 * An array of this object is a map. Behavior and commands are changed by type of the MapTile
 	 * type 0 = Plains
-	 * type 1 = xx
-	 * type 2 = xx
+	 * type 1 = Forest
+	 * type 2 = Jungle
 	 * type x = xx
 	 * ---
-	 * towerTypes are all towers that can be placed on top of the tile
+	 * towerTypes are all towers that can be placed on top of the tile IDEA could be a boolean
 	 * Types are as follows: 
 	 * type 0: ground
 	 * type 1: water
@@ -39,7 +39,9 @@ public class MapTile {
 					break;
 			case 1: this.name = "Forest";
 					break;
-			case 2: this.name = "Jungle";
+			case 2: this.name = "Light Forest";
+					break;
+			case 3: this.name = "Jungle";
 					break;
 			/*
 			 * TODO add types

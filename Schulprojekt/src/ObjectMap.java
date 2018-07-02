@@ -1,5 +1,6 @@
 import mapTiles.MapTile;
 import mapTiles.MapTileForest;
+import units.units;
 
 /**
  * @Classname ObjectMap
@@ -15,14 +16,15 @@ public class ObjectMap {
 	 */
 	
 	private MapTile[][] map;
+	@SuppressWarnings("unused")
+	private units[][][] enemieMap;
 	private int width;
 	private int height;
 	// Constructors
 	public ObjectMap() {
-		this.width = 20;
-		this.height = 20;
+		this.width = 49;
+		this.height = 49;
 		copyMap(createMap.createCustom(width,height));
-		
 	}
 	public ObjectMap(int width, int height) {
 		this.width = width;
