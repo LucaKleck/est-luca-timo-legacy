@@ -13,6 +13,8 @@ public class DrawMap extends JPanel {
 		this.objectMap = objectMap;
 		this.map = objectMap.getMap();
 	}
+
+	//IDEA add transparent rectangles 
 	public void paint(Graphics g) {
 		for(int y = 0; y < objectMap.getHeight(); y++) {
 			for(int x = 0; x < objectMap.getWidth(); x++) {
