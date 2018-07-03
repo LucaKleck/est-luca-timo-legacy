@@ -84,7 +84,7 @@ public class createMap {
 					random = new Random();
 					// 3 types of rivers (central, up, down)
 					switch ((random.nextInt(3)+1)) {
-						case 1: rivers++; //System.err.println("---------"+"\n"+"riverType: "+1+"\n"+"rivers: "+rivers );
+						case 1: rivers++; //System.err.println("---------"+"\n"+"riverType: "+1+"\n"+"rivers: "+rivers ); IDEA deletet this
 							rivers = riverWithChance(map, y, minRiverLength, rivers, 25, 25, type);
 							break;
 						case 2: rivers++; //System.err.println("---------"+"\n"+"riverType: "+2+"\n"+"rivers: "+rivers );
@@ -106,7 +106,7 @@ public class createMap {
 			if(y+1 < map[0].length) map[x][y+1] = createCustomMapTile(type,x,y);
 			Random random = new Random();
 			int upDownOrNothing = (random.nextInt(100)+1);
-			//System.err.println("upDownOrNothing: " + upDownOrNothing +"\n"+"upChance: "+upChance+"\n"+"downChance"+downChance);
+			//System.err.println("upDownOrNothing: " + upDownOrNothing +"\n"+"upChance: "+upChance+"\n"+"downChance"+downChance); //IDEA delete this
 			if(upChance > 100 || downChance > 100) return rivers;
 			if(upDownOrNothing <= downChance) {
 				if(y-1 >= 0)	y--;
@@ -169,15 +169,16 @@ public class createMap {
 		}
 	}
 	private static int[] checkResourceTypeLogic(int[] resourceType, int[] resourceEfficiency) {
-		
+		//TODO create logic
 		return resourceType;
 	}
 	private static int[] checkResourceEfficiencyLogic(int[] resourceType, int[] resourceEfficiency) {
-		
+		//TODO create logic
 		return resourceEfficiency;
 	}
 //  Fuck u Was cooles!1
 //	DOIT create city
+	//DOIT Mach sach
 //	DOIT create pathway IDEA create portal for enemy spawn IDEA create tower that defend the portal IDEA create buff boy to defend portal
 // 	createMap class end
 }
