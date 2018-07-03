@@ -12,8 +12,8 @@ import mapTiles.*;
 public class createMap {
     private static final int MAPTILERADIUSBASE = 4;
 	private static final int TYPEAMOUNT = 3;
-	private static final int MAXRIVERS = 5;
-	private static final int MINRIVERS = 3; // Should be a % of map.length 
+	private static final int MAXRIVERS = 2;
+	private static final int MINRIVERS = 2; // Should be a % of map.length 
 	private static final int MINRIVERLENGTHPERCENT = 20;
 	public static MapTile[][] createCustom( int x, int y) {
 		MapTile[][] map = new MapTile[x][y];
@@ -103,6 +103,7 @@ public class createMap {
 		upChance = upChance+downChance;
 		for( int x = 0; x < map.length; x++) {
 			map[x][y] = createCustomMapTile(type,x,y);
+			if(y+1 < map[0].length) map[x][y+1] = createCustomMapTile(type,x,y);
 			Random random = new Random();
 			int upDownOrNothing = (random.nextInt(100)+1);
 			//System.err.println("upDownOrNothing: " + upDownOrNothing +"\n"+"upChance: "+upChance+"\n"+"downChance"+downChance);
@@ -121,15 +122,61 @@ public class createMap {
 		return rivers;
 	}
 	private static MapTile createCustomMapTile (int type, int x, int y) {
+		Random random = new Random();
+		int[] resourceType;
+		int[] resourceEfficiency;
 		switch(type) {
-			case 0: return new MapTilePlain(x,y);
-			case 1: return new MapTileForest(x,y);
-			case 2: return new MapTileLightForest(x,y);
-			case 3: return new MapTileJungle(x,y);
-			case 20:return new MapTileRiver(x,y);
-			default:return new MapTilePlain(x,y);
+			case 0: resourceType = new int[] {0,random.nextInt(5)};
+					resourceEfficiency = new int[] {100, random.nextInt(100+1)};
+					if(resourceType[1] == resourceType[0]) {
+						resourceType = new int[] {resourceType[0]};
+						resourceEfficiency = new int[] {resourceEfficiency[0]};
+					}
+					return new MapTilePlain(x,y,resourceType,resourceEfficiency);
+			case 1: resourceType = new int[] {1,random.nextInt(5)};
+					resourceEfficiency = new int[] {100, random.nextInt(100+1)};
+					if(resourceType[1] == resourceType[0]) {
+						resourceType = new int[] {resourceType[0]};
+						resourceEfficiency = new int[] {resourceEfficiency[0]};
+					}
+					return new MapTileForest(x,y,resourceType,resourceEfficiency);
+			case 2: resourceType = new int[] {1,random.nextInt(5)};
+					resourceEfficiency = new int[] {70, random.nextInt(100+1)};
+					if(resourceType[1] == resourceType[0]) {
+						resourceType = new int[] {resourceType[0]};
+						resourceEfficiency = new int[] {resourceEfficiency[0]};
+					}
+					return new MapTileLightForest(x,y,resourceType,resourceEfficiency);
+			case 3: resourceType = new int[] {0,1};
+					resourceEfficiency = new int[] {100, 100};
+					return new MapTileJungle(x,y,resourceType,resourceEfficiency);
+			case 20:resourceType = new int[] {4,random.nextInt(5)};
+					resourceEfficiency = new int[] {60, random.nextInt(100+1)};
+					if(resourceType[1] == resourceType[0]) {
+						resourceType = new int[] {resourceType[0]};
+						resourceEfficiency = new int[] {resourceEfficiency[0]};
+					}
+					return new MapTileRiver(x,y,resourceType,resourceEfficiency);
+			default:resourceType = new int[] {1,random.nextInt(5)};
+					resourceEfficiency = new int[] {100, random.nextInt(100+1)};
+					if(resourceType[1] == resourceType[0]) {
+						resourceType = new int[] {resourceType[0]};
+						resourceEfficiency = new int[] {resourceEfficiency[0]};
+					}
+					resourceType = checkResourceTypeLogic(resourceType,resourceEfficiency);
+					resourceEfficiency = checkResourceEfficiencyLogic(resourceType, resourceEfficiency);
+					return new MapTilePlain(x,y,resourceType,resourceEfficiency);
 		}
 	}
-	//DOIT create pathway IDEA create portal for enemy spawn IDEA create tower that defend the portal IDEA create buff boy to defend portal
-// createMap class end
+	private static int[] checkResourceTypeLogic(int[] resourceType, int[] resourceEfficiency) {
+		
+		return resourceType;
+	}
+	private static int[] checkResourceEfficiencyLogic(int[] resourceType, int[] resourceEfficiency) {
+		
+		return resourceEfficiency;
+	}
+//	DOIT create city
+//	DOIT create pathway IDEA create portal for enemy spawn IDEA create tower that defend the portal IDEA create buff boy to defend portal
+// 	createMap class end
 }
