@@ -169,11 +169,11 @@ public class createMap {
 		}
 	}
 	private static int[] checkResourceTypeLogic(int[] resourceType, int[] resourceEfficiency) {
-		
+		//TODO create logic
 		return resourceType;
 	}
 	private static int[] checkResourceEfficiencyLogic(int[] resourceType, int[] resourceEfficiency) {
-		
+		//TODO create logic
 		return resourceEfficiency;
 	}
 //	DOIT create city
