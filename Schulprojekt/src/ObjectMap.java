@@ -17,7 +17,7 @@ public class ObjectMap {
 	
 	private MapTile[][] map;
 	@SuppressWarnings("unused")
-	private unit[][][] enemieMap;
+	private unit[][][] enemieMap; //DOIT create it
 	private int width;
 	private int height;
 	// Constructors
