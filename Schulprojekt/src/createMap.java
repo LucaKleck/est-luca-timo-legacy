@@ -176,7 +176,7 @@ public class createMap {
 		
 		return resourceEfficiency;
 	}
-//  Fuck u Was cooles!
+//  Fuck u Was cooles!1
 //	DOIT create city
 //	DOIT create pathway IDEA create portal for enemy spawn IDEA create tower that defend the portal IDEA create buff boy to defend portal
 // 	createMap class end
