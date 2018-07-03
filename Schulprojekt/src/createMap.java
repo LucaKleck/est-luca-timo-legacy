@@ -84,7 +84,7 @@ public class createMap {
 					random = new Random();
 					// 3 types of rivers (central, up, down)
 					switch ((random.nextInt(3)+1)) {
-						case 1: rivers++; //System.err.println("---------"+"\n"+"riverType: "+1+"\n"+"rivers: "+rivers );
+						case 1: rivers++; //System.err.println("---------"+"\n"+"riverType: "+1+"\n"+"rivers: "+rivers ); IDEA deletet this
 							rivers = riverWithChance(map, y, minRiverLength, rivers, 25, 25, type);
 							break;
 						case 2: rivers++; //System.err.println("---------"+"\n"+"riverType: "+2+"\n"+"rivers: "+rivers );
