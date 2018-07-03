@@ -106,7 +106,7 @@ public class createMap {
 			if(y+1 < map[0].length) map[x][y+1] = createCustomMapTile(type,x,y);
 			Random random = new Random();
 			int upDownOrNothing = (random.nextInt(100)+1);
-			//System.err.println("upDownOrNothing: " + upDownOrNothing +"\n"+"upChance: "+upChance+"\n"+"downChance"+downChance);
+			//System.err.println("upDownOrNothing: " + upDownOrNothing +"\n"+"upChance: "+upChance+"\n"+"downChance"+downChance); //IDEA delete this
 			if(upChance > 100 || downChance > 100) return rivers;
 			if(upDownOrNothing <= downChance) {
 				if(y-1 >= 0)	y--;
