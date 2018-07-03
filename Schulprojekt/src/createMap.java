@@ -177,6 +177,7 @@ public class createMap {
 		return resourceEfficiency;
 	}
 //	DOIT create city
+	//DOIT Mach sach
 //	DOIT create pathway IDEA create portal for enemy spawn IDEA create tower that defend the portal IDEA create buff boy to defend portal
 // 	createMap class end
 }
