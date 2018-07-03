@@ -178,7 +178,6 @@ public class createMap {
 	}
 //  Fuck u Was cooles!1
 //	DOIT create city
-	//DOIT Mach sach
 //	DOIT create pathway IDEA create portal for enemy spawn IDEA create tower that defend the portal IDEA create buff boy to defend portal
 // 	createMap class end
 }
