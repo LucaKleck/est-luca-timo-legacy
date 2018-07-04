@@ -157,24 +157,30 @@ public class createMap {
 						resourceEfficiency = new int[] {resourceEfficiency[0]};
 					}
 					return new MapTileRiver(x,y,resourceType,resourceEfficiency);
-			default:resourceType = new int[] {1,random.nextInt(5)};
-					resourceEfficiency = new int[] {100, random.nextInt(100+1)};
-					if(resourceType[1] == resourceType[0]) {
-						resourceType = new int[] {resourceType[0]};
-						resourceEfficiency = new int[] {resourceEfficiency[0]};
-					}
-					resourceType = checkResourceTypeLogic(resourceType,resourceEfficiency);
-					resourceEfficiency = checkResourceEfficiencyLogic(resourceType, resourceEfficiency);
+			default:int[] resourceTypeTemp = new int[] {1,random.nextInt(5)};
+					int[] resourceEfficiencyTemp = new int[] {100, random.nextInt(100+1)};
+					resourceType = checkResourceTypeLogic(resourceTypeTemp,resourceEfficiencyTemp);
+					resourceEfficiency = checkResourceEfficiencyLogic(resourceTypeTemp, resourceEfficiencyTemp);
 					return new MapTilePlain(x,y,resourceType,resourceEfficiency);
 		}
 	}
-	private static int[] checkResourceTypeLogic(int[] resourceType, int[] resourceEfficiency) {
-		//TODO create logic
-		return resourceType;
+	private static int[] checkResourceTypeLogic(int[] resourceTypeTemp, int[] resourceEfficiencyTemp) {
+		//TODO create logic to see if all is good
+		if(resourceTypeTemp[1] == resourceTypeTemp[0]) {
+			resourceTypeTemp = new int[] {resourceTypeTemp[0]};
+		}
+		return resourceTypeTemp;
 	}
-	private static int[] checkResourceEfficiencyLogic(int[] resourceType, int[] resourceEfficiency) {
-		//TODO create logic
-		return resourceEfficiency;
+	private static int[] checkResourceEfficiencyLogic(int[] resourceTypeTemp, int[] resourceEfficiencyTemp) {
+		//TODO create logic to see if all is good
+		if(resourceTypeTemp[1] == resourceTypeTemp[0]) {
+			if(resourceEfficiencyTemp[0] >= resourceEfficiencyTemp[1]) {
+				resourceEfficiencyTemp = new int[] {resourceEfficiencyTemp[0]};
+			} else {
+				resourceEfficiencyTemp = new int[] {resourceEfficiencyTemp[1]};
+			}
+		}
+		return resourceEfficiencyTemp;
 	}
 //	DOIT create city
 //	DOIT create pathway IDEA create portal for enemy spawn IDEA create tower that defends the portal IDEA create buff boy to defend portal
