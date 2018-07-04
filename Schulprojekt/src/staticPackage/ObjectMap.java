@@ -1,6 +1,7 @@
+package staticPackage;
 import mapTiles.MapTile;
 import mapTiles.MapTileForest;
-import units.unit;
+import units.Unit;
 
 /**
  * @Classname ObjectMap
@@ -14,22 +15,21 @@ public class ObjectMap {
 	/*
 	 * Class map is for loading an existing map or creating a new one, then having special functions related to map movement or editing.
 	 */
-	
 	private MapTile[][] map;
 	@SuppressWarnings("unused")
-	private unit[][][] unitMap; 
+	private Unit[][][] unitMap; 
 	private int width;
 	private int height;
 	// Constructors
 	public ObjectMap() {
 		this.width = 49;
 		this.height = 49;
-		copyMap(createMap.createCustom(width,height));
+		copyMap(CreateMap.createCustom(width,height));
 	}
 	public ObjectMap(int width, int height) {
 		this.width = width;
 		this.height = height;
-		copyMap(createMap.createCustom(width,height));
+		copyMap(CreateMap.createCustom(width,height));
 		
 	}
 	public ObjectMap(MapTile[][] loadMap) {

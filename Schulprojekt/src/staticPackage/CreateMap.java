@@ -1,3 +1,4 @@
+package staticPackage;
 /**
  * @Classname createMap
  * 
@@ -7,17 +8,28 @@
  * 
  */
 import java.util.Random;
+import java.util.logging.Level;
 
-import mapTiles.*;
-public class createMap {
+import com.sun.istack.internal.logging.Logger;
+
+import mapTiles.MapTile;
+import mapTiles.MapTileForest;
+import mapTiles.MapTileJungle;
+import mapTiles.MapTileLightForest;
+import mapTiles.MapTilePlain;
+import mapTiles.MapTileRiver;
+public class CreateMap {
+	private static final Logger log = Logger.getLogger(CreateMap.class.getName(),CreateMap.class);
     private static final int MAPTILERADIUSBASE = 4;
 	private static final int TYPEAMOUNT = 3;
 	private static final int MAXRIVERS = 2;
 	private static final int MINRIVERS = 2; // Should be a % of map.length 
 	private static final int MINRIVERLENGTHPERCENT = 20;
-	public static MapTile[][] createCustom( int x, int y) {
+	public static MapTile[][] createCustom(int x, int y) {
+		log.info("Start createCustom map");
 		MapTile[][] map = new MapTile[x][y];
 		buildMap(map);
+		log.info("End createCustom map");
 		return map;
 	}
 	private static void createGreatPlain(MapTile[][] map) {
@@ -84,7 +96,7 @@ public class createMap {
 					random = new Random();
 					// 3 types of rivers (central, up, down)
 					switch ((random.nextInt(3)+1)) {
-						case 1: rivers++; //System.err.println("---------"+"\n"+"riverType: "+1+"\n"+"rivers: "+rivers ); 
+						case 1: rivers++; log.log(Level.FINE, "Debug: ",("---------"+"\n"+"riverType: "+1+"\n"+"rivers: "+rivers)); 
 							rivers = riverWithChance(map, y, minRiverLength, rivers, 25, 25, type);
 							break;
 						case 2: rivers++; //System.err.println("---------"+"\n"+"riverType: "+2+"\n"+"rivers: "+rivers );
@@ -125,8 +137,8 @@ public class createMap {
 		Random random = new Random();
 		int[] resourceType;
 		int[] resourceEfficiency;
-		int[] resourceTypeTemp;
-		int[] resourceEfficiencyTemp;
+		int[] resourceTypeTemp = new int[2];
+		int[] resourceEfficiencyTemp = new int[2];
 		switch(type) {
 			case 0: resourceTypeTemp = new int[] {0,random.nextInt(5)};
 					resourceEfficiencyTemp = new int[] {100, random.nextInt(100+1)};
@@ -162,8 +174,12 @@ public class createMap {
 		if(resourceEfficiencyTemp[1] <= 0) {
 			resourceTypeTemp = new int[] {resourceTypeTemp[0]};
 		}
-		if(resourceTypeTemp[1] == resourceTypeTemp[0]) {
-			resourceTypeTemp = new int[] {resourceTypeTemp[0]};
+		try {
+			if(resourceTypeTemp[1] == resourceTypeTemp[0]) {
+				resourceTypeTemp = new int[] {resourceTypeTemp[0]};
+			}
+		} catch(Exception e) {
+			log.log(Level.FINEST, "checkResourceTypeLogic: ", e);
 		}
 		return resourceTypeTemp;
 	}
@@ -171,12 +187,16 @@ public class createMap {
 		if(resourceEfficiencyTemp[1] <= 0){
 			resourceEfficiencyTemp = new int[] {resourceEfficiencyTemp[0]};
 		}
-		if(resourceTypeTemp[1] == resourceTypeTemp[0]) {
-			if(resourceEfficiencyTemp[0] >= resourceEfficiencyTemp[1]) {
-				resourceEfficiencyTemp = new int[] {resourceEfficiencyTemp[0]};
-			} else {
-				resourceEfficiencyTemp = new int[] {resourceEfficiencyTemp[1]};
+		try {
+			if(resourceTypeTemp[1] == resourceTypeTemp[0]) {
+				if(resourceEfficiencyTemp[0] >= resourceEfficiencyTemp[1]) {
+					resourceEfficiencyTemp = new int[] {resourceEfficiencyTemp[0]};
+				} else {
+					resourceEfficiencyTemp = new int[] {resourceEfficiencyTemp[1]};
+				}
 			}
+		} catch(Exception e) {
+			log.log(Level.FINEST, "checkResourceEfficiencyLogic: ", e);
 		}
 		return resourceEfficiencyTemp;
 	}
