@@ -179,7 +179,7 @@ public class CreateMap {
 				resourceTypeTemp = new int[] {resourceTypeTemp[0]};
 			}
 		} catch(Exception e) {
-			log.log(Level.FINEST, "checkResourceTypeLogic: ", e);
+			log.log(Level.FINE, "checkResourceTypeLogic: ", e);
 		}
 		return resourceTypeTemp;
 	}
@@ -196,7 +196,7 @@ public class CreateMap {
 				}
 			}
 		} catch(Exception e) {
-			log.log(Level.FINEST, "checkResourceEfficiencyLogic: ", e);
+			log.log(Level.FINE, "checkResourceEfficiencyLogic", e);
 		}
 		return resourceEfficiencyTemp;
 	}
