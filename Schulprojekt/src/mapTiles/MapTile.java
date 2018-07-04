@@ -16,7 +16,7 @@ public abstract class MapTile {
 	 * type 20 = River
 	 * type 30 = Mountain
 	 * ---
-	 * towerTypes are all towers that can be placed on top of the tile IDEA could be a boolean
+	 * towerTypes are all towers that can be placed on top of the tile
 	 * Types are as follows: 
 	 * type 0: ground
 	 * type 1: water
@@ -28,7 +28,6 @@ public abstract class MapTile {
 	 * type 3: stone;
 	 * type 4: Magic Stones
 	 */
-	//DOIT add resource and efficiency
 	private int type;
 	private boolean traversable;
 	private String name;
@@ -56,7 +55,7 @@ public abstract class MapTile {
 			case 3: this.name = "Jungle";
 					break;
 			/*
-			 * IDEA add types
+			 * 
 			 */
 			case 20: this.name = "River";
 			case 69: this.name = "Debug";

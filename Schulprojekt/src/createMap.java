@@ -84,7 +84,7 @@ public class createMap {
 					random = new Random();
 					// 3 types of rivers (central, up, down)
 					switch ((random.nextInt(3)+1)) {
-						case 1: rivers++; //System.err.println("---------"+"\n"+"riverType: "+1+"\n"+"rivers: "+rivers ); IDEA deletet this
+						case 1: rivers++; //System.err.println("---------"+"\n"+"riverType: "+1+"\n"+"rivers: "+rivers ); 
 							rivers = riverWithChance(map, y, minRiverLength, rivers, 25, 25, type);
 							break;
 						case 2: rivers++; //System.err.println("---------"+"\n"+"riverType: "+2+"\n"+"rivers: "+rivers );
@@ -106,7 +106,7 @@ public class createMap {
 			if(y+1 < map[0].length) map[x][y+1] = createCustomMapTile(type,x,y);
 			Random random = new Random();
 			int upDownOrNothing = (random.nextInt(100)+1);
-			//System.err.println("upDownOrNothing: " + upDownOrNothing +"\n"+"upChance: "+upChance+"\n"+"downChance"+downChance); //IDEA delete this
+			//System.err.println("upDownOrNothing: " + upDownOrNothing +"\n"+"upChance: "+upChance+"\n"+"downChance"+downChance); 
 			if(upChance > 100 || downChance > 100) return rivers;
 			if(upDownOrNothing <= downChance) {
 				if(y-1 >= 0)	y--;
@@ -125,54 +125,52 @@ public class createMap {
 		Random random = new Random();
 		int[] resourceType;
 		int[] resourceEfficiency;
+		int[] resourceTypeTemp;
+		int[] resourceEfficiencyTemp;
 		switch(type) {
-			case 0: resourceType = new int[] {0,random.nextInt(5)};
-					resourceEfficiency = new int[] {100, random.nextInt(100+1)};
-					if(resourceType[1] == resourceType[0]) {
-						resourceType = new int[] {resourceType[0]};
-						resourceEfficiency = new int[] {resourceEfficiency[0]};
-					}
+			case 0: resourceTypeTemp = new int[] {0,random.nextInt(5)};
+					resourceEfficiencyTemp = new int[] {100, random.nextInt(100+1)};
+					resourceType = checkResourceTypeLogic(resourceTypeTemp,resourceEfficiencyTemp);
+					resourceEfficiency = checkResourceEfficiencyLogic(resourceTypeTemp, resourceEfficiencyTemp);
 					return new MapTilePlain(x,y,resourceType,resourceEfficiency);
-			case 1: resourceType = new int[] {1,random.nextInt(5)};
-					resourceEfficiency = new int[] {100, random.nextInt(100+1)};
-					if(resourceType[1] == resourceType[0]) {
-						resourceType = new int[] {resourceType[0]};
-						resourceEfficiency = new int[] {resourceEfficiency[0]};
-					}
+			case 1: resourceTypeTemp = new int[] {1,random.nextInt(5)};
+					resourceEfficiencyTemp = new int[] {100, random.nextInt(100+1)};
+					resourceType = checkResourceTypeLogic(resourceTypeTemp,resourceEfficiencyTemp);
+					resourceEfficiency = checkResourceEfficiencyLogic(resourceTypeTemp, resourceEfficiencyTemp);
 					return new MapTileForest(x,y,resourceType,resourceEfficiency);
-			case 2: resourceType = new int[] {1,random.nextInt(5)};
-					resourceEfficiency = new int[] {70, random.nextInt(100+1)};
-					if(resourceType[1] == resourceType[0]) {
-						resourceType = new int[] {resourceType[0]};
-						resourceEfficiency = new int[] {resourceEfficiency[0]};
-					}
+			case 2: resourceTypeTemp = new int[] {1,random.nextInt(5)};
+					resourceEfficiencyTemp = new int[] {100, random.nextInt(100+1)};
+					resourceType = checkResourceTypeLogic(resourceTypeTemp,resourceEfficiencyTemp);
+					resourceEfficiency = checkResourceEfficiencyLogic(resourceTypeTemp, resourceEfficiencyTemp);
 					return new MapTileLightForest(x,y,resourceType,resourceEfficiency);
 			case 3: resourceType = new int[] {0,1};
 					resourceEfficiency = new int[] {100, 100};
 					return new MapTileJungle(x,y,resourceType,resourceEfficiency);
-			case 20:resourceType = new int[] {4,random.nextInt(5)};
-					resourceEfficiency = new int[] {60, random.nextInt(100+1)};
-					if(resourceType[1] == resourceType[0]) {
-						resourceType = new int[] {resourceType[0]};
-						resourceEfficiency = new int[] {resourceEfficiency[0]};
-					}
+			case 20:resourceTypeTemp = new int[] {4,random.nextInt(5)};
+					resourceEfficiencyTemp = new int[] {100, random.nextInt(100+1)};
+					resourceType = checkResourceTypeLogic(resourceTypeTemp,resourceEfficiencyTemp);
+					resourceEfficiency = checkResourceEfficiencyLogic(resourceTypeTemp, resourceEfficiencyTemp);
 					return new MapTileRiver(x,y,resourceType,resourceEfficiency);
-			default:int[] resourceTypeTemp = new int[] {1,random.nextInt(5)};
-					int[] resourceEfficiencyTemp = new int[] {100, random.nextInt(100+1)};
+			default:resourceTypeTemp = new int[] {1,random.nextInt(5)};
+					resourceEfficiencyTemp = new int[] {100, random.nextInt(100+1)};
 					resourceType = checkResourceTypeLogic(resourceTypeTemp,resourceEfficiencyTemp);
 					resourceEfficiency = checkResourceEfficiencyLogic(resourceTypeTemp, resourceEfficiencyTemp);
 					return new MapTilePlain(x,y,resourceType,resourceEfficiency);
 		}
 	}
 	private static int[] checkResourceTypeLogic(int[] resourceTypeTemp, int[] resourceEfficiencyTemp) {
-		//TODO create logic to see if all is good
+		if(resourceEfficiencyTemp[1] <= 0) {
+			resourceTypeTemp = new int[] {resourceTypeTemp[0]};
+		}
 		if(resourceTypeTemp[1] == resourceTypeTemp[0]) {
 			resourceTypeTemp = new int[] {resourceTypeTemp[0]};
 		}
 		return resourceTypeTemp;
 	}
 	private static int[] checkResourceEfficiencyLogic(int[] resourceTypeTemp, int[] resourceEfficiencyTemp) {
-		//TODO create logic to see if all is good
+		if(resourceEfficiencyTemp[1] <= 0){
+			resourceEfficiencyTemp = new int[] {resourceEfficiencyTemp[0]};
+		}
 		if(resourceTypeTemp[1] == resourceTypeTemp[0]) {
 			if(resourceEfficiencyTemp[0] >= resourceEfficiencyTemp[1]) {
 				resourceEfficiencyTemp = new int[] {resourceEfficiencyTemp[0]};
@@ -182,7 +180,7 @@ public class createMap {
 		}
 		return resourceEfficiencyTemp;
 	}
-//	DOIT create city
-//	DOIT create pathway IDEA create portal for enemy spawn IDEA create tower that defends the portal IDEA create buff boy to defend portal
+//	create city
+//	  
 // 	createMap class end
 }
