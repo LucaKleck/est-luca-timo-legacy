@@ -12,9 +12,10 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.LinearGradientPaint;
 import java.awt.geom.Rectangle2D;
-import calc.Sinus;
 
 import javax.swing.JPanel;
+
+import calc.Sinus;
 public class DrawGui extends JPanel {
 	private static final long serialVersionUID = 1L;
 	public void paint(Graphics g) {
