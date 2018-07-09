@@ -18,7 +18,7 @@ public class MainJFrame extends JFrame implements ActionListener {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		for(int y = 0; y < objectMap.getHeight(); y++) {
 			for( int x = 0; x < objectMap.getWidth(); x++) {
-				drawMapTile[x][y] = new DrawMapTile(objectMap,x,y);
+				drawMapTile[x][y] = new DrawMapTile(objectMap,x,y,this);
 				getContentPane().add(drawMapTile[x][y]);
 			}
 		}

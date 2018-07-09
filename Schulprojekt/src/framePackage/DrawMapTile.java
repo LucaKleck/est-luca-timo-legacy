@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import mapTiles.MapTile;
@@ -32,7 +33,8 @@ public class DrawMapTile extends JPanel implements MouseListener {
 	private ObjectMap objectMap;
 	private MapTile mapTile;
 	private Color color = Color.BLACK;
-	public DrawMapTile(ObjectMap objectMap,int x, int y) {
+	private boolean selected = false;
+	public DrawMapTile(ObjectMap objectMap,int x, int y, JFrame mainJFrame) {
 		this.objectMap = objectMap;
 		this.map = objectMap.getMap();
 		this.mapTile = map[x][y];
@@ -40,11 +42,11 @@ public class DrawMapTile extends JPanel implements MouseListener {
         switch(mapTile.getType()) {
 			case 0:	color = new Color(56, 216, 59);
 					break;
-			case 1: color = new Color(66,147,33);
+			case 1: color = new Color(0,100,0);
 					break;
 			case 2: color = new Color(10,130,10);
 					break;
-			case 3: color = new Color(0,100,0);
+			case 3: color = new Color(66,147,33);
 					break;
 			case 20:color = new Color(0,30,255);
 					break;
@@ -58,21 +60,24 @@ public class DrawMapTile extends JPanel implements MouseListener {
 		public void actionPerformed(ActionEvent evt) {
 				try {
 					System.out.println(mapTile);
-					color = new Color(255,0,0);
+					selected = !selected;
+					mainJFrame.repaint();
 				}
 				catch (Exception e) {
 					System.out.println(e);
-					
 				}
 			}
 		});
 	}
+	
 	public void paint(Graphics g) {
 		double width = (double)this.getWidth();
 		double height = (double)this.getHeight();
-				mapTile.setHeight(height);
-				mapTile.setWidth(width);
-				mapTile.drawMapTileTest(g, color);
+		mapTile.setHeight(height);
+		mapTile.setWidth(width);
+		mapTile.drawMapTile(g, color, selected);
+				
+				
 				//drawMapTile(g,map[x][y],color);
 	}
 	@Override

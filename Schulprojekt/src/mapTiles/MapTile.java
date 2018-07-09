@@ -70,17 +70,21 @@ public abstract class MapTile{
 		}
 	}
 	//Methods
-	public void drawMapTile(Graphics g, Color color) {
+	/*public void drawMapTile(Graphics g, Color color) { // Legacy
 		g.setColor(color);
 		g.fillRect((int)((double)this.getXPos()*this.getWidth()), (int)(this.getYPos()*this.getHeight()), (int)this.getWidth()+1, (int)this.getHeight()+1);
 		g.setColor(new Color(0,0,0,40));
 		g.drawRect((int)((double)this.getXPos()*this.getWidth()), (int)(this.getYPos()*this.getHeight()), (int)this.getWidth()+1, (int)this.getHeight()+1);
-	}
-	public void drawMapTileTest(Graphics g, Color color) {
+	}*/
+	public void drawMapTile(Graphics g, Color color, boolean selected) {
 		g.setColor(color);
 		g.fillRect(0, 0, (int)this.getWidth()+1, (int)this.getHeight()+1);
 		g.setColor(new Color(0,0,0,40));
 		g.drawRect(0, 0, (int)this.getWidth()+1, (int)this.getHeight()+1);
+		if(selected) {
+			g.setColor(new Color(255,0,0,100));
+			g.fillRect(0, 0, (int)this.getWidth()+1, (int)this.getHeight()+1);
+		}
 	}
 	public String toString() {
 		String str = "MapTile \n" + "Type: " + this.name + " xPos: " + this.xPos + " yPos: " + this.yPos;

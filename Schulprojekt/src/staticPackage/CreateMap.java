@@ -49,11 +49,11 @@ public class CreateMap {
 		switch(type) {
 			case 0: createGreatPlain(map);
 					break;
-			case 1: placeSquareRadialType(map, type, 10, 10);
+			case 1: placeSquareRadialType(map, type, 10, 30);
 					break;
 			case 2: placeSquareRadialType(map, type, 11, 22);
 					break;
-			case 3: placeSquareRadialType(map,type,1,50);
+			case 3: placeSquareRadialType(map,type,10,10);
 					break;
 			case 20:placeRiverType(map,20,3);
 					break;

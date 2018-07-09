@@ -1,15 +1,9 @@
 package framePackage;
-import java.awt.Color;
-import java.awt.Graphics;
-
 import javax.swing.JPanel;
-
-import mapTiles.MapTile;
-import staticPackage.ObjectMap;
 
 public class DrawMap extends JPanel {
 	private static final long serialVersionUID = 1L;
-	private MapTile[][] map;
+	/*private MapTile[][] map;
 	private ObjectMap objectMap;
 	public DrawMap(ObjectMap objectMap) {
 		this.objectMap = objectMap;
@@ -39,7 +33,7 @@ public class DrawMap extends JPanel {
 					default:color = Color.BLACK;
 							break;
 				}
-				map[x][y].drawMapTile(g, color);
+				//map[x][y].drawMapTile(g, color);
 				//drawMapTile(g,map[x][y],color);
 			}
 		}
@@ -49,5 +43,5 @@ public class DrawMap extends JPanel {
 		g.fillRect((int)((double)map.getXPos()*map.getWidth()), (int)(map.getYPos()*map.getHeight()), (int)map.getWidth()+1, (int)map.getHeight()+1);
 		g.setColor(new Color(0,0,0,40));
 		g.drawRect((int)((double)map.getXPos()*map.getWidth()), (int)(map.getYPos()*map.getHeight()), (int)map.getWidth()+1, (int)map.getHeight()+1);
-	}
+	}*/
 }
