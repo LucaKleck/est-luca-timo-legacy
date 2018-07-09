@@ -13,7 +13,7 @@ public class MainJFrame extends JFrame implements ActionListener {
 	public MainJFrame(ObjectMap objectMap) {
 		drawMapTile = new DrawMapTile[objectMap.getHeight()][objectMap.getWidth()];
 		this.setTitle("Map");
-		this.setSize(600,600);
+		this.setSize(555,578);
 		getContentPane().setLayout(new GridLayout( objectMap.getHeight(), objectMap.getWidth() ));
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		for(int y = 0; y < objectMap.getHeight(); y++) {
