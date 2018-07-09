@@ -22,11 +22,6 @@ public class MainJFrame extends JFrame implements ActionListener {
 				getContentPane().add(drawMapTile[x][y]);
 			}
 		}
-		/*getContentPane().setLayout(new GridLayout(0, 2, 0, 0));
-		DrawMap drawMap = new DrawMap(objectMap);
-		getContentPane().add(drawMap);
-		DrawGui drawGui = new DrawGui();
-		getContentPane().add(drawGui);*/
 		this.setVisible(true);
 	}
 	@Override
