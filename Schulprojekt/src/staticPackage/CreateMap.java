@@ -71,7 +71,7 @@ public class CreateMap {
 					for(int yRadius = 0; yRadius <= radius; yRadius++) {
 						for( int xRadius = 0; xRadius <= radius; xRadius++ ) {
 							if((random.nextInt(100)+1) <= tileChance) {
-								map[xRadius+x-radius][yRadius+y-radius] = createCustomMapTile(type,x,y);
+								map[xRadius+x-radius][yRadius+y-radius] = createCustomMapTile(type,map[xRadius+x-radius][yRadius+y-radius].getXPos(),map[xRadius+x-radius][yRadius+y-radius].getYPos());
 							}
 						}
 					}	
@@ -108,20 +108,19 @@ public class CreateMap {
 					}
 				}
 			}
-			
 		}
 	}
 	private static int riverWithChance(MapTile[][] map, int y, int minRiverLength, int rivers, int upChance, int downChance, int type) {
 		upChance = upChance+downChance;
 		for( int x = 0; x < map.length; x++) {
 			map[x][y] = createCustomMapTile(type,x,y);
-			if(y+1 < map[0].length) map[x][y+1] = createCustomMapTile(type,x,y);
+			if(y+1 < map[0].length) map[x][y+1] = createCustomMapTile(type,x,y+1);
 			Random random = new Random();
 			int upDownOrNothing = (random.nextInt(100)+1);
 			//System.err.println("upDownOrNothing: " + upDownOrNothing +"\n"+"upChance: "+upChance+"\n"+"downChance"+downChance); 
 			if(upChance > 100 || downChance > 100) return rivers;
 			if(upDownOrNothing <= downChance) {
-				if(y-1 >= 0)	y--;
+				if(y-1 >= 0) y--;
 				else { if(x <= minRiverLength) {rivers-=1;} x=map.length; }
 			}
 			else {

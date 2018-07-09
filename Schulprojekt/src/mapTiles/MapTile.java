@@ -7,7 +7,11 @@
  * 
  */
 package mapTiles;
-public abstract class MapTile {
+
+import java.awt.Color;
+import java.awt.Graphics;
+
+public abstract class MapTile{
 	/*
 	 * An array of this object is a map. Behavior and commands are changed by type of the MapTile
 	 * type 0 = Plains
@@ -33,9 +37,12 @@ public abstract class MapTile {
 	private String name;
 	private int xPos;
 	private int yPos;
+	private double width;
+	private double height;
 	private int[] towerTypes;
 	private int[] resourceType;
 	private int[] resourceEfficiency;
+
 	// Constructor
 	public MapTile(int type, int xPos, int yPos, int[] towerTypes, boolean traversable, int[] resourceType, int[] resourceEfficiency) {
 		this.type = type;
@@ -62,6 +69,23 @@ public abstract class MapTile {
 			default: this.name = "MissingType";
 		}
 	}
+	//Methods
+	public void drawMapTile(Graphics g, Color color) {
+		g.setColor(color);
+		g.fillRect((int)((double)this.getXPos()*this.getWidth()), (int)(this.getYPos()*this.getHeight()), (int)this.getWidth()+1, (int)this.getHeight()+1);
+		g.setColor(new Color(0,0,0,40));
+		g.drawRect((int)((double)this.getXPos()*this.getWidth()), (int)(this.getYPos()*this.getHeight()), (int)this.getWidth()+1, (int)this.getHeight()+1);
+	}
+	public void drawMapTileTest(Graphics g, Color color) {
+		g.setColor(color);
+		g.fillRect(0, 0, (int)this.getWidth()+1, (int)this.getHeight()+1);
+		g.setColor(new Color(0,0,0,40));
+		g.drawRect(0, 0, (int)this.getWidth()+1, (int)this.getHeight()+1);
+	}
+	public String toString() {
+		String str = "MapTile \n" + "Type: " + this.name + " xPos: " + this.xPos + " yPos: " + this.yPos;
+		return str;
+	}
 	// getter
 	public int getType() {
 		return type;
@@ -87,9 +111,21 @@ public abstract class MapTile {
 	public int[] getTowerTypes() {
 		return towerTypes;
 	}
+	public double getWidth() {
+		return this.width;
+	}
+	public double getHeight() {
+		return this.height;
+	}
 	// setter
 	protected void setTraversable(boolean traversable) {
 		this.traversable = traversable;
+	}
+	public void setWidth(double width) {
+		this.width = width;
+	}
+	public void setHeight(double  height) {
+		this.height = height;
 	}
 	// compare
 	
