@@ -24,6 +24,9 @@ public class MainJFrame extends JFrame implements ActionListener {
 		}
 		this.setVisible(true);
 	}
+	public DrawMapTile[][] getDrawMapTileArray() {
+		return drawMapTile;
+	}
 	@Override
 	public void actionPerformed(ActionEvent evt) {
 		
