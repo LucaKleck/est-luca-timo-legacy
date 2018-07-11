@@ -42,7 +42,7 @@ public class DrawMapTile extends JPanel implements MouseListener, ActionListener
 					try {
 						System.out.println(mapTile);
 						removeSelectedFromAllTiles(mainJFrame, (int)mapTile.getWidth(), (int)mapTile.getHeight());
-						selected = !selected;
+						toggleSelected();
 						drawMap.repaintMapTile(xOfTile, yOfTile);
 					} catch (Exception e) {
 						System.out.println(e);
