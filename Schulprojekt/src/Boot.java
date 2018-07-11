@@ -17,6 +17,6 @@ public class Boot {
 		ObjectMap objectMap = new ObjectMap();		
 		//objectMap.printMap();
 		JFrame f = new MainJFrame(objectMap);
-		//objectMap.getTestMethod(10, 10);
+		objectMap.getTestMethod(10, 10);
 	}
 }

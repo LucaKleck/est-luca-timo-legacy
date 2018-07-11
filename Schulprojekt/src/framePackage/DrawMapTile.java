@@ -35,7 +35,6 @@ public class DrawMapTile extends JPanel implements MouseListener, ActionListener
 		this.color = mapTile.getMapTileType().getColor();
 		listener = new ArrayList<ActionListener>();
         addMouseListener(this);
-        
         drawMapTileActionListener = new ActionListener() {
         	@Override
         	public void actionPerformed(ActionEvent evt) {
