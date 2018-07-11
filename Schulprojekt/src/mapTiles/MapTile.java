@@ -8,9 +8,6 @@
  */
 package mapTiles;
 
-import java.awt.Color;
-import java.awt.Graphics;
-
 public abstract class MapTile{
 	/*
 	 * An array of this object is a map. Behavior and commands are changed by type of the MapTile
@@ -76,16 +73,6 @@ public abstract class MapTile{
 		g.setColor(new Color(0,0,0,40));
 		g.drawRect((int)((double)this.getXPos()*this.getWidth()), (int)(this.getYPos()*this.getHeight()), (int)this.getWidth()+1, (int)this.getHeight()+1);
 	}*/
-	public void drawMapTile(Graphics g, Color color, boolean selected) {
-		g.setColor(color);
-		g.fillRect(0, 0, (int)this.getWidth()+1, (int)this.getHeight()+1);
-		g.setColor(new Color(0,0,0,40));
-		g.drawRect(0, 0, (int)this.getWidth()+1, (int)this.getHeight()+1);
-		if(selected) {
-			g.setColor(new Color(255,0,0,100));
-			g.fillRect(0, 0, (int)this.getWidth()+1, (int)this.getHeight()+1);
-		}
-	}
 	public String toString() {
 		String str = "MapTile \n" + "Type: " + this.name + " xPos: " + this.xPos + " yPos: " + this.yPos;
 		return str;
