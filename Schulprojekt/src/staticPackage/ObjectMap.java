@@ -38,14 +38,14 @@ public class ObjectMap {
 		this.height = loadMap[0].length;
 	}
 	// Methods public
-	public void printMap() {
+	/*public void printMap() {
 		for(int y=0; y < map[0].length; y++) {
 			for(int x=0; x < map.length; x++) {
 				System.out.print(map[x][y].getType());
 			}
 			System.out.println("");
 		}
-	}
+	}*/
 	// getter
 	public MapTile[][] getMap() {
 		return map;

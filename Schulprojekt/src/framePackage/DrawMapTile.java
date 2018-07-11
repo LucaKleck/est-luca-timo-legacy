@@ -32,32 +32,19 @@ public class DrawMapTile extends JPanel implements MouseListener, ActionListener
 		this.map = objectMap.getMap();
 		this.drawMap = drawMap;
 		this.mapTile = map[xOfTile][yOfTile];
-        switch(mapTile.getType()) {
-			case 0:	color = new Color(56, 216, 59);
-					break;
-			case 1: color = new Color(0,100,0);
-					break;
-			case 2: color = new Color(10,130,10);
-					break;
-			case 3: color = new Color(66,147,33);
-					break;
-			case 20:color = new Color(0,30,255);
-					break;
-			default:color = Color.BLACK;
-					break;
-		}
+		this.color = mapTile.getMapTileType().getColor();
 		listener = new ArrayList<ActionListener>();
         addMouseListener(this);
+        
         drawMapTileActionListener = new ActionListener() {
         	@Override
         	public void actionPerformed(ActionEvent evt) {
         		if(evt.getActionCommand() == "select") {
 					try {
 						System.out.println(mapTile);
-						removeSelectedFromAllTiles(mainJFrame, xOfTile, yOfTile);
+						removeSelectedFromAllTiles(mainJFrame, (int)mapTile.getWidth(), (int)mapTile.getHeight());
 						selected = !selected;
-						System.out.println(evt.getActionCommand());
-						drawMap.repaint();
+						drawMap.repaintMapTile(xOfTile, yOfTile);
 					} catch (Exception e) {
 						System.out.println(e);
 					}
@@ -65,7 +52,7 @@ public class DrawMapTile extends JPanel implements MouseListener, ActionListener
         		if(evt.getActionCommand() == "toggleHover") {
         			try {
         				hover = !hover;
-        				mainJFrame.repaint();
+        				drawMap.repaintMapTile(xOfTile, yOfTile);
         			} catch (Exception e) {
         				System.out.println(e);
         			}
@@ -79,16 +66,16 @@ public class DrawMapTile extends JPanel implements MouseListener, ActionListener
 		mapTile.setHeight((double)drawMap.getHeight()/objectMap.getHeight());
 		mapTile.setWidth((double)drawMap.getWidth()/objectMap.getWidth());
 		g.setColor(color);
-		g.fillRect((int)(mapTile.getWidth()*mapTile.getXPos()-1), (int)(mapTile.getHeight()*mapTile.getYPos()), (int)mapTile.getWidth()+1, (int)mapTile.getHeight()+1);
+		g.fillRect((int)(mapTile.getWidth()*mapTile.getXPos()), (int)(mapTile.getHeight()*mapTile.getYPos()), (int)mapTile.getWidth()+1, (int)mapTile.getHeight()+1);
 		g.setColor(new Color(0,0,0,40));
-		g.drawRect((int)(mapTile.getWidth()*mapTile.getXPos()-1), (int)(mapTile.getHeight()*mapTile.getYPos()), (int)mapTile.getWidth()+1, (int)mapTile.getHeight()+1);
+		g.drawRect((int)(mapTile.getWidth()*mapTile.getXPos()), (int)(mapTile.getHeight()*mapTile.getYPos()), (int)mapTile.getWidth()+1, (int)mapTile.getHeight()+1);
 		if(selected) {
 			g.setColor(new Color(255,0,0,100));
-			g.fillRect((int)(mapTile.getWidth()*mapTile.getXPos()-1), (int)(mapTile.getHeight()*mapTile.getYPos()), (int)mapTile.getWidth()+1, (int)mapTile.getHeight()+1);
+			g.fillRect((int)(mapTile.getWidth()*mapTile.getXPos()), (int)(mapTile.getHeight()*mapTile.getYPos()), (int)mapTile.getWidth()+1, (int)mapTile.getHeight()+1);
 		}
 		if(hover) {
 			g.setColor(new Color(120,100,0,100));
-			g.fillRect((int)(mapTile.getWidth()*mapTile.getXPos()-1), (int)(mapTile.getHeight()*mapTile.getYPos()), (int)mapTile.getWidth()+1, (int)mapTile.getHeight()+1);
+			g.fillRect((int)(mapTile.getWidth()*mapTile.getXPos()), (int)(mapTile.getHeight()*mapTile.getYPos()), (int)mapTile.getWidth()+1, (int)mapTile.getHeight()+1);
 		}
 	}
 	public void removeSelectedFromAllTiles(MainJFrame mainJFrame, int xOfTile, int yOfTile) {
@@ -96,9 +83,12 @@ public class DrawMapTile extends JPanel implements MouseListener, ActionListener
 			for( int x = 0; x < map.length; x++) {
 				DrawMapTile[][] drawMapTileArray = mainJFrame.getDrawMapTileArray();
 				if( x == xOfTile && y == yOfTile) {
-					
+					drawMap.repaintMapTile(xOfTile, yOfTile);
 				} else {
-					drawMapTileArray[x][y].turnOffSelected();
+					if(drawMapTileArray[x][y].selected == true) {
+						drawMapTileArray[x][y].turnOffSelected();
+						drawMap.repaintMapTile(x, y);
+					}
 				}
 			}
 		}
@@ -114,6 +104,9 @@ public class DrawMapTile extends JPanel implements MouseListener, ActionListener
 	}
 	public MapTile getMapTile() {
 		return mapTile;
+	}
+	public boolean getSelected() {
+		return selected;
 	}
 	public ActionListener getDrawMapTileActionListener() {
 		return drawMapTileActionListener;

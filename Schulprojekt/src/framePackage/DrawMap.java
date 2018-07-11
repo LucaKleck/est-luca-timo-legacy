@@ -31,17 +31,18 @@ public class DrawMap extends JPanel implements MouseListener, ActionListener {
 			}
 		}
 	}
+	public void repaintMapTile(int xOfTile, int yOfTile) {
+		drawMapTile[xOfTile][yOfTile].drawMapTile(getGraphics());
+	}
 	@Override
 	public void mouseClicked(java.awt.event.MouseEvent evt) {
 		fireUpdate(new ActionEvent(this, 0, "select"),(int)(evt.getX()/((double)this.getWidth()/objectMap.getWidth())),(int)(evt.getY()/((double)this.getHeight()/objectMap.getHeight())));
 	}
 	@Override
 	public void mouseEntered(java.awt.event.MouseEvent evt) {
-		
 	}
 	@Override
 	public void mouseExited(java.awt.event.MouseEvent evt) {
-		
 	}
 	@Override
 	public void mousePressed(java.awt.event.MouseEvent evt) {
