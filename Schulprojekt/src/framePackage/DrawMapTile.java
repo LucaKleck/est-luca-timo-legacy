@@ -38,17 +38,19 @@ public class DrawMapTile extends JPanel {
         	@Override
         	public void actionPerformed(ActionEvent evt) {
         		if(!evt.getActionCommand().isEmpty()) {
-        			boolean isBuilding = false;
-            		String itemName = removeTypeFromString(evt.getActionCommand());
-            		System.out.println(itemName);
-        			if(evt.getActionCommand().contains(",Building")) {
-        				isBuilding = true;
-        			}
-        			System.out.println("bought Item One");
-        			buyItem(itemName, isBuilding, mapTile, mainJFrame.getResources());
-        			mainJFrame.getBuyMenu().deselect();
-        			toggleSelected();
-        			drawMap.repaintMapTile(xOfTile, yOfTile);
+        			if(evt.getActionCommand()!="select") {
+	        			boolean isBuilding = false;
+	            		String itemName = removeTypeFromString(evt.getActionCommand());
+	            		System.out.println(itemName);
+	        			if(evt.getActionCommand().contains(",Building")) {
+	        				isBuilding = true;
+	        			}
+	        			System.out.println("bought Item One");
+	        			buyItem(itemName, isBuilding, mapTile, mainJFrame.getResources());
+	        			mainJFrame.getBuyMenu().deselect();
+	        			toggleSelected();
+	        			drawMap.repaintMapTile(xOfTile, yOfTile);
+	        		}
         		}
         		if(evt.getActionCommand() == "select") {
 					try {	

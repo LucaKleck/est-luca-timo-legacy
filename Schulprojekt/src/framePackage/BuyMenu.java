@@ -1,14 +1,15 @@
 package framePackage;
 
-import java.awt.BorderLayout;
-import java.awt.Component;
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.border.LineBorder;
+
+import net.miginfocom.swing.MigLayout;
 
 public class BuyMenu extends JPanel implements ActionListener {
 	private static final long serialVersionUID = 8222232669945381478L;
@@ -16,21 +17,22 @@ public class BuyMenu extends JPanel implements ActionListener {
 	private MainJFrame mainJFrame;
 	public BuyMenu(MainJFrame mainJFrame) {
 		super();
+		setBackground(new Color(255, 228, 181));
+		setBorder(new LineBorder(new Color(0, 0, 0), 2));
 		this.mainJFrame = mainJFrame;
-		JButton button_one = new JButton("button 1");
-		//JButton button_two = new JButton("button 2");
-		Component horizontalStrut = Box.createHorizontalStrut(20);
-		this.add(button_one, BorderLayout.CENTER);
+		JButton button_one = new JButton("item one");
+		setLayout(new MigLayout("", "[90.42%]", "[10%][10%]"));
+		this.add(button_one, "cell 0 0,grow");
 		button_one.addActionListener(this);
-		//this.add(button_two);
-		this.add(horizontalStrut, BorderLayout.WEST);
+		JButton button_two = new JButton("button 2");
+		this.add(button_two, "cell 0 1,grow");
 	}
 	public void paint(Graphics g) {
 	}
 	@Override
 	public void actionPerformed(ActionEvent evt) {
 		try {
-			if(evt.getActionCommand() == "button 1") {
+			if(evt.getActionCommand() == "item one") {
 				if(buyMenuSelected != 1) {
 					DrawMapTile[][] drawMapTileArray = mainJFrame.getDrawMapTileArray();
 					drawMapTileArray[0][0].removeSelectedFromAllTiles(mainJFrame);
