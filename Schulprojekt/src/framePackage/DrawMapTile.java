@@ -4,15 +4,15 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
+import info.ResourcesController;
 import mapTiles.MapTile;
 import staticPackage.ObjectMap;
 
-public class DrawMapTile extends JPanel implements MouseListener, ActionListener {
+public class DrawMapTile extends JPanel {
 	private static final long serialVersionUID = -8785925966340775096L;
 	private MapTile[][] map;
 	private ObjectMap objectMap;
@@ -34,15 +34,27 @@ public class DrawMapTile extends JPanel implements MouseListener, ActionListener
 		this.mapTile = map[xOfTile][yOfTile];
 		this.color = mapTile.getMapTileType().getColor();
 		listener = new ArrayList<ActionListener>();
-        addMouseListener(this);
         drawMapTileActionListener = new ActionListener() {
         	@Override
         	public void actionPerformed(ActionEvent evt) {
+        		if(!evt.getActionCommand().isEmpty()) {
+        			boolean isBuilding = false;
+            		String itemName = removeTypeFromString(evt.getActionCommand());
+            		System.out.println(itemName);
+        			if(evt.getActionCommand().contains(",Building")) {
+        				isBuilding = true;
+        			}
+        			System.out.println("bought Item One");
+        			buyItem(itemName, isBuilding, mapTile, mainJFrame.getResources());
+        			mainJFrame.getBuyMenu().deselect();
+        			toggleSelected();
+        			drawMap.repaintMapTile(xOfTile, yOfTile);
+        		}
         		if(evt.getActionCommand() == "select") {
-					try {
+					try {	
 						System.out.println(mapTile);
-						removeSelectedFromAllTiles(mainJFrame, (int)mapTile.getWidth(), (int)mapTile.getHeight());
 						toggleSelected();
+						removeSelectedFromAllTiles(mainJFrame, (int)mapTile.getXPos(), (int)mapTile.getYPos());
 						drawMap.repaintMapTile(xOfTile, yOfTile);
 					} catch (Exception e) {
 						System.out.println(e);
@@ -50,12 +62,11 @@ public class DrawMapTile extends JPanel implements MouseListener, ActionListener
         		}
         		if(evt.getActionCommand() == "toggleHover") {
         			try {
-        				hover = !hover;
+        				toggleHover();
         				drawMap.repaintMapTile(xOfTile, yOfTile);
         			} catch (Exception e) {
         				System.out.println(e);
         			}
-        			
         		}
 			}
 		};
@@ -77,6 +88,9 @@ public class DrawMapTile extends JPanel implements MouseListener, ActionListener
 			g.fillRect((int)(mapTile.getWidth()*mapTile.getXPos()), (int)(mapTile.getHeight()*mapTile.getYPos()), (int)mapTile.getWidth()+1, (int)mapTile.getHeight()+1);
 		}
 	}
+	public void buyItem(String itemName, boolean isBuilding, MapTile mapTile, ResourcesController resources) {
+		
+	}
 	public void removeSelectedFromAllTiles(MainJFrame mainJFrame, int xOfTile, int yOfTile) {
 		for( int y = 0; y < map[0].length; y++) {
 			for( int x = 0; x < map.length; x++) {
@@ -88,6 +102,28 @@ public class DrawMapTile extends JPanel implements MouseListener, ActionListener
 						drawMapTileArray[x][y].turnOffSelected();
 						drawMap.repaintMapTile(x, y);
 					}
+				}
+			}
+		}
+	}
+	private String removeTypeFromString(String fullString) {
+		String result = "";
+		for(int search = 0; search < fullString.length(); search++) {
+			if(fullString.charAt(search) == ',') {
+				return result;
+			}
+			result += fullString.charAt(search);
+		}
+		return result;
+		
+	}
+	public void removeSelectedFromAllTiles(MainJFrame mainJFrame) {
+		for( int y = 0; y < map[0].length; y++) {
+			for( int x = 0; x < map.length; x++) {
+				DrawMapTile[][] drawMapTileArray = mainJFrame.getDrawMapTileArray();
+				if(drawMapTileArray[x][y].selected == true) {
+					drawMapTileArray[x][y].turnOffSelected();
+					drawMap.repaintMapTile(x, y);
 				}
 			}
 		}
@@ -110,26 +146,6 @@ public class DrawMapTile extends JPanel implements MouseListener, ActionListener
 	public ActionListener getDrawMapTileActionListener() {
 		return drawMapTileActionListener;
 	}
-	@Override
-	public void mouseClicked(java.awt.event.MouseEvent evt) {
-		fireUpdate(new ActionEvent(this, 0, "select"));
-	}
-	@Override
-	public void mouseEntered(java.awt.event.MouseEvent evt) {
-		fireUpdate(new ActionEvent(this, 0, "toggleHover"));
-	}
-	@Override
-	public void mouseExited(java.awt.event.MouseEvent evt) {
-		fireUpdate(new ActionEvent(this, 0, "toggleHover"));
-	}
-	@Override
-	public void mousePressed(java.awt.event.MouseEvent evt) {
-		
-	}
-	@Override
-	public void mouseReleased(java.awt.event.MouseEvent evt) {
-		
-	}
 	protected void fireUpdate(ActionEvent evt) {   
         for (ActionListener al : listener) {
             al.actionPerformed(evt);
@@ -141,10 +157,6 @@ public class DrawMapTile extends JPanel implements MouseListener, ActionListener
     public void removeActionListener(ActionListener al) {
         listener.remove(al);
     }
-	@Override
-	public void actionPerformed(ActionEvent arg0) {
-		
-	}
 	public ArrayList<ActionListener> getListener() {
 		return listener;
 	}

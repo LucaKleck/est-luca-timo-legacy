@@ -13,9 +13,11 @@ public class DrawMap extends JPanel implements MouseListener, ActionListener {
 	private static final long serialVersionUID = 88330795020315231L;
 	private DrawMapTile[][] drawMapTile;
 	private ObjectMap objectMap;
+	private MainJFrame mainJFrame;
 	// constructor
 	public DrawMap(ObjectMap objectMap, MainJFrame mainJFrame) {
 		drawMapTile = mainJFrame.getDrawMapTileArray();
+		this.mainJFrame = mainJFrame;
 		this.objectMap = objectMap;
         addMouseListener(this);
         for(int yOfTile = 0; yOfTile < objectMap.getHeight(); yOfTile++) {
@@ -36,7 +38,7 @@ public class DrawMap extends JPanel implements MouseListener, ActionListener {
 	}
 	@Override
 	public void mouseClicked(java.awt.event.MouseEvent evt) {
-		fireUpdate(new ActionEvent(this, 0, "select"),(int)(evt.getX()/((double)this.getWidth()/objectMap.getWidth())),(int)(evt.getY()/((double)this.getHeight()/objectMap.getHeight())));
+		
 	}
 	@Override
 	public void mouseEntered(java.awt.event.MouseEvent evt) {
@@ -50,7 +52,22 @@ public class DrawMap extends JPanel implements MouseListener, ActionListener {
 	}
 	@Override
 	public void mouseReleased(java.awt.event.MouseEvent evt) {
-		
+		String command = "select";
+		try {
+			if(mainJFrame.getBuyMenu().getSelected() != 0) {
+				switch(mainJFrame.getBuyMenu().getSelected()) {
+					case 1: command = "buyItemOne,Building";
+							break;
+					default:command = "ErrorWhileBuying";
+							break;
+				}
+			}
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		if(evt.getButton() == 1) {
+			fireUpdate(new ActionEvent(this, 0, command),(int)(evt.getX()/((double)this.getWidth()/objectMap.getWidth())),(int)(evt.getY()/((double)this.getHeight()/objectMap.getHeight())));
+		}
 	}
 	protected void fireUpdate(ActionEvent evt, int xOfTile, int yOfTile) {   
         drawMapTile[xOfTile][yOfTile].fireUpdate(evt);
