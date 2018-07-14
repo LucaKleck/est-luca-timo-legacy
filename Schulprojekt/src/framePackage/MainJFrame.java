@@ -19,6 +19,7 @@ public class MainJFrame extends JFrame implements MouseListener {
 	private DrawMap drawMap;
 	private BuyMenu buyMenu;
 	public MainJFrame(ObjectMap objectMap, ResourcesController resources) {
+		super();
 		getContentPane().setBackground(new Color(192, 192, 192));
 		drawMapTile = new DrawMapTile[objectMap.getHeight()][objectMap.getWidth()];
 		this.setTitle("The Game");
@@ -32,7 +33,7 @@ public class MainJFrame extends JFrame implements MouseListener {
 		gridBagLayout.rowWeights = new double[]{1.0, Double.MIN_VALUE};
 		getContentPane().setLayout(gridBagLayout);
 		drawMap = new DrawMap(objectMap,this);
-		drawMap.setBorder(null);
+		drawMap.setBorder(new LineBorder(new Color(0, 0, 0)));
 		GridBagConstraints gbc_drawMap = new GridBagConstraints();
 		gbc_drawMap.fill = GridBagConstraints.BOTH;
 		gbc_drawMap.gridx = 0;
@@ -41,7 +42,7 @@ public class MainJFrame extends JFrame implements MouseListener {
 		drawMap.addMouseListener(this);
 		buyMenu = new BuyMenu(this);
 		buyMenu.setAlignmentX(Component.RIGHT_ALIGNMENT);
-		buyMenu.setBorder(new LineBorder(new Color(0, 0, 0), 5, true));
+		buyMenu.setBorder(new LineBorder(new Color(0, 0, 0), 3));
 		GridBagConstraints gbc_buyMenu = new GridBagConstraints();
 		gbc_buyMenu.anchor = GridBagConstraints.EAST;
 		gbc_buyMenu.fill = GridBagConstraints.BOTH;

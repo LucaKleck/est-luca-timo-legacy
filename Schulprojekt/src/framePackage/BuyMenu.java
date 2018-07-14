@@ -28,6 +28,7 @@ public class BuyMenu extends JPanel implements ActionListener {
 		this.add(button_two, "cell 0 1,grow");
 	}
 	public void paint(Graphics g) {
+		super.paint(g);
 	}
 	@Override
 	public void actionPerformed(ActionEvent evt) {

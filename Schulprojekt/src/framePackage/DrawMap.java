@@ -16,9 +16,11 @@ public class DrawMap extends JPanel implements MouseListener, ActionListener {
 	private MainJFrame mainJFrame;
 	// constructor
 	public DrawMap(ObjectMap objectMap, MainJFrame mainJFrame) {
+		super();
 		drawMapTile = mainJFrame.getDrawMapTileArray();
 		this.mainJFrame = mainJFrame;
 		this.objectMap = objectMap;
+		this.setBackground(new java.awt.Color(0, 0, 0, 0));
         addMouseListener(this);
         for(int yOfTile = 0; yOfTile < objectMap.getHeight(); yOfTile++) {
 			for( int xOfTile = 0; xOfTile < objectMap.getWidth(); xOfTile++) {
@@ -32,6 +34,7 @@ public class DrawMap extends JPanel implements MouseListener, ActionListener {
 				drawMapTile[xOfTile][yOfTile].drawMapTile(g);
 			}
 		}
+		super.paint(g);
 	}
 	public void repaintMapTile(int xOfTile, int yOfTile) {
 		drawMapTile[xOfTile][yOfTile].drawMapTile(getGraphics());
