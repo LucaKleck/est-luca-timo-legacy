@@ -89,6 +89,7 @@ public class DrawMapTile extends JPanel {
 			g.setColor(new Color(120,100,0,100));
 			g.fillRect((int)(mapTile.getWidth()*mapTile.getXPos()), (int)(mapTile.getHeight()*mapTile.getYPos()), (int)mapTile.getWidth()+1, (int)mapTile.getHeight()+1);
 		}
+		
 	}
 	public void buyItem(String itemName, boolean isBuilding, MapTile mapTile, ResourcesController resources) {
 		

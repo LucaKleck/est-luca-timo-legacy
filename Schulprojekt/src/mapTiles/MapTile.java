@@ -14,12 +14,6 @@ import staticPackage.MapTileType;
 public abstract class MapTile{
 	/*
 	 * An array of this object is a map. Behavior and commands are changed by type of the MapTile
-	 * ---
-	 * towerTypes are all towers that can be placed on top of the tile
-	 * Types are as follows: 
-	 * type 0: ground
-	 * type 1: water
-	 * type 3: xx
 	 */
 	private MapTileType type;
 	private boolean traversable;
@@ -28,15 +22,13 @@ public abstract class MapTile{
 	private int yPos;
 	private double width;
 	private double height;
-	private int[] towerTypes;
 	private int[] resourceType;
 	private int[] resourceEfficiency;
 	// Constructor
-	public MapTile(MapTileType type, int xPos, int yPos, int[] towerTypes, boolean traversable, int[] resourceType, int[] resourceEfficiency) {
+	public MapTile(MapTileType type, int xPos, int yPos, boolean traversable, int[] resourceType, int[] resourceEfficiency) {
 		this.type = type;
 		this.xPos = xPos;
 		this.yPos = yPos;
-		this.towerTypes = towerTypes;
 		this.traversable = traversable;
 		this.resourceType = resourceType;
 		this.resourceEfficiency = resourceEfficiency;
@@ -64,9 +56,6 @@ public abstract class MapTile{
 	}
 	public boolean getTraversable() {
 		return traversable;
-	}
-	public int[] getTowerTypes() {
-		return towerTypes;
 	}
 	public double getWidth() {
 		return this.width;

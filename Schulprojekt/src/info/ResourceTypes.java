@@ -2,10 +2,11 @@ package info;
 
 public enum ResourceTypes {
 	Money("Money",1),
-	Wood("Wood",2),
-	Stone("Stone",3),
-	Metal("Metal",4),
-	ManaStones("ManaStones",5);
+	Food("Food",2),
+	Wood("Wood",3),
+	Stone("Stone",4),
+	Metal("Metal",5),
+	ManaStones("ManaStones",6);
 	
 	private final int type;
 	private final String name;
