@@ -89,10 +89,18 @@ public class DrawMapTile extends JPanel {
 			g.setColor(new Color(120,100,0,100));
 			g.fillRect((int)(mapTile.getWidth()*mapTile.getXPos()), (int)(mapTile.getHeight()*mapTile.getYPos()), (int)mapTile.getWidth()+1, (int)mapTile.getHeight()+1);
 		}
+		if(mapTile.getBuilding() != null) {
+			g.setColor(new Color(30,30,30));
+			g.fillRect((int)(mapTile.getWidth()*mapTile.getXPos()+mapTile.getWidth()/100*10), (int)(mapTile.getHeight()*mapTile.getYPos()+mapTile.getHeight()/100*10), (int)(mapTile.getWidth()-mapTile.getWidth()/100*40), (int)(mapTile.getHeight()-mapTile.getHeight()/100*40));
+		}
 		
 	}
 	public void buyItem(String itemName, boolean isBuilding, MapTile mapTile, ResourcesController resources) {
-		
+		switch(itemName) {
+			case "":
+				break;
+			default: return;
+		}
 	}
 	public void removeSelectedFromAllTiles(MainJFrame mainJFrame, int xOfTile, int yOfTile) {
 		for( int y = 0; y < map[0].length; y++) {
