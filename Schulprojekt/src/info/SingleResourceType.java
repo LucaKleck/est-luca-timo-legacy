@@ -7,6 +7,10 @@ public class SingleResourceType {
 		this.resourceAmount = amount;
 		this.resourceType = type;
 	}
+	public String toString() {
+		String string = ""+resourceAmount;
+		return string;
+	}
 	public int getResourceAmount() {
 		return resourceAmount;
 	}

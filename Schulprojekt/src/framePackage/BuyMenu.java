@@ -21,7 +21,7 @@ public class BuyMenu extends JPanel implements ActionListener {
 		setBorder(new LineBorder(new Color(0, 0, 0), 2));
 		this.mainJFrame = mainJFrame;
 		JButton button_one = new JButton("item one");
-		setLayout(new MigLayout("", "[90.42%]", "[10%][10%]"));
+		setLayout(new MigLayout("", "[90%]", "[10%][10%]"));
 		this.add(button_one, "cell 0 0,grow");
 		button_one.addActionListener(this);
 		JButton button_two = new JButton("button 2");
@@ -35,15 +35,18 @@ public class BuyMenu extends JPanel implements ActionListener {
 		try {
 			if(evt.getActionCommand() == "item one") {
 				if(buyMenuSelected != 1) {
+					mainJFrame.getTextPaneWriter().write("Selected "+evt.getActionCommand());
+					mainJFrame.getTextPaneWriter().flush();
+					
 					DrawMapTile[][] drawMapTileArray = mainJFrame.getDrawMapTileArray();
 					drawMapTileArray[0][0].removeSelectedFromAllTiles(mainJFrame);
 					buyMenuSelected = 1;
 				} else {
 					buyMenuSelected = 0;
+					mainJFrame.getTextPaneWriter().write("deselected");
 				}
 					
 			}
-		System.out.println(buyMenuSelected);
 		} catch(Exception e) {
 			System.out.println(e);
 		}
@@ -54,6 +57,6 @@ public class BuyMenu extends JPanel implements ActionListener {
 	}
 	public void deselect() {
 		this.buyMenuSelected = 0;
-		System.out.println(buyMenuSelected);
+		mainJFrame.getTextPaneWriter().write("deselected");
 	}
 }

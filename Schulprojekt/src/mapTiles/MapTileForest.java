@@ -4,7 +4,7 @@ import staticPackage.MapTileType;
 
 public class MapTileForest extends MapTile {
 	private static final MapTileType TYPE = MapTileType.Forest;
-	private static final boolean TRAVERSABLE = false;
+	private static final boolean TRAVERSABLE = true;
 	public MapTileForest(int xPos, int yPos, int[] resourceType, int[] resourceEfficiency) {
 		super(TYPE, xPos, yPos, TRAVERSABLE, resourceType, resourceEfficiency);
 	}

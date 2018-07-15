@@ -1,8 +1,7 @@
 package info;
 
-public enum Item {
-	itemOne("itemOne");
-	
+public class Item {
+
 	private String itemName;
 	private SingleResourceType moneyCost;
 	private SingleResourceType foodCost;
@@ -11,10 +10,10 @@ public enum Item {
 	private SingleResourceType metalCost;
 	private SingleResourceType manaStoneCost;
 	
-	Item(String itemName) {
+	public Item(String itemName) {
 		this.itemName = itemName;
 		switch(itemName) {
-			case "itemOne": moneyCost = new SingleResourceType(ResourceTypes.Money,50);
+			case "ItemOne": moneyCost = new SingleResourceType(ResourceTypes.Money,50);
 							foodCost = new SingleResourceType(ResourceTypes.Food, 20);
 							woodCost = new SingleResourceType(ResourceTypes.Wood, 10);
 							stoneCost = new SingleResourceType(ResourceTypes.Stone, 40);
@@ -23,6 +22,36 @@ public enum Item {
 							break;
 			default: 		break;
 		}
+	}
+	public String toString() {
+		String string = "Name: " +itemName+"\n moneyCost: " + moneyCost+"\n foodCost: "+foodCost;
+		return string;
+	}
+	public SingleResourceType[] getCosts() {
+		SingleResourceType[] cost = new SingleResourceType[6];
+		cost[0] = moneyCost;
+		cost[1] = foodCost;
+		cost[2] = woodCost;
+		cost[3] = stoneCost;
+		cost[4] = metalCost;
+		cost[5] = manaStoneCost;
+		return cost;
+	}
+	public boolean hasResources(ResourcesController resources) {
+		boolean hasResources = false;
+		if(hasSingleResource(resources.getResources()[0], getCosts()[0])&&hasSingleResource(resources.getResources()[1], getCosts()[1])&&hasSingleResource(resources.getResources()[2], getCosts()[2])&&hasSingleResource(resources.getResources()[3], getCosts()[3])&&hasSingleResource(resources.getResources()[4], getCosts()[4])&&hasSingleResource(resources.getResources()[5], getCosts()[5])   ) {
+				hasResources = true;
+		}
+		return hasResources;
+	}
+	private boolean hasSingleResource(SingleResourceType resource, SingleResourceType cost) {
+		boolean hasSingleResource = false;
+		try {
+			if(resource.getResourceAmount() >= cost.getResourceAmount()) hasSingleResource = true;
+		} catch(Exception e) {
+			System.out.println(e);
+		}
+		return hasSingleResource;
 	}
 	public String getItemName() {
 		return itemName;

@@ -132,7 +132,7 @@ public class CreateMap {
 		}
 		return rivers;
 	}
-	private static MapTile createCustomMapTile (int type, int x, int y) {
+	private static MapTile createCustomMapTile(int type, int x, int y) {
 		Random random = new Random();
 		int[] resourceType;
 		int[] resourceEfficiency;
@@ -157,7 +157,7 @@ public class CreateMap {
 			case 3: resourceType = new int[] {0,1};
 					resourceEfficiency = new int[] {100, 100};
 					return new MapTileJungle(x,y,resourceType,resourceEfficiency);
-			case 20:resourceTypeTemp = new int[] {4,random.nextInt(5)};
+			case 20:resourceTypeTemp = new int[] {4,1};
 					resourceEfficiencyTemp = new int[] {100, random.nextInt(100+1)};
 					resourceType = checkResourceTypeLogic(resourceTypeTemp,resourceEfficiencyTemp);
 					resourceEfficiency = checkResourceEfficiencyLogic(resourceTypeTemp, resourceEfficiencyTemp);

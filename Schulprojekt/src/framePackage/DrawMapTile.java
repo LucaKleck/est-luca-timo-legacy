@@ -8,7 +8,11 @@ import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
+import buildings.Building;
+import buildings.Lumbercamp;
+import info.Item;
 import info.ResourcesController;
+import info.SingleResourceType;
 import mapTiles.MapTile;
 import staticPackage.ObjectMap;
 
@@ -37,20 +41,18 @@ public class DrawMapTile extends JPanel {
         drawMapTileActionListener = new ActionListener() {
         	@Override
         	public void actionPerformed(ActionEvent evt) {
-        		if(!evt.getActionCommand().isEmpty()) {
-        			if(evt.getActionCommand()!="select") {
-	        			boolean isBuilding = false;
-	            		String itemName = removeTypeFromString(evt.getActionCommand());
-	            		System.out.println(itemName);
-	        			if(evt.getActionCommand().contains(",Building")) {
-	        				isBuilding = true;
-	        			}
-	        			System.out.println("bought Item One");
-	        			buyItem(itemName, isBuilding, mapTile, mainJFrame.getResources());
-	        			mainJFrame.getBuyMenu().deselect();
-	        			toggleSelected();
-	        			drawMap.repaintMapTile(xOfTile, yOfTile);
-	        		}
+        		if(!evt.getActionCommand().isEmpty() && evt.getActionCommand()!="select") {
+        			boolean isBuilding = false;
+            		Item item = new Item(removeTypeFromString(evt.getActionCommand()));
+            		System.out.println(item);
+        			if(evt.getActionCommand().contains(",Building")) {
+        				isBuilding = true;
+        			}
+        			System.out.println("bought: " + item);
+        			buyItem(item, isBuilding, mapTile, mainJFrame.getResources());
+        			mainJFrame.getBuyMenu().deselect();
+        			toggleSelected();
+        			drawMap.repaintMapTile(xOfTile, yOfTile);
         		}
         		if(evt.getActionCommand() == "select") {
 					try {	
@@ -95,11 +97,27 @@ public class DrawMapTile extends JPanel {
 		}
 		
 	}
-	public void buyItem(String itemName, boolean isBuilding, MapTile mapTile, ResourcesController resources) {
-		switch(itemName) {
-			case "":
-				break;
-			default: return;
+	public void buyItem(Item item, boolean isBuilding, MapTile mapTile, ResourcesController resources) {
+		if(isBuilding) {
+			switch(item.getItemName()) {
+				case "ItemOne": System.out.println(mapTile.getBuilding());
+					if(mapTile.getBuilding() == null) {
+						boolean hasResources = false;
+						SingleResourceType[] cost = item.getCosts();
+						System.out.println(resources);
+						hasResources = item.hasResources(resources);
+						if(hasResources) {
+							Building lumbercamp = new Lumbercamp();
+							for(int subtrackt = 0; subtrackt < resources.getResources().length; subtrackt++) {
+								 resources.getResources()[subtrackt].removeResourceAmount(cost[subtrackt].getResourceAmount());
+							}
+							mapTile.setBuilding(lumbercamp);
+							System.out.println(resources);
+						}
+					} System.out.println(mapTile.getBuilding());
+					break;
+				default: return;
+			}
 		}
 	}
 	public void removeSelectedFromAllTiles(MainJFrame mainJFrame, int xOfTile, int yOfTile) {
@@ -119,7 +137,7 @@ public class DrawMapTile extends JPanel {
 	}
 	private String removeTypeFromString(String fullString) {
 		String result = "";
-		for(int search = 0; search < fullString.length(); search++) {
+		for(int search = 3; search < fullString.length(); search++) {
 			if(fullString.charAt(search) == ',') {
 				return result;
 			}

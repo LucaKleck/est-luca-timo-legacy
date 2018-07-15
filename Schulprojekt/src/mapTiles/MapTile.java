@@ -35,7 +35,7 @@ public abstract class MapTile{
 	}
 	//Methods
 	public String toString() {
-		String str = "MapTile \n" + "Type: " + type.getName() + " xPos: " + this.xPos + " yPos: " + this.yPos;
+		String str = "MapTile \n" + "Type: " + type.getName() + " xPos: " + this.xPos + " yPos: " + this.yPos + "building: " + building;
 		return str;
 	}
 	// getter
@@ -67,6 +67,9 @@ public abstract class MapTile{
 		return building;
 	}
 	// setter
+	public void setBuilding(Building building) {
+		this.building = building;
+	}
 	protected void setTraversable(boolean traversable) {
 		this.traversable = traversable;
 	}

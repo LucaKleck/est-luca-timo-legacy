@@ -12,7 +12,7 @@ import framePackage.MainJFrame;
 import info.ResourcesController;
 import staticPackage.ObjectMap;
 
-public class Boot {
+public class Start {
 	@SuppressWarnings("unused")
 	public static void main(String[] args) {
 		ObjectMap objectMap = new ObjectMap();
