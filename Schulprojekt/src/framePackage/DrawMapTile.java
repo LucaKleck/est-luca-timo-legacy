@@ -56,7 +56,7 @@ public class DrawMapTile extends JPanel {
         		}
         		if(evt.getActionCommand() == "select") {
 					try {	
-						System.out.println(mapTile);
+						mainJFrame.getTextPane().setText(""+mapTile);
 						toggleSelected();
 						removeSelectedFromAllTiles(mainJFrame, (int)mapTile.getXPos(), (int)mapTile.getYPos());
 						drawMap.repaintMapTile(xOfTile, yOfTile);
@@ -100,11 +100,10 @@ public class DrawMapTile extends JPanel {
 	public void buyItem(Item item, boolean isBuilding, MapTile mapTile, ResourcesController resources) {
 		if(isBuilding) {
 			switch(item.getItemName()) {
-				case "ItemOne": System.out.println(mapTile.getBuilding());
+				case "ItemOne":
 					if(mapTile.getBuilding() == null) {
 						boolean hasResources = false;
 						SingleResourceType[] cost = item.getCosts();
-						System.out.println(resources);
 						hasResources = item.hasResources(resources);
 						if(hasResources) {
 							Building lumbercamp = new Lumbercamp();
@@ -112,11 +111,10 @@ public class DrawMapTile extends JPanel {
 								 resources.getResources()[subtrackt].removeResourceAmount(cost[subtrackt].getResourceAmount());
 							}
 							mapTile.setBuilding(lumbercamp);
-							System.out.println(resources);
 						}
-					} System.out.println(mapTile.getBuilding());
+					} mainJFrame.getTextPane().setText(mapTile.getBuilding()+"\n"+resources+ "\n"+item);
 					break;
-				default: return;
+				default: mainJFrame.getTextPane().setText("No Money/Building blocked"); return;
 			}
 		}
 	}

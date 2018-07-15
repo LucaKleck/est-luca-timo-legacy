@@ -4,8 +4,6 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.io.IOException;
-import java.io.StringWriter;
 
 import javax.swing.JFrame;
 import javax.swing.JTextPane;
@@ -22,24 +20,17 @@ public class MainJFrame extends JFrame implements MouseListener {
 	private DrawMap drawMap;
 	private BuyMenu buyMenu;
 	private JTextPane textPane;
-	private StringWriter infoTextWriter;
 	public MainJFrame(ObjectMap objectMap, ResourcesController resources) {
 		super();
 		setMinimumSize(new Dimension(800, 600));
 		this.setTitle("The Game");
 		this.setSize(555,578);
 		this.resources = resources;
-		this.infoTextWriter = new StringWriter();
 		getContentPane().setLayout(new MigLayout("insets 0 0 0 0, gap 0px 0px", "[80%][20%,grow]", "[75%][25%,grow]"));
 		getContentPane().setBackground(new Color(192, 192, 192));
 		
 		textPane = new JTextPane();
 		textPane.setEditable(false);
-		try {
-			textPane.write(infoTextWriter);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 		
 		drawMapTileArray = new DrawMapTile[objectMap.getHeight()][objectMap.getWidth()];
 		drawMap = new DrawMap(objectMap,this);
@@ -61,8 +52,8 @@ public class MainJFrame extends JFrame implements MouseListener {
 	public MainJFrame getMainJFrame() {
 		return this;
 	}
-	public StringWriter getTextPaneWriter() {
-		return infoTextWriter;
+	public JTextPane getTextPane() {
+		return textPane;
 	}
 	public DrawMapTile[][] getDrawMapTileArray() {
 		return drawMapTileArray;

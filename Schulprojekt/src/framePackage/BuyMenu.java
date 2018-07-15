@@ -35,15 +35,13 @@ public class BuyMenu extends JPanel implements ActionListener {
 		try {
 			if(evt.getActionCommand() == "item one") {
 				if(buyMenuSelected != 1) {
-					mainJFrame.getTextPaneWriter().write("Selected "+evt.getActionCommand());
-					mainJFrame.getTextPaneWriter().flush();
-					
+					mainJFrame.getTextPane().setText("Selected "+evt.getActionCommand());
 					DrawMapTile[][] drawMapTileArray = mainJFrame.getDrawMapTileArray();
 					drawMapTileArray[0][0].removeSelectedFromAllTiles(mainJFrame);
 					buyMenuSelected = 1;
 				} else {
 					buyMenuSelected = 0;
-					mainJFrame.getTextPaneWriter().write("deselected");
+					mainJFrame.getTextPane().setText("deselected");
 				}
 					
 			}
@@ -57,6 +55,5 @@ public class BuyMenu extends JPanel implements ActionListener {
 	}
 	public void deselect() {
 		this.buyMenuSelected = 0;
-		mainJFrame.getTextPaneWriter().write("deselected");
 	}
 }
