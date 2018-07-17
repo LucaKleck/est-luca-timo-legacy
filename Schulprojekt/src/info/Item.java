@@ -84,4 +84,7 @@ public class Item {
 	public SingleResourceType getManaStoneCost() {
 		return manaStoneCost;
 	}
+	public void setItemName(String newName) {
+		this.itemName = newName;
+	}
 }

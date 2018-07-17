@@ -38,9 +38,9 @@ public abstract class MapTile{
 	public String toString() {
 		String str = "";
 		try {
-			str = "MapTile" + type.getName() + " xPos: " + this.xPos + " yPos: " + this.yPos + "building: " + building+"\nresourceType(s): "+resourceType[0]+": "+resourceEfficiency[0]+"%, "+resourceType[1]+": "+resourceEfficiency[1]+"%";
+			str = "MapTile" + type.getName() + "\nxPos: " + this.xPos + " yPos: " + this.yPos + "\nbuilding: " + building+"\nresourceType(s): "+resourceType[0]+": "+resourceEfficiency[0]+"%, "+resourceType[1]+": "+resourceEfficiency[1]+"%";
 		} catch(IndexOutOfBoundsException e) {
-			str = "MapTile" + type.getName() + " xPos: " + this.xPos + " yPos: " + this.yPos + "building: " + building+"\nresourceType(s): "+resourceType[0]+": "+resourceEfficiency[0]+"%";
+			str = "MapTile" + type.getName() + "\nxPos: " + this.xPos + " yPos: " + this.yPos + "\nbuilding: " + building+"\nresourceType(s): "+resourceType[0]+": "+resourceEfficiency[0]+"%";
 		}
 		return str;
 	}

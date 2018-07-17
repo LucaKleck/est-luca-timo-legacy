@@ -11,14 +11,14 @@ import javax.swing.border.LineBorder;
 
 import net.miginfocom.swing.MigLayout;
 
-public class BuyMenu extends JPanel implements ActionListener {
+public class BuyMenuBuildings extends JPanel implements ActionListener {
 	private static final long serialVersionUID = 8222232669945381478L;
 	private int buyMenuSelected = 0;
 	private MainJFrame mainJFrame;
 	private JButton buttonSelectItemOne;
 	private JButton buttonSelectItemTwo;
 	
-	public BuyMenu(MainJFrame mainJFrame) {
+	public BuyMenuBuildings(MainJFrame mainJFrame) {
 		super();
 		setBackground(new Color(255, 228, 181));
 		setBorder(new LineBorder(new Color(0, 0, 0), 2));

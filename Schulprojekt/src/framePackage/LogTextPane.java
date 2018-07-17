@@ -9,9 +9,12 @@ public class LogTextPane extends JTextArea{
 	
 	private StringWriter logStringWriter = new StringWriter();
 	
+	public LogTextPane() {
+		writeToLog("Log Started");
+	}
+	
 	public void writeToLog(String message) {
 		logStringWriter.write(message+"\n-------------------\n");
 		this.setText(logStringWriter.toString());
 	}
-	
 }

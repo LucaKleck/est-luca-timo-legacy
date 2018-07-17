@@ -13,21 +13,23 @@ import javax.swing.border.LineBorder;
 import info.ResourcesController;
 import net.miginfocom.swing.MigLayout;
 import staticPackage.ObjectMap;
+import javax.swing.JTabbedPane;
 
 public class MainJFrame extends JFrame implements MouseListener {
 	private static final long serialVersionUID = 1L;
 	private DrawMapTile[][] drawMapTileArray;
 	private ResourcesController resources;
 	private DrawMap drawMap;
-	private BuyMenu buyMenu;
+	private BuyMenuBuildings buyMenuBuildings;
 	private JTextPane infoTextPane;
 	private JScrollPane scrollPane;
 	private LogTextPane logTextPane;
+	private JTabbedPane tabbedPane;
 	public MainJFrame(ObjectMap objectMap, ResourcesController resources) {
 		super();
-		setMinimumSize(new Dimension(800, 600));
+		setMinimumSize(new Dimension(600, 600));
 		this.setTitle("The Game");
-		this.setSize(555,578);
+		this.setSize(600,600);
 		this.resources = resources;
 		getContentPane().setLayout(new MigLayout("insets 0 0 0 0, gap 0px 0px", "[70%:70%:70%,grow][30%:30%:30%,grow]", "[75%:75%:75%][25%:25%:25%,grow]"));
 		getContentPane().setBackground(new Color(192, 192, 192));
@@ -40,12 +42,18 @@ public class MainJFrame extends JFrame implements MouseListener {
 		drawMap.setBorder(new LineBorder(new Color(0, 0, 0)));
 		drawMap.addMouseListener(this);
 		
-		buyMenu = new BuyMenu(this);
-		buyMenu.setAlignmentX(Component.RIGHT_ALIGNMENT);
-		buyMenu.setBorder(new LineBorder(new Color(0, 0, 0), 3));
-		
 		getContentPane().add(drawMap, "cell 0 0,grow");
-		getContentPane().add(buyMenu, "flowx,cell 1 0,grow");
+		
+		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+		getContentPane().add(tabbedPane, "flowy,cell 1 0,grow");
+		
+		buyMenuBuildings = new BuyMenuBuildings(this);
+		buyMenuBuildings.setName("");
+		buyMenuBuildings.setToolTipText("");
+		tabbedPane.addTab("Buildings", null, buyMenuBuildings, null);
+		tabbedPane.setEnabledAt(0, true);
+		buyMenuBuildings.setAlignmentX(Component.RIGHT_ALIGNMENT);
+		buyMenuBuildings.setBorder(new LineBorder(new Color(0, 0, 0), 3));
 		
 		scrollPane = new JScrollPane();
 		getContentPane().add(scrollPane, "cell 0 1,grow");
@@ -72,8 +80,8 @@ public class MainJFrame extends JFrame implements MouseListener {
 	public DrawMapTile[][] getDrawMapTileArray() {
 		return drawMapTileArray;
 	}
-	public BuyMenu getBuyMenu() {
-		return buyMenu;
+	public BuyMenuBuildings getBuyMenu() {
+		return buyMenuBuildings;
 	}
 	public ResourcesController getResources() {
 		return resources;
@@ -97,7 +105,7 @@ public class MainJFrame extends JFrame implements MouseListener {
 	@Override
 	public void mouseReleased(MouseEvent evt) {
 		if(evt.getButton() == 3) {
-			buyMenu.deselect();
+			buyMenuBuildings.deselect();
 			drawMapTileArray[0][0].removeSelectedFromAllTiles(getMainJFrame());
 		}
 	}

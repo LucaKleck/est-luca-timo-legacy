@@ -98,7 +98,6 @@ public class DrawMapTile extends JPanel {
 			switch(item.getItemName()) {
 				case "ItemOne":
 					if(mapTile.getBuilding() == null) {
-						System.out.println("should only be null:"+mapTile.getBuilding());
 						boolean hasResources = false;
 						SingleResourceType[] cost = item.getCosts();
 						hasResources = item.hasResources(resources, mapTile);
@@ -108,19 +107,20 @@ public class DrawMapTile extends JPanel {
 								resources.getResources()[subtrackt].removeResourceAmount(cost[subtrackt].getResourceAmount());
 							}
 							mapTile.setBuilding(lumbercamp);
+							item.setItemName(mapTile.getBuilding().getName());
 							mainJFrame.getLogTextPane().writeToLog("bought: " + item);
 							mainJFrame.getInfoTextPane().setText(mapTile.getBuilding()+"\n"+resources);
 						} else {
-							mainJFrame.getLogTextPane().writeToLog("No Money/Invalid Field");		
-							mainJFrame.getInfoTextPane().setText("No Money/Invalid Field"); return;
+							mainJFrame.getLogTextPane().writeToLog("Missing Resources/Invalid Field");		
+							mainJFrame.getInfoTextPane().setText("Missing Resources/Invalid Field"); return;
 						}
 					} else {
-						mainJFrame.getLogTextPane().writeToLog("No Money/Building blocked");		
-						mainJFrame.getInfoTextPane().setText("No Money/Building blocked"); return;
+						mainJFrame.getLogTextPane().writeToLog("Missing Resources/Building blocked");		
+						mainJFrame.getInfoTextPane().setText("Missing Resources/Building blocked"); return;
 					}
 					break;
-				default: mainJFrame.getLogTextPane().writeToLog("No Money/Building blocked + DEFAULTCASE!!! (not good)");		
-						 mainJFrame.getInfoTextPane().setText("No Money/Building blocked"); return;
+				default: mainJFrame.getLogTextPane().writeToLog("Missing Resources/Building blocked + DEFAULTCASE!!! (not good)");		
+						 mainJFrame.getInfoTextPane().setText("Missing Resources/Building blocked"); return;
 			}
 		}
 	}
