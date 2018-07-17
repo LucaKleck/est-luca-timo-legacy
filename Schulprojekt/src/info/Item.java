@@ -1,5 +1,7 @@
 package info;
 
+import mapTiles.MapTile;
+
 public class Item {
 
 	private String itemName;
@@ -9,22 +11,24 @@ public class Item {
 	private SingleResourceType stoneCost;
 	private SingleResourceType metalCost;
 	private SingleResourceType manaStoneCost;
+	private ResourceType requiredType;
 	
 	public Item(String itemName) {
 		this.itemName = itemName;
 		switch(itemName) {
-			case "ItemOne": moneyCost = new SingleResourceType(ResourceTypes.Money,50);
-							foodCost = new SingleResourceType(ResourceTypes.Food, 20);
-							woodCost = new SingleResourceType(ResourceTypes.Wood, 10);
-							stoneCost = new SingleResourceType(ResourceTypes.Stone, 40);
-							metalCost = new SingleResourceType(ResourceTypes.Metal, 45);
-							manaStoneCost = new SingleResourceType(ResourceTypes.ManaStones, 10);
+			case "ItemOne": moneyCost = new SingleResourceType(ResourceType.Money,50);
+							foodCost = new SingleResourceType(ResourceType.Food, 20);
+							woodCost = new SingleResourceType(ResourceType.Wood, 10);
+							stoneCost = new SingleResourceType(ResourceType.Stone, 40);
+							metalCost = new SingleResourceType(ResourceType.Metal, 45);
+							manaStoneCost = new SingleResourceType(ResourceType.ManaStones, 10);
+							requiredType = ResourceType.Wood;
 							break;
 			default: 		break;
 		}
 	}
 	public String toString() {
-		String string = "Name: " +itemName+"\n moneyCost: " + moneyCost+"\n foodCost: "+foodCost;
+		String string = "Name: " +itemName+"\nmoneyCost: " + moneyCost+"\nfoodCost: "+foodCost+"\nwoodCost: "+woodCost+"\nmetalCost: "+metalCost+"\nmanaStoneCost: "+manaStoneCost;
 		return string;
 	}
 	public SingleResourceType[] getCosts() {
@@ -37,9 +41,15 @@ public class Item {
 		cost[5] = manaStoneCost;
 		return cost;
 	}
-	public boolean hasResources(ResourcesController resources) {
+	public boolean hasResources(ResourcesController resources, MapTile mapTile) {
 		boolean hasResources = false;
-		if(hasSingleResource(resources.getResources()[0], getCosts()[0])&&hasSingleResource(resources.getResources()[1], getCosts()[1])&&hasSingleResource(resources.getResources()[2], getCosts()[2])&&hasSingleResource(resources.getResources()[3], getCosts()[3])&&hasSingleResource(resources.getResources()[4], getCosts()[4])&&hasSingleResource(resources.getResources()[5], getCosts()[5])   ) {
+		boolean hasRequiredType = false;
+		for(int scan = 0; scan < mapTile.getResourceType().length; scan++) {
+			if(mapTile.getResourceType()[scan].getType() == requiredType.getType()) {
+				hasRequiredType = true;
+			}
+		}
+		if(hasRequiredType&&hasSingleResource(resources.getResources()[0], getCosts()[0])&&hasSingleResource(resources.getResources()[1], getCosts()[1])&&hasSingleResource(resources.getResources()[2], getCosts()[2])&&hasSingleResource(resources.getResources()[3], getCosts()[3])&&hasSingleResource(resources.getResources()[4], getCosts()[4])&&hasSingleResource(resources.getResources()[5], getCosts()[5])   ) {
 				hasResources = true;
 		}
 		return hasResources;

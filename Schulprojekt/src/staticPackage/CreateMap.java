@@ -12,6 +12,7 @@ import java.util.logging.Level;
 
 import com.sun.istack.internal.logging.Logger;
 
+import info.ResourceType;
 import mapTiles.MapTile;
 import mapTiles.MapTileForest;
 import mapTiles.MapTileJungle;
@@ -23,7 +24,7 @@ public class CreateMap {
     private static final int MAPTILERADIUSBASE = 4;
 	private static final int TYPEAMOUNT = 3;
 	private static final int MAXRIVERS = 2;
-	private static final int MINRIVERS = 2; // Should be a % of map.length 
+	private static final int MINRIVERS = 2; // Could be a % of map.length 
 	private static final int MINRIVERLENGTHPERCENT = 20;
 	public static MapTile[][] createCustom(int x, int y) {
 		log.info("Start createCustom map");
@@ -57,7 +58,7 @@ public class CreateMap {
 					break;
 			case 20:placeRiverType(map,20,3);
 					break;
-			default:break;
+			default:return;
 		}
 	}	
 	// Placement method with two types of chances
@@ -88,7 +89,6 @@ public class CreateMap {
 			if(rivers < MAXRIVERS) {
 				if(rivers < MINRIVERS && yFirstRow == (map[0].length-2)) {
 					yFirstRow=0;
-					//System.err.println("firstRowReset");
 				}
 				random = new Random();
 				if(random.nextInt(100) <= spawnChance) {
@@ -134,60 +134,79 @@ public class CreateMap {
 	}
 	private static MapTile createCustomMapTile(int type, int x, int y) {
 		Random random = new Random();
-		int[] resourceType;
+		ResourceType[] resourceType;
 		int[] resourceEfficiency;
-		int[] resourceTypeTemp = new int[2];
+		ResourceType[] resourceTypeTemp = new ResourceType[2];
 		int[] resourceEfficiencyTemp = new int[2];
 		switch(type) {
-			case 0: resourceTypeTemp = new int[] {0,random.nextInt(5)};
+			case 0: resourceTypeTemp = new ResourceType[] {ResourceType.Food, createResourceTypeFromInt(random.nextInt(5)+1)};
 					resourceEfficiencyTemp = new int[] {100, random.nextInt(100+1)};
 					resourceType = checkResourceTypeLogic(resourceTypeTemp,resourceEfficiencyTemp);
 					resourceEfficiency = checkResourceEfficiencyLogic(resourceTypeTemp, resourceEfficiencyTemp);
 					return new MapTilePlain(x,y,resourceType,resourceEfficiency);
-			case 1: resourceTypeTemp = new int[] {1,random.nextInt(5)};
+			case 1: resourceTypeTemp = new ResourceType[] {ResourceType.Wood, createResourceTypeFromInt(random.nextInt(5)+1)};
 					resourceEfficiencyTemp = new int[] {100, random.nextInt(100+1)};
 					resourceType = checkResourceTypeLogic(resourceTypeTemp,resourceEfficiencyTemp);
 					resourceEfficiency = checkResourceEfficiencyLogic(resourceTypeTemp, resourceEfficiencyTemp);
 					return new MapTileForest(x,y,resourceType,resourceEfficiency);
-			case 2: resourceTypeTemp = new int[] {1,random.nextInt(5)};
-					resourceEfficiencyTemp = new int[] {100, random.nextInt(100+1)};
+			case 2: resourceTypeTemp = new ResourceType[] {ResourceType.Wood, createResourceTypeFromInt(random.nextInt(5)+1)};
+					resourceEfficiencyTemp = new int[] {70, random.nextInt(100+1)};
 					resourceType = checkResourceTypeLogic(resourceTypeTemp,resourceEfficiencyTemp);
 					resourceEfficiency = checkResourceEfficiencyLogic(resourceTypeTemp, resourceEfficiencyTemp);
 					return new MapTileLightForest(x,y,resourceType,resourceEfficiency);
-			case 3: resourceType = new int[] {0,1};
+			case 3: resourceType = new ResourceType[] {ResourceType.Wood, ResourceType.Food};
 					resourceEfficiency = new int[] {100, 100};
 					return new MapTileJungle(x,y,resourceType,resourceEfficiency);
-			case 20:resourceTypeTemp = new int[] {4,1};
-					resourceEfficiencyTemp = new int[] {100, random.nextInt(100+1)};
+			case 20:resourceTypeTemp = new ResourceType[] {ResourceType.ManaStones, ResourceType.Food};
+					resourceEfficiencyTemp = new int[] {100, 100};
 					resourceType = checkResourceTypeLogic(resourceTypeTemp,resourceEfficiencyTemp);
 					resourceEfficiency = checkResourceEfficiencyLogic(resourceTypeTemp, resourceEfficiencyTemp);
 					return new MapTileRiver(x,y,resourceType,resourceEfficiency);
-			default:resourceTypeTemp = new int[] {1,random.nextInt(5)};
+			default:resourceTypeTemp = new ResourceType[] {ResourceType.Food, createResourceTypeFromInt(random.nextInt(5)+1)};
 					resourceEfficiencyTemp = new int[] {100, random.nextInt(100+1)};
 					resourceType = checkResourceTypeLogic(resourceTypeTemp,resourceEfficiencyTemp);
 					resourceEfficiency = checkResourceEfficiencyLogic(resourceTypeTemp, resourceEfficiencyTemp);
 					return new MapTilePlain(x,y,resourceType,resourceEfficiency);
 		}
 	}
-	private static int[] checkResourceTypeLogic(int[] resourceTypeTemp, int[] resourceEfficiencyTemp) {
+	private static ResourceType createResourceTypeFromInt(int i) {
+		ResourceType resourceType;
+		switch(i) {
+			case 0: resourceType = ResourceType.Money;
+					break;
+			case 1: resourceType = ResourceType.Food;
+					break;
+			case 2: resourceType = ResourceType.Wood;
+					break;
+			case 3: resourceType = ResourceType.Stone;
+					break;
+			case 4: resourceType = ResourceType.Metal;
+					break;
+			case 5: resourceType = ResourceType.ManaStones;
+					break;
+			default: resourceType = ResourceType.Food;
+		}
+		return resourceType;
+	}
+	private static ResourceType[] checkResourceTypeLogic(ResourceType[] resourceTypeTemp, int[] resourceEfficiencyTemp) {
 		if(resourceEfficiencyTemp[1] <= 0) {
-			resourceTypeTemp = new int[] {resourceTypeTemp[0]};
+			resourceTypeTemp = new ResourceType[] {resourceTypeTemp[0]};
 		}
 		try {
-			if(resourceTypeTemp[1] == resourceTypeTemp[0]) {
-				resourceTypeTemp = new int[] {resourceTypeTemp[0]};
+			if(resourceTypeTemp[1].getType() == resourceTypeTemp[0].getType()) {
+				resourceTypeTemp = new ResourceType[] {resourceTypeTemp[0]};
 			}
 		} catch(Exception e) {
 			log.log(Level.FINE, "checkResourceTypeLogic: ", e);
 		}
 		return resourceTypeTemp;
 	}
-	private static int[] checkResourceEfficiencyLogic(int[] resourceTypeTemp, int[] resourceEfficiencyTemp) {
+	private static int[] checkResourceEfficiencyLogic(ResourceType[] resourceTypeTemp, int[] resourceEfficiencyTemp) {
 		if(resourceEfficiencyTemp[1] <= 0){
 			resourceEfficiencyTemp = new int[] {resourceEfficiencyTemp[0]};
 		}
 		try {
-			if(resourceTypeTemp[1] == resourceTypeTemp[0]) {
+			if(resourceTypeTemp[1].getType() == resourceTypeTemp[0].getType()) {
 				if(resourceEfficiencyTemp[0] >= resourceEfficiencyTemp[1]) {
 					resourceEfficiencyTemp = new int[] {resourceEfficiencyTemp[0]};
 				} else {

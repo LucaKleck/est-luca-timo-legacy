@@ -8,12 +8,12 @@ public class ResourcesController {
 	private SingleResourceType metal;
 	private SingleResourceType manaStone;
 	public ResourcesController() {
-		money = new SingleResourceType(ResourceTypes.Money, 200);
-		food = new SingleResourceType(ResourceTypes.Food,200);
-		wood = new SingleResourceType(ResourceTypes.Wood, 200);
-		stone = new SingleResourceType(ResourceTypes.Stone, 200);
-		metal = new SingleResourceType(ResourceTypes.Metal, 200);
-		manaStone = new SingleResourceType(ResourceTypes.ManaStones, 200);
+		money = new SingleResourceType(ResourceType.Money, 200);
+		food = new SingleResourceType(ResourceType.Food,200);
+		wood = new SingleResourceType(ResourceType.Wood, 200);
+		stone = new SingleResourceType(ResourceType.Stone, 200);
+		metal = new SingleResourceType(ResourceType.Metal, 200);
+		manaStone = new SingleResourceType(ResourceType.ManaStones, 200);
 	}
 	public String toString() {
 		String string = "money: "+money+" food: "+food+" wood: "+wood+" stone: "+stone+" metal: "+metal+" manaStone: "+manaStone;

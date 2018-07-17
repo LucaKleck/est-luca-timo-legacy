@@ -16,7 +16,6 @@ public class Start {
 	@SuppressWarnings("unused")
 	public static void main(String[] args) {
 		ObjectMap objectMap = new ObjectMap();
-		//objectMap.printMap();
 		ResourcesController resources = new ResourcesController();
 		JFrame f = new MainJFrame(objectMap, resources);
 		//objectMap.getTestMethod(10, 10);

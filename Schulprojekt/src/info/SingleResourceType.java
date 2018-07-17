@@ -1,9 +1,9 @@
 package info;
-import info.ResourceTypes;
+import info.ResourceType;
 public class SingleResourceType {
-	private ResourceTypes resourceType;
+	private ResourceType resourceType;
 	private int resourceAmount;
-	public SingleResourceType(ResourceTypes type, int amount) {
+	public SingleResourceType(ResourceType type, int amount) {
 		this.resourceAmount = amount;
 		this.resourceType = type;
 	}
@@ -14,7 +14,7 @@ public class SingleResourceType {
 	public int getResourceAmount() {
 		return resourceAmount;
 	}
-	public ResourceTypes getResourceType() {
+	public ResourceType getResourceType() {
 		return resourceType;
 	}
 	public void addResourceAmount(int amount) {

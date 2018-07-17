@@ -9,6 +9,7 @@
 package mapTiles;
 
 import buildings.Building;
+import info.ResourceType;
 import staticPackage.MapTileType;
 
 public abstract class MapTile{
@@ -22,10 +23,10 @@ public abstract class MapTile{
 	private int yPos;
 	private double width;
 	private double height;
-	private int[] resourceType;
+	private ResourceType[] resourceType;
 	private int[] resourceEfficiency;
 	// Constructor
-	public MapTile(MapTileType type, int xPos, int yPos, boolean traversable, int[] resourceType, int[] resourceEfficiency) {
+	public MapTile(MapTileType type, int xPos, int yPos, boolean traversable, ResourceType[] resourceType, int[] resourceEfficiency) {
 		this.type = type;
 		this.xPos = xPos;
 		this.yPos = yPos;
@@ -35,14 +36,19 @@ public abstract class MapTile{
 	}
 	//Methods
 	public String toString() {
-		String str = "MapTile \n" + "Type: " + type.getName() + " xPos: " + this.xPos + " yPos: " + this.yPos + "building: " + building;
+		String str = "";
+		try {
+			str = "MapTile" + type.getName() + " xPos: " + this.xPos + " yPos: " + this.yPos + "building: " + building+"\nresourceType(s): "+resourceType[0]+": "+resourceEfficiency[0]+"%, "+resourceType[1]+": "+resourceEfficiency[1]+"%";
+		} catch(IndexOutOfBoundsException e) {
+			str = "MapTile" + type.getName() + " xPos: " + this.xPos + " yPos: " + this.yPos + "building: " + building+"\nresourceType(s): "+resourceType[0]+": "+resourceEfficiency[0]+"%";
+		}
 		return str;
 	}
 	// getter
 	public MapTileType getMapTileType() {
 		return type;
 	}
-	public int[] getResourceType() {
+	public ResourceType[] getResourceType() {
 		return resourceType;
 	}
 	public int[] getResourceEfficiency() {

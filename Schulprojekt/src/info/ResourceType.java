@@ -1,6 +1,6 @@
 package info;
 
-public enum ResourceTypes {
+public enum ResourceType {
 	Money("Money",1),
 	Food("Food",2),
 	Wood("Wood",3),
@@ -10,7 +10,7 @@ public enum ResourceTypes {
 	
 	private final int type;
 	private final String name;
-	ResourceTypes(String name, int type) {
+	ResourceType(String name, int type) {
 		this.name = name;
 		this.type = type;
 	}

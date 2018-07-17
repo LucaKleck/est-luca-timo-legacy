@@ -15,40 +15,64 @@ public class BuyMenu extends JPanel implements ActionListener {
 	private static final long serialVersionUID = 8222232669945381478L;
 	private int buyMenuSelected = 0;
 	private MainJFrame mainJFrame;
+	private JButton buttonSelectItemOne;
+	private JButton buttonSelectItemTwo;
+	
 	public BuyMenu(MainJFrame mainJFrame) {
 		super();
 		setBackground(new Color(255, 228, 181));
 		setBorder(new LineBorder(new Color(0, 0, 0), 2));
+		setLayout(new MigLayout("", "[100%]", "[10%][10%]"));
 		this.mainJFrame = mainJFrame;
-		JButton button_one = new JButton("item one");
-		setLayout(new MigLayout("", "[90%]", "[10%][10%]"));
-		this.add(button_one, "cell 0 0,grow");
-		button_one.addActionListener(this);
-		JButton button_two = new JButton("button 2");
-		this.add(button_two, "cell 0 1,grow");
+		
+		buttonSelectItemOne = new JButton("Lumbercamp");
+		buttonSelectItemOne.setActionCommand("buyItemOne");
+		this.add(buttonSelectItemOne, "cell 0 0,grow");
+		buttonSelectItemOne.addActionListener(this);
+		
+		buttonSelectItemTwo = new JButton("Fishing Dock");
+		buttonSelectItemTwo.setActionCommand("buyItemTwo");
+		this.add(buttonSelectItemTwo, "cell 0 1,grow");
+		buttonSelectItemTwo.addActionListener(this);
 	}
 	public void paint(Graphics g) {
 		super.paint(g);
 	}
+	@SuppressWarnings("deprecation")
 	@Override
 	public void actionPerformed(ActionEvent evt) {
 		try {
-			if(evt.getActionCommand() == "item one") {
-				if(buyMenuSelected != 1) {
-					mainJFrame.getTextPane().setText("Selected "+evt.getActionCommand());
+			if(evt.getActionCommand().contains("buyItem")) {
+				if(evt.getActionCommand().contains("One")) {
+					if(buyMenuSelected != 1) {
+						mainJFrame.getInfoTextPane().setText("Selected "+buttonSelectItemOne.getLabel());
+						DrawMapTile[][] drawMapTileArray = mainJFrame.getDrawMapTileArray();
+						try {
+							drawMapTileArray[0][0].removeSelectedFromAllTiles(mainJFrame);
+						} catch(IndexOutOfBoundsException e){}
+						buyMenuSelected = 1;
+					} else {
+						buyMenuSelected = 0;
+						mainJFrame.getInfoTextPane().setText("Deselected "+buttonSelectItemOne.getLabel());
+					}
+				}
+			}//IDEA make it with Reflection
+			if(evt.getActionCommand().contains("Two")) {
+				if(buyMenuSelected != 2) {
+					mainJFrame.getInfoTextPane().setText("Selected "+buttonSelectItemTwo.getLabel());
 					DrawMapTile[][] drawMapTileArray = mainJFrame.getDrawMapTileArray();
-					drawMapTileArray[0][0].removeSelectedFromAllTiles(mainJFrame);
-					buyMenuSelected = 1;
+					try {
+						drawMapTileArray[0][0].removeSelectedFromAllTiles(mainJFrame);
+					} catch(IndexOutOfBoundsException e){}
+					buyMenuSelected = 2;
 				} else {
 					buyMenuSelected = 0;
-					mainJFrame.getTextPane().setText("deselected");
+					mainJFrame.getInfoTextPane().setText("Deselected "+buttonSelectItemTwo.getLabel());
 				}
-					
 			}
 		} catch(Exception e) {
 			System.out.println(e);
 		}
-		
 	}
 	public int getSelected() {
 		return buyMenuSelected;

@@ -22,7 +22,6 @@ public class DrawMapTile extends JPanel {
 	private ObjectMap objectMap;
 	private ArrayList<ActionListener> listener = null;
 	private MapTile mapTile;
-	@SuppressWarnings("unused")
 	private MainJFrame mainJFrame;
 	private DrawMap drawMap;
 	private Color color = Color.BLACK;
@@ -44,11 +43,9 @@ public class DrawMapTile extends JPanel {
         		if(!evt.getActionCommand().isEmpty() && evt.getActionCommand()!="select") {
         			boolean isBuilding = false;
             		Item item = new Item(removeTypeFromString(evt.getActionCommand()));
-            		System.out.println(item);
         			if(evt.getActionCommand().contains(",Building")) {
         				isBuilding = true;
         			}
-        			System.out.println("bought: " + item);
         			buyItem(item, isBuilding, mapTile, mainJFrame.getResources());
         			mainJFrame.getBuyMenu().deselect();
         			toggleSelected();
@@ -56,7 +53,7 @@ public class DrawMapTile extends JPanel {
         		}
         		if(evt.getActionCommand() == "select") {
 					try {	
-						mainJFrame.getTextPane().setText(""+mapTile);
+						mainJFrame.getInfoTextPane().setText(""+mapTile);
 						toggleSelected();
 						removeSelectedFromAllTiles(mainJFrame, (int)mapTile.getXPos(), (int)mapTile.getYPos());
 						drawMap.repaintMapTile(xOfTile, yOfTile);
@@ -92,29 +89,38 @@ public class DrawMapTile extends JPanel {
 			g.fillRect((int)(mapTile.getWidth()*mapTile.getXPos()), (int)(mapTile.getHeight()*mapTile.getYPos()), (int)mapTile.getWidth()+1, (int)mapTile.getHeight()+1);
 		}
 		if(mapTile.getBuilding() != null) {
-			g.setColor(new Color(30,30,30));
+			g.setColor(mapTile.getBuilding().getColor());
 			g.fillRect((int)(mapTile.getWidth()*mapTile.getXPos()+mapTile.getWidth()/100*10), (int)(mapTile.getHeight()*mapTile.getYPos()+mapTile.getHeight()/100*10), (int)(mapTile.getWidth()-mapTile.getWidth()/100*40), (int)(mapTile.getHeight()-mapTile.getHeight()/100*40));
 		}
-		
 	}
 	public void buyItem(Item item, boolean isBuilding, MapTile mapTile, ResourcesController resources) {
 		if(isBuilding) {
 			switch(item.getItemName()) {
 				case "ItemOne":
 					if(mapTile.getBuilding() == null) {
+						System.out.println("should only be null:"+mapTile.getBuilding());
 						boolean hasResources = false;
 						SingleResourceType[] cost = item.getCosts();
-						hasResources = item.hasResources(resources);
+						hasResources = item.hasResources(resources, mapTile);
 						if(hasResources) {
 							Building lumbercamp = new Lumbercamp();
 							for(int subtrackt = 0; subtrackt < resources.getResources().length; subtrackt++) {
-								 resources.getResources()[subtrackt].removeResourceAmount(cost[subtrackt].getResourceAmount());
+								resources.getResources()[subtrackt].removeResourceAmount(cost[subtrackt].getResourceAmount());
 							}
 							mapTile.setBuilding(lumbercamp);
+							mainJFrame.getLogTextPane().writeToLog("bought: " + item);
+							mainJFrame.getInfoTextPane().setText(mapTile.getBuilding()+"\n"+resources);
+						} else {
+							mainJFrame.getLogTextPane().writeToLog("No Money/Invalid Field");		
+							mainJFrame.getInfoTextPane().setText("No Money/Invalid Field"); return;
 						}
-					} mainJFrame.getTextPane().setText(mapTile.getBuilding()+"\n"+resources+ "\n"+item);
+					} else {
+						mainJFrame.getLogTextPane().writeToLog("No Money/Building blocked");		
+						mainJFrame.getInfoTextPane().setText("No Money/Building blocked"); return;
+					}
 					break;
-				default: mainJFrame.getTextPane().setText("No Money/Building blocked"); return;
+				default: mainJFrame.getLogTextPane().writeToLog("No Money/Building blocked + DEFAULTCASE!!! (not good)");		
+						 mainJFrame.getInfoTextPane().setText("No Money/Building blocked"); return;
 			}
 		}
 	}
@@ -142,7 +148,6 @@ public class DrawMapTile extends JPanel {
 			result += fullString.charAt(search);
 		}
 		return result;
-		
 	}
 	public void removeSelectedFromAllTiles(MainJFrame mainJFrame) {
 		for( int y = 0; y < map[0].length; y++) {
