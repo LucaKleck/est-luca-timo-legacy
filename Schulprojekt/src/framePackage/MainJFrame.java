@@ -13,6 +13,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextPane;
 import javax.swing.border.LineBorder;
 
+import framePackageSelectedMenu.*;
 import info.ObjectMap;
 import info.ResourcesController;
 import mapTiles.MapTile;
@@ -29,7 +30,7 @@ public class MainJFrame extends JFrame implements MouseListener, ActionListener 
 	private LogTextPane logTextPane;
 	private JTabbedPane tabbedPane;
 	private ObjectMap objectMap;
-	private CreateTownsHallPanel townsHallPanel;
+	private CreateTownHallPanel townsHallPanel;
 	
 	public MainJFrame(ObjectMap objectMap, ResourcesController resources) {
 		super();
@@ -54,7 +55,7 @@ public class MainJFrame extends JFrame implements MouseListener, ActionListener 
 		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		getContentPane().add(tabbedPane, "flowy,cell 1 0,grow");
 		
-		townsHallPanel = new CreateTownsHallPanel(this);
+		townsHallPanel = new CreateTownHallPanel(this);
 		tabbedPane.addTab("Towns Hall", null, townsHallPanel, null);
 		tabbedPane.setEnabledAt(0, true);
 		
@@ -113,8 +114,23 @@ public class MainJFrame extends JFrame implements MouseListener, ActionListener 
 	public ResourcesController getResources() {
 		return resources;
 	}
-	public CreateTownsHallPanel getTownsHallPanel() {
+	public CreateTownHallPanel getTownsHallPanel() {
 		return townsHallPanel;
+	}
+	public void enableBuyMenuBuildings() {
+		tabbedPane.removeTabAt(0);
+		tabbedPane.addTab("Buildings", null, buyMenuBuildings, null);
+		tabbedPane.setEnabledAt(0, true);
+	}
+	public void enableSelectedTownHall() {
+		tabbedPane.removeTabAt(0);
+		tabbedPane.addTab("Town Hall", null, new SelectedMenuTownHall(), null);
+		tabbedPane.setEnabledAt(0, true);
+	}
+	public void enableSelectedMenuLumbercamp() {
+		tabbedPane.removeTabAt(0);
+		tabbedPane.addTab("Lumbercamp", null, new SelectedMenuLumbercamp(), null);
+		tabbedPane.setEnabledAt(0, true);
 	}
 	public void testForTownHall() {
 		MapTile[][] map = objectMap.getMap();
@@ -133,6 +149,22 @@ public class MainJFrame extends JFrame implements MouseListener, ActionListener 
 				}
 			}
 		}
+	}
+	public boolean hasTownHall() {
+		MapTile[][] map = objectMap.getMap();
+		boolean hasTownHall = false;
+		for(int y = 0; y < map[0].length; y++) {
+			for(int x = 0; x < map.length; x++) {
+				try {
+					if(map[x][y].getBuilding().getName() == "Town Hall") {
+						return hasTownHall = true;
+					}
+				} catch(NullPointerException e) {
+					// just normal null pointer Exceptions due to most tiles not having buildings
+				}
+			}
+		}
+		return hasTownHall;
 	}
 	@Override
 	public void mouseClicked(MouseEvent evt) {
@@ -155,6 +187,7 @@ public class MainJFrame extends JFrame implements MouseListener, ActionListener 
 		if(evt.getButton() == 3) {
 			buyMenuBuildings.deselect();
 			drawMapTileArray[0][0].removeSelectedFromAllTiles(getMainJFrame());
+			enableBuyMenuBuildings();
 		}
 	}
 	@Override

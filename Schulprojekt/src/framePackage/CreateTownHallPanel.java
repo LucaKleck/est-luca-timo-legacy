@@ -5,7 +5,7 @@ import javax.swing.JPanel;
 
 import net.miginfocom.swing.MigLayout;
 
-public class CreateTownsHallPanel extends JPanel {
+public class CreateTownHallPanel extends JPanel {
 	private static final long serialVersionUID = 4173647531503859006L;
 	
 	private JButton btnTownsHall;
@@ -13,7 +13,7 @@ public class CreateTownsHallPanel extends JPanel {
 	private MainJFrame mainJFrame;
 	private boolean selected = false;
 	
-	public CreateTownsHallPanel(MainJFrame mainJFrame) {
+	public CreateTownHallPanel(MainJFrame mainJFrame) {
 		this.mainJFrame = mainJFrame;
 		setLayout(new MigLayout("", "[100%]", "[100%]"));
 		btnTownsHall = new JButton("Towns Hall");

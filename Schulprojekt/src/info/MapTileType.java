@@ -10,7 +10,7 @@ public enum MapTileType {
 	River(20, "River", new Color(0,30,255)),
 	Mountain(30, "Mountain", Color.BLACK),
 	DefaultRoad(40, "Road", new Color(30,30,30)),
-	DirtRoad(41,"Dirt Road",new Color(40,40,40)),
+	DirtRoad(41,"Dirt Road",new Color(200,150,40)),
 	Bridge(42,"Bridge",new Color(0,30,30));
 	
 	private final int type;

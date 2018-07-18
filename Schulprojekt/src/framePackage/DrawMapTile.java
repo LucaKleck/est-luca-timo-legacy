@@ -59,10 +59,27 @@ public class DrawMapTile extends JPanel {
 					try {	
 						mainJFrame.getInfoTextPane().setText(""+mapTile);
 						toggleSelected();
-						removeSelectedFromAllTiles(mainJFrame, (int)mapTile.getXPos(), (int)mapTile.getYPos());
+						removeSelectedFromAllTiles(mainJFrame,mapTile.getXPos(),mapTile.getYPos());
 						drawMap.repaintMapTile(xOfTile, yOfTile);
 					} catch (Exception e) {
 						System.out.println("selected "+e);
+					}
+					if(mapTile.getBuilding() == null && mainJFrame.hasTownHall()) {
+						mainJFrame.enableBuyMenuBuildings();
+					}
+					try {
+						if(mapTile.getBuilding().getName()=="Town Hall"&&getSelected()==true) {
+							mainJFrame.enableSelectedTownHall();
+						} else {
+							mainJFrame.enableBuyMenuBuildings();
+						}
+						if(mapTile.getBuilding().getName()=="Lumbercamp"&&getSelected()==true) {
+							mainJFrame.enableSelectedMenuLumbercamp();
+						} else {
+							mainJFrame.enableBuyMenuBuildings();
+						}
+					} catch(NullPointerException e) {
+						// No building
 					}
         		}
         		if(evt.getActionCommand() == "toggleHover") {
@@ -133,21 +150,6 @@ public class DrawMapTile extends JPanel {
 			resources.getResources()[subtrackt].removeResourceAmount(cost[subtrackt].getResourceAmount());
 		}
 	}
-	public void removeSelectedFromAllTiles(MainJFrame mainJFrame, int xOfTile, int yOfTile) {
-		for( int y = 0; y < map[0].length; y++) {
-			for( int x = 0; x < map.length; x++) {
-				DrawMapTile[][] drawMapTileArray = mainJFrame.getDrawMapTileArray();
-				if( x == xOfTile && y == yOfTile) {
-					drawMap.repaintMapTile(xOfTile, yOfTile);
-				} else {
-					if(drawMapTileArray[x][y].selected == true) {
-						drawMapTileArray[x][y].turnOffSelected();
-						drawMap.repaintMapTile(x, y);
-					}
-				}
-			}
-		}
-	}
 	public void removeSelectedFromAllTiles(MainJFrame mainJFrame) {
 		for( int y = 0; y < map[0].length; y++) {
 			for( int x = 0; x < map.length; x++) {
@@ -159,6 +161,21 @@ public class DrawMapTile extends JPanel {
 			}
 		}
 	}
+	public void removeSelectedFromAllTiles(MainJFrame mainJFrame, int xPos, int yPos) {
+		for( int y = 0; y < map[0].length; y++) {
+			for( int x = 0; x < map.length; x++) {
+				DrawMapTile[][] drawMapTileArray = mainJFrame.getDrawMapTileArray();
+				if(yPos == y && xPos == x) {
+					drawMap.repaintMapTile(xPos, yPos);
+				} else {
+					if(drawMapTileArray[x][y].selected == true) {
+					drawMapTileArray[x][y].turnOffSelected();
+					drawMap.repaintMapTile(x, y);
+					}
+				}
+			}
+		}
+	}	
 	protected void toggleHover() {
 		hover = !hover;
 	}
@@ -211,8 +228,8 @@ public class DrawMapTile extends JPanel {
 				g.setColor(mapTile.getBuilding().getColor());
 				g.fillRect((int)(mapTile.getWidth()*mapTile.getXPos()+mapTile.getWidth()/100*10), (int)(mapTile.getHeight()*mapTile.getYPos()+mapTile.getHeight()/100*10), (int)(mapTile.getWidth()-mapTile.getWidth()/100*40), (int)(mapTile.getHeight()-mapTile.getHeight()/100*40));
 			}
-		} catch (Exception e) {
-			System.out.println("DrawMapTile g: "+e);
+		} catch (NullPointerException e) {
+			
 		}
 	}
 }
