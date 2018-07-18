@@ -1,9 +1,9 @@
 package mapTiles;
 
+import info.MapTileType;
 import info.ResourceType;
-import staticPackage.MapTileType;
 
-public class MapTileRiver extends MapTile {
+public class MapTileRiver extends MapTileWithResources {
 	private static final MapTileType TYPE = MapTileType.River;
 	private static final boolean TRAVERSABLE = false;
 	public MapTileRiver(int xPos, int yPos, ResourceType[] resourceType, int[] resourceEfficiency) {

@@ -1,6 +1,6 @@
 package info;
 
-import mapTiles.MapTile;
+import mapTiles.MapTileWithResources;
 
 public class Item {
 
@@ -14,9 +14,9 @@ public class Item {
 	private ResourceType requiredType;
 	
 	public Item(String itemName) {
-		this.itemName = itemName;
 		switch(itemName) {
-			case "ItemOne": moneyCost = new SingleResourceType(ResourceType.Money,50);
+			case "ItemOne": this.itemName = "Lumbercamp";
+							moneyCost = new SingleResourceType(ResourceType.Money,50);
 							foodCost = new SingleResourceType(ResourceType.Food, 20);
 							woodCost = new SingleResourceType(ResourceType.Wood, 10);
 							stoneCost = new SingleResourceType(ResourceType.Stone, 40);
@@ -24,11 +24,27 @@ public class Item {
 							manaStoneCost = new SingleResourceType(ResourceType.ManaStones, 10);
 							requiredType = ResourceType.Wood;
 							break;
+			case "TownHall":this.itemName = "Town Hall";
+							moneyCost = new SingleResourceType(ResourceType.Money,0);
+							foodCost = new SingleResourceType(ResourceType.Food, 0);
+							woodCost = new SingleResourceType(ResourceType.Wood, 0);
+							stoneCost = new SingleResourceType(ResourceType.Stone, 0);
+							metalCost = new SingleResourceType(ResourceType.Metal, 0);
+							manaStoneCost = new SingleResourceType(ResourceType.ManaStones, 0);
+							requiredType = null;
 			default: 		break;
 		}
+		/*
+		 * DOIT REPLACE WITH ITEM ARRAY, THANKS!
+		 */
 	}
 	public String toString() {
-		String string = "Name: " +itemName+"\nmoneyCost: " + moneyCost+"\nfoodCost: "+foodCost+"\nwoodCost: "+woodCost+"\nmetalCost: "+metalCost+"\nmanaStoneCost: "+manaStoneCost;
+		String string;
+		if(this.itemName != "Towns Hall") {
+			string = "Name: " +itemName+"\nmoneyCost: " + moneyCost+"\nfoodCost: "+foodCost+"\nwoodCost: "+woodCost+"\nmetalCost: "+metalCost+"\nmanaStoneCost: "+manaStoneCost;
+		} else {
+			string = "Name: "+itemName;
+		}
 		return string;
 	}
 	public SingleResourceType[] getCosts() {
@@ -41,7 +57,7 @@ public class Item {
 		cost[5] = manaStoneCost;
 		return cost;
 	}
-	public boolean hasResources(ResourcesController resources, MapTile mapTile) {
+	public boolean hasResources(ResourcesController resources, MapTileWithResources mapTile) {
 		boolean hasResources = false;
 		boolean hasRequiredType = false;
 		for(int scan = 0; scan < mapTile.getResourceType().length; scan++) {
@@ -83,8 +99,5 @@ public class Item {
 	}
 	public SingleResourceType getManaStoneCost() {
 		return manaStoneCost;
-	}
-	public void setItemName(String newName) {
-		this.itemName = newName;
 	}
 }

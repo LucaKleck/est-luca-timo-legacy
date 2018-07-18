@@ -9,8 +9,8 @@
 import javax.swing.JFrame;
 
 import framePackage.MainJFrame;
+import info.ObjectMap;
 import info.ResourcesController;
-import staticPackage.ObjectMap;
 
 public class Start {
 	@SuppressWarnings("unused")

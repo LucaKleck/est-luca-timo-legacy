@@ -14,6 +14,7 @@ import net.miginfocom.swing.MigLayout;
 public class BuyMenuBuildings extends JPanel implements ActionListener {
 	private static final long serialVersionUID = 8222232669945381478L;
 	private int buyMenuSelected = 0;
+	@SuppressWarnings("unused")
 	private MainJFrame mainJFrame;
 	private JButton buttonSelectItemOne;
 	private JButton buttonSelectItemTwo;
@@ -56,7 +57,7 @@ public class BuyMenuBuildings extends JPanel implements ActionListener {
 						mainJFrame.getInfoTextPane().setText("Deselected "+buttonSelectItemOne.getLabel());
 					}
 				}
-			}//IDEA make it with Reflection
+			}//IDEA make array, make 
 			if(evt.getActionCommand().contains("Two")) {
 				if(buyMenuSelected != 2) {
 					mainJFrame.getInfoTextPane().setText("Selected "+buttonSelectItemTwo.getLabel());
@@ -71,8 +72,20 @@ public class BuyMenuBuildings extends JPanel implements ActionListener {
 				}
 			}
 		} catch(Exception e) {
-			System.out.println(e);
+			System.out.println("BMB: "+e);
 		}
+	}
+	protected int getBuyMenuSelected() {
+		return buyMenuSelected;
+	}
+	protected JButton getButtonSelectedItemOne() {
+		return buttonSelectItemOne;
+	}
+	protected JButton getButtonSelectedItemTwo() {
+		return buttonSelectItemTwo;
+	}
+	protected void setBuyMenuSelected(int selected) {
+		this.buyMenuSelected = selected;
 	}
 	public int getSelected() {
 		return buyMenuSelected;

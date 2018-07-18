@@ -1,6 +1,7 @@
-package staticPackage;
+package info;
 import mapTiles.MapTile;
 import mapTiles.MapTileForest;
+import staticPackage.CreateMap;
 import units.Unit;
 
 /**

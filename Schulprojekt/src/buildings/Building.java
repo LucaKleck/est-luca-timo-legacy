@@ -2,15 +2,20 @@ package buildings;
 
 import java.awt.Color;
 
+import mapTiles.MapTile;
+
 public abstract class Building {
 	private static int amountOfBuildings = 0;
 	private int buildingID;
 	private String buildingName;
 	private int[] buildableOn;
 	private Color color;
-	public Building(String buildingName, int[] buildableOn) {
+	private MapTile mapTile;
+	
+	public Building(String buildingName, int[] buildableOn, MapTile mapTile) {
 		this.buildableOn = buildableOn;
 		this.buildingName = buildingName;
+		this.mapTile = mapTile;
 		buildingID = amountOfBuildings;
 		switch(buildingName) {
 			case "Lumbercamp":
@@ -20,6 +25,9 @@ public abstract class Building {
 					 break;
 		}
 		amountOfBuildings++;
+	}
+	public MapTile getMapTile() {
+		return mapTile;
 	}
 	public Color getColor() {
 		return color;

@@ -7,7 +7,7 @@ import java.awt.event.MouseListener;
 
 import javax.swing.JPanel;
 
-import staticPackage.ObjectMap;
+import info.ObjectMap;
 
 public class DrawMap extends JPanel implements MouseListener, ActionListener {
 	private static final long serialVersionUID = 88330795020315231L;
@@ -53,9 +53,16 @@ public class DrawMap extends JPanel implements MouseListener, ActionListener {
 	public void mousePressed(java.awt.event.MouseEvent evt) {
 		
 	}
-	@Override
+	@Override //This fires update if mouse button 1 was clicked, update is decided by what kind of things are going on
 	public void mouseReleased(java.awt.event.MouseEvent evt) {
 		String command = "select";
+		try {
+			if(mainJFrame.getTownsHallPanel().getSelected()) { // here buy towns hall is selected as command because towns hall button is selected
+				command = "buyTownHall,Building";				
+			}
+		} catch (Exception e) {
+			System.out.println(e);
+		}
 		try {
 			if(mainJFrame.getBuyMenu().getSelected() != 0) {
 				switch(mainJFrame.getBuyMenu().getSelected()) {
@@ -68,12 +75,13 @@ public class DrawMap extends JPanel implements MouseListener, ActionListener {
 		} catch (Exception e) {
 			System.out.println(e);
 		}
-		if(evt.getButton() == 1) {
+		if(evt.getButton() == 1) { //here the command gets sent into the event handler of this object
 			fireUpdate(new ActionEvent(this, 0, command),(int)(evt.getX()/((double)this.getWidth()/objectMap.getWidth())),(int)(evt.getY()/((double)this.getHeight()/objectMap.getHeight())));
 		}
 	}
-	protected void fireUpdate(ActionEvent evt, int xOfTile, int yOfTile) {   
+	protected void fireUpdate(ActionEvent evt, int xOfTile, int yOfTile) {   // this is the method to send it to the DrawMapTile that was clicked
         drawMapTile[xOfTile][yOfTile].fireUpdate(evt);
+        // note that it goes to DrawMapTile!
     }
     public void addActionListener(ActionListener al, int xOfTile, int yOfTile) {
         drawMapTile[xOfTile][yOfTile].getListener().add(al);

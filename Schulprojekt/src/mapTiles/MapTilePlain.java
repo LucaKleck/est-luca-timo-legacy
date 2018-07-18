@@ -1,9 +1,9 @@
 package mapTiles;
 
+import info.MapTileType;
 import info.ResourceType;
-import staticPackage.MapTileType;
 
-public class MapTilePlain extends MapTile {
+public class MapTilePlain extends MapTileWithResources {
 	private static final MapTileType TYPE = MapTileType.Plain;
 	private static final boolean TRAVERSABLE = true;
 	public MapTilePlain(int xPos, int yPos, ResourceType[] resourceType, int[] resourceEfficiency) {
