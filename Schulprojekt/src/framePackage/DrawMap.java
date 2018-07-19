@@ -3,13 +3,15 @@ package framePackage;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 
 import javax.swing.JPanel;
 
 import info.ObjectMap;
 
-public class DrawMap extends JPanel implements MouseListener, ActionListener {
+public class DrawMap extends JPanel implements MouseListener, MouseMotionListener, ActionListener {
 	private static final long serialVersionUID = 88330795020315231L;
 	private DrawMapTile[][] drawMapTile;
 	private ObjectMap objectMap;
@@ -22,6 +24,7 @@ public class DrawMap extends JPanel implements MouseListener, ActionListener {
 		this.objectMap = objectMap;
 		this.setBackground(new java.awt.Color(0, 0, 0, 0));
         addMouseListener(this);
+        addMouseMotionListener(this);
         for(int yOfTile = 0; yOfTile < objectMap.getHeight(); yOfTile++) {
 			for( int xOfTile = 0; xOfTile < objectMap.getWidth(); xOfTile++) {
 				drawMapTile[xOfTile][yOfTile] = new DrawMapTile(objectMap,xOfTile,yOfTile,mainJFrame, this);
@@ -80,7 +83,11 @@ public class DrawMap extends JPanel implements MouseListener, ActionListener {
 		}
 	}
 	protected void fireUpdate(ActionEvent evt, int xOfTile, int yOfTile) {   // this is the method to send it to the DrawMapTile that was clicked
-        drawMapTile[xOfTile][yOfTile].fireUpdate(evt);
+		try {			
+			drawMapTile[xOfTile][yOfTile].fireUpdate(evt);
+		} catch(IndexOutOfBoundsException e) {
+			
+		}
         // note that it goes to DrawMapTile!
     }
     public void addActionListener(ActionListener al, int xOfTile, int yOfTile) {
@@ -92,5 +99,23 @@ public class DrawMap extends JPanel implements MouseListener, ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		
+	}
+	public DrawMapTile getDrawMapTile(int xPos, int yPos) {
+		return drawMapTile[xPos][yPos];
+	}
+	@Override
+	public void mouseDragged(MouseEvent evt) {
+		
+	}
+	@Override
+	public void mouseMoved(MouseEvent evt) {
+		try {
+			System.out.println("don");
+			if((evt.getX()/((double)this.getWidth()/objectMap.getWidth())) == (int)((evt.getX()/((double)this.getWidth()/objectMap.getWidth())))) {
+				this.getDrawMapTile((int)(evt.getX()/((double)this.getWidth()/objectMap.getWidth())), (int)(evt.getY()/((double)this.getHeight()/objectMap.getHeight()))).fireUpdate(new ActionEvent(evt, 1337, "toggleHover"));				
+			}
+		} catch(IndexOutOfBoundsException e) {
+			//
+		}
 	}
 }

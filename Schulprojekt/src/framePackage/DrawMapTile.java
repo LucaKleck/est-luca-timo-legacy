@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
 import javax.swing.JPanel;
@@ -18,7 +20,7 @@ import info.SingleResourceType;
 import mapTiles.MapTile;
 import mapTiles.MapTileWithResources;
 
-public class DrawMapTile extends JPanel {
+public class DrawMapTile extends JPanel implements MouseListener {
 	private static final long serialVersionUID = -8785925966340775096L;
 	private MapTile[][] map;
 	private ObjectMap objectMap;
@@ -39,6 +41,7 @@ public class DrawMapTile extends JPanel {
 		this.mapTile = map[xOfTile][yOfTile];
 		this.color = mapTile.getMapTileType().getColor();
 		listener = new ArrayList<ActionListener>();
+		this.addMouseListener(this);
         drawMapTileActionListener = new ActionListener() {
         	@Override // Event from DrawMap, contains command from the special happenings
         	public void actionPerformed(ActionEvent evt) {
@@ -69,13 +72,12 @@ public class DrawMapTile extends JPanel {
 					}
 					try {
 						if(mapTile.getBuilding().getName()=="Town Hall"&&getSelected()==true) {
-							mainJFrame.enableSelectedTownHall();
-						} else {
-							mainJFrame.enableBuyMenuBuildings();
+							mainJFrame.enableSelectedMenuTownHall();
 						}
 						if(mapTile.getBuilding().getName()=="Lumbercamp"&&getSelected()==true) {
 							mainJFrame.enableSelectedMenuLumbercamp();
-						} else {
+						}
+						if(getSelected()==false && mainJFrame.hasTownHall()) {
 							mainJFrame.enableBuyMenuBuildings();
 						}
 					} catch(NullPointerException e) {
@@ -232,4 +234,25 @@ public class DrawMapTile extends JPanel {
 			
 		}
 	}
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		
+	}
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		System.out.println("into");
+	}
+	@Override
+	public void mouseExited(MouseEvent e) {
+		System.out.println("outof");
+	}
+	@Override
+	public void mousePressed(MouseEvent e) {
+		System.out.println("not the one I want but nice too");
+	}
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		
+	}
+	
 }

@@ -7,13 +7,15 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextPane;
 import javax.swing.border.LineBorder;
 
-import framePackageSelectedMenu.*;
+import framePackageSelectedMenu.SelectedMenuLumbercamp;
+import framePackageSelectedMenu.SelectedMenuTownHall;
 import info.ObjectMap;
 import info.ResourcesController;
 import mapTiles.MapTile;
@@ -31,6 +33,7 @@ public class MainJFrame extends JFrame implements MouseListener, ActionListener 
 	private JTabbedPane tabbedPane;
 	private ObjectMap objectMap;
 	private CreateTownHallPanel townsHallPanel;
+	private JButton btnNextTurn;
 	
 	public MainJFrame(ObjectMap objectMap, ResourcesController resources) {
 		super();
@@ -39,7 +42,7 @@ public class MainJFrame extends JFrame implements MouseListener, ActionListener 
 		this.setTitle("The Game");
 		this.setSize(600,600);
 		this.resources = resources;
-		getContentPane().setLayout(new MigLayout("insets 0 0 0 0, gap 0px 0px", "[70%:70%:70%,grow][30%:30%:30%,grow]", "[75%:75%:75%][25%:25%:25%,grow]"));
+		getContentPane().setLayout(new MigLayout("insets 0 0 0 0, gap 0px 0px", "[70%:70%:70%,grow][30%:30%:30%,grow]", "[75%:75%:75%][5%:5%:5%][20%:20%:20%,grow]"));
 		getContentPane().setBackground(new Color(192, 192, 192));
 		
 		infoTextPane = new JTextPane();
@@ -61,18 +64,25 @@ public class MainJFrame extends JFrame implements MouseListener, ActionListener 
 		
 		buyMenuBuildings = new BuyMenuBuildings(this);
 		buyMenuBuildings.setName("");
-		buyMenuBuildings.setToolTipText("");
+		buyMenuBuildings.setToolTipText("Here you can buy Buildings");
 		buyMenuBuildings.setAlignmentX(Component.RIGHT_ALIGNMENT);
 		buyMenuBuildings.setBorder(new LineBorder(new Color(0, 0, 0), 3));
 		
+		btnNextTurn = new JButton("Next Turn");
+		btnNextTurn.setActionCommand("NextTurn");
+		btnNextTurn.setToolTipText("Ends current turn and progresses the game");
+		btnNextTurn.addActionListener(this);
+		
+		getContentPane().add(btnNextTurn, "cell 1 1,grow");
+		
 		scrollPane = new JScrollPane();
-		getContentPane().add(scrollPane, "cell 0 1,grow");
+		getContentPane().add(scrollPane, "cell 0 1 1 2,grow");
 		
 		logTextPane = new LogTextPane();
 		logTextPane.setBackground(Color.LIGHT_GRAY);
 		logTextPane.setEditable(false);
 		scrollPane.setViewportView(logTextPane);
-		getContentPane().add(infoTextPane, "cell 1 1,grow");
+		getContentPane().add(infoTextPane, "cell 1 2,grow");
 		
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setVisible(true);
@@ -122,7 +132,7 @@ public class MainJFrame extends JFrame implements MouseListener, ActionListener 
 		tabbedPane.addTab("Buildings", null, buyMenuBuildings, null);
 		tabbedPane.setEnabledAt(0, true);
 	}
-	public void enableSelectedTownHall() {
+	public void enableSelectedMenuTownHall() {
 		tabbedPane.removeTabAt(0);
 		tabbedPane.addTab("Town Hall", null, new SelectedMenuTownHall(), null);
 		tabbedPane.setEnabledAt(0, true);
@@ -199,8 +209,19 @@ public class MainJFrame extends JFrame implements MouseListener, ActionListener 
 				if(townsHallPanel.getSelected()) this.getInfoTextPane().setText("Selected Towns Hall");
 				else this.getInfoTextPane().setText("Deselected Towns Hall");
 			}
+			if(evt.getActionCommand().toString() == "NextTurn" && hasTownHall()) {
+				nextTurn();
+			}
 		} catch(Exception e) {
 			System.out.println("MJF: Action Performed: "+e);
 		}
+	}
+	public void nextTurn() {
+		// Here goes all the stuff that will happen
+		// Need arrays of all things, that means we need unit array!
+		// TODO create turn controll item, to count rounds and so on
+		// TODO make Lumbercamps have a resource they create, BuildingsWithResources, abstract
+		// TODO calc new resources IDEA maybe upkeep or something?
+		System.out.println("TEST");
 	}
 }
