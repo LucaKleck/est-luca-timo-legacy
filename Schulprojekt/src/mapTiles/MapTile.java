@@ -30,7 +30,10 @@ public abstract class MapTile {
 		this.traversable = traversable;
 	}
 	//Methods
-	
+	public String toString() {
+		String str = "MapTile" + getMapTileType().getName() + "\nxPos: " + getXPos() + " yPos: " + getYPos() + "\nbuilding: " + getBuilding();
+		return str;
+	}
 	// getter
 	public MapTileType getMapTileType() {
 		return type;

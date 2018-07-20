@@ -40,16 +40,12 @@ public class GameCommandHandler implements ActionListener {
 	}
 
 	// Methods
+	public String sendCommand(String command, DrawMapTile source) {
+		String result = drawMapTileCommands(command, source);
+		return result;
+	}
 	public String sendCommand(String command, Object source) {
-		String result = "";
-		System.out.println(source);
-		System.out.println(source.getClass() + " vs "+ DrawMapTile.class);
-		System.out.println(source.getClass().equals(DrawMapTile.class));
-		System.out.println(source.equals(DrawMapTile.class));
-		
-		if(source.getClass().equals(DrawMapTile.class)) {
-			result = drawMapTileCommands(command,(DrawMapTile) source);
-		}
+		String result = "ERROR";
 		return result;
 	}
 	public String drawMapTileCommands(String command, DrawMapTile source) {
