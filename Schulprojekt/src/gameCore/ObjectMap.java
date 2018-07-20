@@ -1,7 +1,6 @@
-package info;
+package gameCore;
 import mapTiles.MapTile;
 import mapTiles.MapTileForest;
-import staticPackage.CreateMap;
 import units.Unit;
 
 /**
@@ -47,6 +46,21 @@ public class ObjectMap {
 			System.out.println("");
 		}
 	}*/
+	public boolean hasTownHall() {
+		boolean hasTownHall = false;
+		for(int y = 0; y < map[0].length; y++) {
+			for(int x = 0; x < map.length; x++) {
+				try {
+					if(map[x][y].getBuilding().getName() == "Town Hall") {
+						return hasTownHall = true;
+					}
+				} catch(NullPointerException e) {
+					// just normal null pointer Exceptions due to most tiles not having buildings
+				}
+			}
+		}
+		return hasTownHall;
+	}
 	// getter
 	public MapTile[][] getMap() {
 		return map;

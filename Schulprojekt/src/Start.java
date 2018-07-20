@@ -1,3 +1,4 @@
+
 /**
  * @Classname Boot
  * 
@@ -9,8 +10,8 @@
 import javax.swing.JFrame;
 
 import framePackage.MainJFrame;
-import info.ObjectMap;
-import info.ResourcesController;
+import gameCore.ObjectMap;
+import gameCore.ResourcesController;
 
 public class Start {
 	@SuppressWarnings("unused")

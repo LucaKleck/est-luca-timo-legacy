@@ -16,8 +16,9 @@ import javax.swing.border.LineBorder;
 
 import framePackageSelectedMenu.SelectedMenuLumbercamp;
 import framePackageSelectedMenu.SelectedMenuTownHall;
-import info.ObjectMap;
-import info.ResourcesController;
+import gameCore.GameCommandHandler;
+import gameCore.ObjectMap;
+import gameCore.ResourcesController;
 import mapTiles.MapTile;
 import net.miginfocom.swing.MigLayout;
 
@@ -34,6 +35,7 @@ public class MainJFrame extends JFrame implements MouseListener, ActionListener 
 	private ObjectMap objectMap;
 	private CreateTownHallPanel townsHallPanel;
 	private JButton btnNextTurn;
+	private GameCommandHandler commandHandler;
 	
 	public MainJFrame(ObjectMap objectMap, ResourcesController resources) {
 		super();
@@ -84,9 +86,14 @@ public class MainJFrame extends JFrame implements MouseListener, ActionListener 
 		scrollPane.setViewportView(logTextPane);
 		getContentPane().add(infoTextPane, "cell 1 2,grow");
 		
+		commandHandler = new GameCommandHandler(this,objectMap);
+		
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setVisible(true);
 		this.addMouseListener(this);
+	}
+	public GameCommandHandler getCommandHandler() {
+		return commandHandler;
 	}
 	public MainJFrame getMainJFrame() {
 		return this;
@@ -124,7 +131,7 @@ public class MainJFrame extends JFrame implements MouseListener, ActionListener 
 	public ResourcesController getResources() {
 		return resources;
 	}
-	public CreateTownHallPanel getTownsHallPanel() {
+	public CreateTownHallPanel getTownHallPanel() {
 		return townsHallPanel;
 	}
 	public void enableBuyMenuBuildings() {
@@ -160,22 +167,6 @@ public class MainJFrame extends JFrame implements MouseListener, ActionListener 
 			}
 		}
 	}
-	public boolean hasTownHall() {
-		MapTile[][] map = objectMap.getMap();
-		boolean hasTownHall = false;
-		for(int y = 0; y < map[0].length; y++) {
-			for(int x = 0; x < map.length; x++) {
-				try {
-					if(map[x][y].getBuilding().getName() == "Town Hall") {
-						return hasTownHall = true;
-					}
-				} catch(NullPointerException e) {
-					// just normal null pointer Exceptions due to most tiles not having buildings
-				}
-			}
-		}
-		return hasTownHall;
-	}
 	@Override
 	public void mouseClicked(MouseEvent evt) {
 		
@@ -209,7 +200,7 @@ public class MainJFrame extends JFrame implements MouseListener, ActionListener 
 				if(townsHallPanel.getSelected()) this.getInfoTextPane().setText("Selected Towns Hall");
 				else this.getInfoTextPane().setText("Deselected Towns Hall");
 			}
-			if(evt.getActionCommand().toString() == "NextTurn" && hasTownHall()) {
+			if(evt.getActionCommand().toString() == "NextTurn" && objectMap.hasTownHall()) {
 				nextTurn();
 			}
 		} catch(Exception e) {
@@ -217,9 +208,10 @@ public class MainJFrame extends JFrame implements MouseListener, ActionListener 
 		}
 	}
 	public void nextTurn() {
+		// DOIT put this into the CommandHandler
 		// Here goes all the stuff that will happen
 		// Need arrays of all things, that means we need unit array!
-		// TODO create turn controll item, to count rounds and so on
+		// TODO create turn control item, to count rounds and so on
 		// TODO make Lumbercamps have a resource they create, BuildingsWithResources, abstract
 		// TODO calc new resources IDEA maybe upkeep or something?
 		System.out.println("TEST");

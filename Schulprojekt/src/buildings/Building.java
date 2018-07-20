@@ -2,17 +2,18 @@ package buildings;
 
 import java.awt.Color;
 
+import info.ResourceType;
 import mapTiles.MapTile;
 
 public abstract class Building {
 	private static int amountOfBuildings = 0;
 	private int buildingID;
 	private String buildingName;
-	private int[] buildableOn;
+	private ResourceType[] buildableOn;
 	private Color color;
 	private MapTile mapTile;
 	
-	public Building(String buildingName, int[] buildableOn, MapTile mapTile) {
+	public Building(String buildingName, ResourceType[] buildableOn, MapTile mapTile) {
 		this.buildableOn = buildableOn;
 		this.buildingName = buildingName;
 		this.mapTile = mapTile;
@@ -35,7 +36,7 @@ public abstract class Building {
 	public int getAmountOfBuildings() {
 		return amountOfBuildings;
 	}
-	public int[] getBuildableOn() {
+	public ResourceType[] getBuildableOn() {
 		return buildableOn;
 	}
 	public int getID() { 

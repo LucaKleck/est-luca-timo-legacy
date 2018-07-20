@@ -1,42 +1,29 @@
 package info;
 
+import gameCore.ResourcesController;
 import mapTiles.MapTileWithResources;
 
 public class Item {
 
 	private String itemName;
-	private SingleResourceType moneyCost;
-	private SingleResourceType foodCost;
-	private SingleResourceType woodCost;
-	private SingleResourceType stoneCost;
-	private SingleResourceType metalCost;
-	private SingleResourceType manaStoneCost;
+	
+	private SingleResourceTypeWithAmount moneyCost;
+	private SingleResourceTypeWithAmount foodCost;
+	private SingleResourceTypeWithAmount woodCost;
+	private SingleResourceTypeWithAmount stoneCost;
+	private SingleResourceTypeWithAmount metalCost;
+	private SingleResourceTypeWithAmount manaStoneCost;
 	private ResourceType requiredType;
 	
 	public Item(String itemName) {
 		switch(itemName) {
-			case "ItemOne": this.itemName = "Lumbercamp";
-							moneyCost = new SingleResourceType(ResourceType.Money,50);
-							foodCost = new SingleResourceType(ResourceType.Food, 20);
-							woodCost = new SingleResourceType(ResourceType.Wood, 10);
-							stoneCost = new SingleResourceType(ResourceType.Stone, 40);
-							metalCost = new SingleResourceType(ResourceType.Metal, 45);
-							manaStoneCost = new SingleResourceType(ResourceType.ManaStones, 10);
-							requiredType = ResourceType.Wood;
-							break;
-			case "TownHall":this.itemName = "Town Hall";
-							moneyCost = new SingleResourceType(ResourceType.Money,0);
-							foodCost = new SingleResourceType(ResourceType.Food, 0);
-							woodCost = new SingleResourceType(ResourceType.Wood, 0);
-							stoneCost = new SingleResourceType(ResourceType.Stone, 0);
-							metalCost = new SingleResourceType(ResourceType.Metal, 0);
-							manaStoneCost = new SingleResourceType(ResourceType.ManaStones, 0);
-							requiredType = null;
-			default: 		break;
+			case "TownHall"	: setToTownHall();
+			break;
+			case "ItemOne"	: setToLumbercamp();
+			break;
+			case "ItemTwo"	: setToFishingHutt();
+			break;
 		}
-		/*
-		 * DOIT REPLACE WITH ITEM ARRAY, THANKS!
-		 */
 	}
 	public String toString() {
 		String string;
@@ -47,8 +34,8 @@ public class Item {
 		}
 		return string;
 	}
-	public SingleResourceType[] getCosts() {
-		SingleResourceType[] cost = new SingleResourceType[6];
+	public SingleResourceTypeWithAmount[] getCost() {
+		SingleResourceTypeWithAmount[] cost = new SingleResourceTypeWithAmount[6];
 		cost[0] = moneyCost;
 		cost[1] = foodCost;
 		cost[2] = woodCost;
@@ -65,12 +52,12 @@ public class Item {
 				hasRequiredType = true;
 			}
 		}
-		if(hasRequiredType&&hasSingleResource(resources.getResources()[0], getCosts()[0])&&hasSingleResource(resources.getResources()[1], getCosts()[1])&&hasSingleResource(resources.getResources()[2], getCosts()[2])&&hasSingleResource(resources.getResources()[3], getCosts()[3])&&hasSingleResource(resources.getResources()[4], getCosts()[4])&&hasSingleResource(resources.getResources()[5], getCosts()[5])   ) {
+		if(hasRequiredType&&hasSingleResource(resources.getResources()[0], getCost()[0])&&hasSingleResource(resources.getResources()[1], getCost()[1])&&hasSingleResource(resources.getResources()[2], getCost()[2])&&hasSingleResource(resources.getResources()[3], getCost()[3])&&hasSingleResource(resources.getResources()[4], getCost()[4])&&hasSingleResource(resources.getResources()[5], getCost()[5])   ) {
 				hasResources = true;
 		}
 		return hasResources;
 	}
-	private boolean hasSingleResource(SingleResourceType resource, SingleResourceType cost) {
+	private boolean hasSingleResource(SingleResourceTypeWithAmount resource, SingleResourceTypeWithAmount cost) {
 		boolean hasSingleResource = false;
 		try {
 			if(resource.getResourceAmount() >= cost.getResourceAmount()) hasSingleResource = true;
@@ -79,25 +66,57 @@ public class Item {
 		}
 		return hasSingleResource;
 	}
+	//
+	private void setToTownHall() {
+		this.itemName = "Town Hall";
+		moneyCost = new SingleResourceTypeWithAmount(ResourceType.Money,0);
+		foodCost = new SingleResourceTypeWithAmount(ResourceType.Food, 0);
+		woodCost = new SingleResourceTypeWithAmount(ResourceType.Wood, 0);
+		stoneCost = new SingleResourceTypeWithAmount(ResourceType.Stone, 0);
+		metalCost = new SingleResourceTypeWithAmount(ResourceType.Metal, 0);
+		manaStoneCost = new SingleResourceTypeWithAmount(ResourceType.ManaStones, 0);
+		requiredType = null;	
+	}
+	private void setToLumbercamp() {
+		this.itemName = "Lumbercamp";
+		moneyCost = new SingleResourceTypeWithAmount(ResourceType.Money,50);
+		foodCost = new SingleResourceTypeWithAmount(ResourceType.Food, 20);
+		woodCost = new SingleResourceTypeWithAmount(ResourceType.Wood, 10);
+		stoneCost = new SingleResourceTypeWithAmount(ResourceType.Stone, 40);
+		metalCost = new SingleResourceTypeWithAmount(ResourceType.Metal, 45);
+		manaStoneCost = new SingleResourceTypeWithAmount(ResourceType.ManaStones, 10);
+		requiredType = ResourceType.Wood;
+	}
+	private void setToFishingHutt() {
+		this.itemName = "Fishing Hutt";
+		moneyCost = new SingleResourceTypeWithAmount(ResourceType.Money,50);
+		foodCost = new SingleResourceTypeWithAmount(ResourceType.Food, 20);
+		woodCost = new SingleResourceTypeWithAmount(ResourceType.Wood, 10);
+		stoneCost = new SingleResourceTypeWithAmount(ResourceType.Stone, 40);
+		metalCost = new SingleResourceTypeWithAmount(ResourceType.Metal, 45);
+		manaStoneCost = new SingleResourceTypeWithAmount(ResourceType.ManaStones, 10);
+		requiredType = ResourceType.Wood;
+	}
+	// Getter
 	public String getItemName() {
 		return itemName;
 	}
-	public SingleResourceType getMoneyCost() {
+	public SingleResourceTypeWithAmount getMoneyCost() {
 		return moneyCost;
 	}
-	public SingleResourceType getFoodCost() {
+	public SingleResourceTypeWithAmount getFoodCost() {
 		return foodCost;
 	}
-	public SingleResourceType getWoodCost() {
+	public SingleResourceTypeWithAmount getWoodCost() {
 		return woodCost;
 	}
-	public SingleResourceType getStoneCost() {
+	public SingleResourceTypeWithAmount getStoneCost() {
 		return stoneCost;
 	}
-	public SingleResourceType getMetalCost() {
+	public SingleResourceTypeWithAmount getMetalCost() {
 		return metalCost;
 	}
-	public SingleResourceType getManaStoneCost() {
+	public SingleResourceTypeWithAmount getManaStoneCost() {
 		return manaStoneCost;
 	}
 }

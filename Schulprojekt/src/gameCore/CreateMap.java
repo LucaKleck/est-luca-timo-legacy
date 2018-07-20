@@ -1,4 +1,4 @@
-package staticPackage;
+package gameCore;
 /**
  * @Classname createMap
  * 

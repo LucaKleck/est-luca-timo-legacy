@@ -4,8 +4,6 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
 import javax.swing.JPanel;
@@ -13,14 +11,14 @@ import javax.swing.JPanel;
 import buildings.Building;
 import buildings.Lumbercamp;
 import buildings.TownHall;
+import gameCore.ObjectMap;
+import gameCore.ResourcesController;
 import info.Item;
-import info.ObjectMap;
-import info.ResourcesController;
-import info.SingleResourceType;
+import info.SingleResourceTypeWithAmount;
 import mapTiles.MapTile;
 import mapTiles.MapTileWithResources;
 
-public class DrawMapTile extends JPanel implements MouseListener {
+public class DrawMapTile extends JPanel {
 	private static final long serialVersionUID = -8785925966340775096L;
 	private MapTile[][] map;
 	private ObjectMap objectMap;
@@ -41,10 +39,12 @@ public class DrawMapTile extends JPanel implements MouseListener {
 		this.mapTile = map[xOfTile][yOfTile];
 		this.color = mapTile.getMapTileType().getColor();
 		listener = new ArrayList<ActionListener>();
-		this.addMouseListener(this);
         drawMapTileActionListener = new ActionListener() {
         	@Override // Event from DrawMap, contains command from the special happenings
         	public void actionPerformed(ActionEvent evt) {
+        		String result = mainJFrame.getCommandHandler().sendCommand(evt.getActionCommand(),this);
+        		System.out.println(result);
+        		/*
         		if(!evt.getActionCommand().isEmpty() && evt.getActionCommand()!="select") {
         			boolean isBuilding = false;
             		Item item = new Item(stripBuyString(evt.getActionCommand())); // This strips the string off of building information and buy
@@ -53,7 +53,7 @@ public class DrawMapTile extends JPanel implements MouseListener {
         			}
         			// buys item(containing price) on MapTile mapTile, costs the global Resources
         			buyItem(item, isBuilding, mapTile, mainJFrame.getResources());
-        			if(evt.getActionCommand()=="buyTownHall,Building") mainJFrame.getTownsHallPanel().toggleSelected();mainJFrame.testForTownHall();
+        			if(evt.getActionCommand()=="buyTownHall,Building") mainJFrame.getTownHallPanel().toggleSelected();mainJFrame.testForTownHall();
         			mainJFrame.getBuyMenu().deselect();
         			toggleSelected();
         			drawMap.repaintMapTile(xOfTile, yOfTile);
@@ -67,7 +67,7 @@ public class DrawMapTile extends JPanel implements MouseListener {
 					} catch (Exception e) {
 						System.out.println("selected "+e);
 					}
-					if(mapTile.getBuilding() == null && mainJFrame.hasTownHall()) {
+					if(mapTile.getBuilding() == null && objectMap.hasTownHall()) {
 						mainJFrame.enableBuyMenuBuildings();
 					}
 					try {
@@ -77,7 +77,7 @@ public class DrawMapTile extends JPanel implements MouseListener {
 						if(mapTile.getBuilding().getName()=="Lumbercamp"&&getSelected()==true) {
 							mainJFrame.enableSelectedMenuLumbercamp();
 						}
-						if(getSelected()==false && mainJFrame.hasTownHall()) {
+						if(getSelected()==false && objectMap.hasTownHall()) {
 							mainJFrame.enableBuyMenuBuildings();
 						}
 					} catch(NullPointerException e) {
@@ -92,10 +92,14 @@ public class DrawMapTile extends JPanel implements MouseListener {
         				System.out.println("selected "+e);
         			}
         		}
-			}
+			*/};
 		};
 		this.addActionListener(getDrawMapTileActionListener());
 	}
+	private ActionListener getDrawMapTileActionListener() {
+		return drawMapTileActionListener;
+	}
+	@SuppressWarnings("unused")
 	private String stripBuyString(String fullString) {
 		String result = "";
 		for(int search = 3; search < fullString.length(); search++) {
@@ -108,46 +112,51 @@ public class DrawMapTile extends JPanel implements MouseListener {
 	}
 	public void buyItem(Item item, boolean isBuilding, MapTile mapTile, ResourcesController resources) {
 		if(isBuilding) {
-			Building building;
-			boolean hasResources = false;
 			switch(item.getItemName()) {
-				case "Town Hall":
-						if(mapTile.getBuilding() == null && mapTile.getMapTileType().getType() != 20) {
-							building = new TownHall(mainJFrame, mapTile);
-							subtracktResources(item, resources);
-							mapTile.setBuilding(building);
-							mainJFrame.getLogTextPane().writeToLog("bought: " + item);
-							mainJFrame.getInfoTextPane().setText(mapTile.getBuilding()+"\n"+resources);
-						} else {
-							mainJFrame.getLogTextPane().writeToLog("Missing Resources/Building blocked");		
-							mainJFrame.getInfoTextPane().setText("Missing Resources/Building blocked"); return;
-						}
-						break;
-				case "Lumbercamp":
-					if(mapTile.getBuilding() == null) {
-						hasResources = item.hasResources(resources, (MapTileWithResources) mapTile);
-						if(hasResources) {
-							building = new Lumbercamp(mapTile);
-							subtracktResources(item, resources);
-							mapTile.setBuilding(building);
-							mainJFrame.getLogTextPane().writeToLog("bought: " + item);
-							mainJFrame.getInfoTextPane().setText(mapTile.getBuilding()+"\n"+resources);
-						} else {
-							mainJFrame.getLogTextPane().writeToLog("Missing Resources/Invalid Field");		
-							mainJFrame.getInfoTextPane().setText("Missing Resources/Invalid Field"); return;
-						}
-					} else {
-						mainJFrame.getLogTextPane().writeToLog("Missing Resources/Building blocked");		
-						mainJFrame.getInfoTextPane().setText("Missing Resources/Building blocked"); return;
-					}
-					break;
-				default: mainJFrame.getLogTextPane().writeToLog("Missing Resources/Building blocked + DEFAULTCASE!!! (not good)");		
+				case "Town Hall":	buyTownHall(mainJFrame, mapTile, resources, item);
+									break;
+				case "Lumbercamp":	buyLumbercamp(mainJFrame, mapTile, resources, item);
+									break;
+				default: mainJFrame.getLogTextPane().writeToLog("Missing Resources/Building blocked + DEFAULTCASE!!! (not good, something bad happened)");		
 						 mainJFrame.getInfoTextPane().setText("Missing Resources/Building blocked"); return;
 			}
 		}
 	}
+	private void buyLumbercamp(MainJFrame mainJFrame, MapTile mapTile, ResourcesController resources, Item item) {
+		if(mapTile.getBuilding() == null) {
+			boolean hasResources = item.hasResources(resources, (MapTileWithResources) mapTile);
+			if(hasResources) {
+				Building building = new Lumbercamp(mapTile);
+				subtracktResources(item, resources);
+				mapTile.setBuilding(building);
+				writeToLogAndSetTextBought(mainJFrame, item, building, resources);
+			} else {
+				writeToLogAndSetText("Missing Resources/Invalid Field"); return;
+			}
+		} else {
+			writeToLogAndSetText("Missing Resources/Building blocked");	return;
+		}
+	}
+	private void buyTownHall(MainJFrame mainJFrame, MapTile mapTile, ResourcesController resources, Item item) {
+		if(mapTile.getBuilding() == null && mapTile.getMapTileType().getType() != 20) {
+			Building building = new TownHall(mainJFrame, mapTile);
+			subtracktResources(item, resources);
+			mapTile.setBuilding(building);
+			writeToLogAndSetTextBought(mainJFrame, item, mapTile.getBuilding(), resources);
+		} else {
+			writeToLogAndSetText("Missing Resources Building blocked"); return;
+		}
+	}
+	private void writeToLogAndSetText(String textToSet) {
+		mainJFrame.getLogTextPane().writeToLog(textToSet);		
+		mainJFrame.getInfoTextPane().setText(textToSet);
+	}
+	private void writeToLogAndSetTextBought(MainJFrame mainJFrame, Item item, Building building, ResourcesController resources) {
+		mainJFrame.getLogTextPane().writeToLog("bought: " + item);
+		mainJFrame.getInfoTextPane().setText(building+"\n"+resources);
+	}
 	private void subtracktResources(Item item, ResourcesController resources) {
-		SingleResourceType[] cost = item.getCosts();
+		SingleResourceTypeWithAmount[] cost = item.getCost();
 		for(int subtrackt = 0; subtrackt < resources.getResources().length; subtrackt++) {
 			resources.getResources()[subtrackt].removeResourceAmount(cost[subtrackt].getResourceAmount());
 		}
@@ -177,11 +186,11 @@ public class DrawMapTile extends JPanel implements MouseListener {
 				}
 			}
 		}
-	}	
-	protected void toggleHover() {
+	}
+	public void toggleHover() {
 		hover = !hover;
 	}
-	protected void toggleSelected() {
+	public void toggleSelected() {
 		selected = !selected;
 	}
 	public void turnOffSelected() {
@@ -192,9 +201,6 @@ public class DrawMapTile extends JPanel implements MouseListener {
 	}
 	public boolean getSelected() {
 		return selected;
-	}
-	public ActionListener getDrawMapTileActionListener() {
-		return drawMapTileActionListener;
 	}
 	protected void fireUpdate(ActionEvent evt) {   
         for (ActionListener al : listener) {
@@ -234,25 +240,4 @@ public class DrawMapTile extends JPanel implements MouseListener {
 			
 		}
 	}
-	@Override
-	public void mouseClicked(MouseEvent e) {
-		
-	}
-	@Override
-	public void mouseEntered(MouseEvent e) {
-		System.out.println("into");
-	}
-	@Override
-	public void mouseExited(MouseEvent e) {
-		System.out.println("outof");
-	}
-	@Override
-	public void mousePressed(MouseEvent e) {
-		System.out.println("not the one I want but nice too");
-	}
-	@Override
-	public void mouseReleased(MouseEvent e) {
-		
-	}
-	
 }

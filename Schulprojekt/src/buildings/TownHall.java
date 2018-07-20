@@ -5,12 +5,13 @@ import java.util.Random;
 
 import framePackage.MainJFrame;
 import info.MapTileType;
+import info.ResourceType;
 import mapTiles.MapTile;
 import mapTiles.MapTileRoad;
 
 public class TownHall extends Building {
 	private static String buildingName = "Town Hall";
-	private static int[] buildableOn = {0,1,2,3,4,5};
+	private static ResourceType[] buildableOn = {ResourceType.Money,ResourceType.Food,ResourceType.Wood,ResourceType.Stone,ResourceType.Metal,ResourceType.ManaStones};
 
 	public TownHall(MainJFrame mainJFrame,MapTile townHall) { 
 		super(buildingName, buildableOn, townHall);
