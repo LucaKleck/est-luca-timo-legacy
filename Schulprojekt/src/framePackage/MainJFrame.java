@@ -21,30 +21,32 @@ import gameCore.ObjectMap;
 import gameCore.ResourcesController;
 import mapTiles.MapTile;
 import net.miginfocom.swing.MigLayout;
+import javax.swing.JPanel;
 
 public class MainJFrame extends JFrame implements MouseListener, ActionListener {
 	private static final long serialVersionUID = 1L;
 	private DrawMapTile[][] drawMapTileArray;
 	private ResourcesController resources;
 	private DrawMap drawMap;
-	private BuyMenuBuildings buyMenuBuildings;
+	private BuyMenuTownBuildings buyMenuTownBuildings;
 	private JTextPane infoTextPane;
 	private JScrollPane scrollPane;
 	private LogTextPane logTextPane;
-	private JTabbedPane tabbedPane;
+	private JTabbedPane tabbedPlayerInteractionPane;
 	private ObjectMap objectMap;
 	private CreateTownHallPanel townsHallPanel;
 	private JButton btnNextTurn;
 	private GameCommandHandler commandHandler;
+	private JPanel resourceDisplayPanel;
+	private JTextPane resourceText;
 	
-	public MainJFrame(ObjectMap objectMap, ResourcesController resources) {
-		super();
-		this.objectMap = objectMap;
+	public MainJFrame() {
+		this.objectMap = new ObjectMap();
+		this.resources = new ResourcesController();
 		setMinimumSize(new Dimension(600, 600));
 		this.setTitle("The Game");
 		this.setSize(600,600);
-		this.resources = resources;
-		getContentPane().setLayout(new MigLayout("insets 0 0 0 0, gap 0px 0px", "[70%:70%:70%,grow][30%:30%:30%,grow]", "[75%:75%:75%][5%:5%:5%][20%:20%:20%,grow]"));
+		getContentPane().setLayout(new MigLayout("insets 0 0 0 0, gap 0px 0px", "[70%:70%:70%,grow][30%:30%:30%,grow]", "[5%:5%:5%,grow][75%:75%:75%][5%:5%:5%][20%:20%:20%,grow]"));
 		getContentPane().setBackground(new Color(192, 192, 192));
 		
 		infoTextPane = new JTextPane();
@@ -55,99 +57,74 @@ public class MainJFrame extends JFrame implements MouseListener, ActionListener 
 		drawMap.setBorder(new LineBorder(new Color(0, 0, 0)));
 		drawMap.addMouseListener(this);
 		
-		getContentPane().add(drawMap, "cell 0 0,grow");
+		resourceDisplayPanel = new JPanel();
+		getContentPane().add(resourceDisplayPanel, "cell 0 0 2 1,grow");
+		resourceDisplayPanel.setLayout(new MigLayout("insets 0 0 0 0, gap 0px 0px", "[20%,grow]", "[100%,grow]"));
 		
-		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-		getContentPane().add(tabbedPane, "flowy,cell 1 0,grow");
+		resourceText = new JTextPane();
+		resourceText.setEditable(false);
+		resourceDisplayPanel.add(resourceText, "cell 0 0,grow");
+		resourceText.setText(resources.toString());
+		
+		getContentPane().add(drawMap, "cell 0 1,grow");
+		
+		tabbedPlayerInteractionPane = new JTabbedPane(JTabbedPane.TOP);
+		getContentPane().add(tabbedPlayerInteractionPane, "flowy,cell 1 1,grow");
 		
 		townsHallPanel = new CreateTownHallPanel(this);
-		tabbedPane.addTab("Towns Hall", null, townsHallPanel, null);
-		tabbedPane.setEnabledAt(0, true);
+		tabbedPlayerInteractionPane.addTab("Towns Hall", null, townsHallPanel, null);
+		tabbedPlayerInteractionPane.setEnabledAt(0, true);
 		
-		buyMenuBuildings = new BuyMenuBuildings(this);
-		buyMenuBuildings.setName("");
-		buyMenuBuildings.setToolTipText("Here you can buy Buildings");
-		buyMenuBuildings.setAlignmentX(Component.RIGHT_ALIGNMENT);
-		buyMenuBuildings.setBorder(new LineBorder(new Color(0, 0, 0), 3));
+		buyMenuTownBuildings = new BuyMenuTownBuildings(this);
+		buyMenuTownBuildings.setName("");
+		buyMenuTownBuildings.setToolTipText("Here you can buy Buildings");
+		buyMenuTownBuildings.setAlignmentX(Component.RIGHT_ALIGNMENT);
+		buyMenuTownBuildings.setBorder(new LineBorder(new Color(0, 0, 0), 3));
 		
 		btnNextTurn = new JButton("Next Turn");
 		btnNextTurn.setActionCommand("NextTurn");
 		btnNextTurn.setToolTipText("Ends current turn and progresses the game");
 		btnNextTurn.addActionListener(this);
 		
-		getContentPane().add(btnNextTurn, "cell 1 1,grow");
+		getContentPane().add(btnNextTurn, "cell 1 2,grow");
 		
 		scrollPane = new JScrollPane();
-		getContentPane().add(scrollPane, "cell 0 1 1 2,grow");
+		getContentPane().add(scrollPane, "cell 0 2 1 2,grow");
 		
 		logTextPane = new LogTextPane();
 		logTextPane.setBackground(Color.LIGHT_GRAY);
 		logTextPane.setEditable(false);
 		scrollPane.setViewportView(logTextPane);
-		getContentPane().add(infoTextPane, "cell 1 2,grow");
+		getContentPane().add(infoTextPane, "cell 1 3,grow");
 		
-		commandHandler = new GameCommandHandler(this,objectMap);
+		commandHandler = new GameCommandHandler(this);
 		
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setVisible(true);
 		this.addMouseListener(this);
-	}
-	public GameCommandHandler getCommandHandler() {
-		return commandHandler;
-	}
-	public MainJFrame getMainJFrame() {
-		return this;
-	}
-	public JTextPane getInfoTextPane() {
-		return infoTextPane;
-	}
-	public LogTextPane getLogTextPane() {
-		return logTextPane;
-	}
-	public JTabbedPane getTabbedPane() {
-		return tabbedPane;
-	}
-	public DrawMapTile[][] getDrawMapTileArray() {
-		return drawMapTileArray;
-	}
-	public DrawMap getDrawMap() {
-		return drawMap;
 	}
 	public void redoDrawMapTile() {
 		drawMapTileArray = new DrawMapTile[objectMap.getHeight()][objectMap.getWidth()];
 		drawMap = new DrawMap(objectMap,this);
 		drawMap.setBorder(new LineBorder(new Color(0, 0, 0)));
 		drawMap.addMouseListener(this);
-		
-		getContentPane().add(drawMap, "cell 0 0,grow");
+		getContentPane().add(drawMap, "cell 0 1,grow");
 		repaint();
 	}
-	public ObjectMap getObjectMap() {
-		return objectMap;
-	}
-	public BuyMenuBuildings getBuyMenu() {
-		return buyMenuBuildings;
-	}
-	public ResourcesController getResources() {
-		return resources;
-	}
-	public CreateTownHallPanel getTownHallPanel() {
-		return townsHallPanel;
-	}
 	public void enableBuyMenuBuildings() {
-		tabbedPane.removeTabAt(0);
-		tabbedPane.addTab("Buildings", null, buyMenuBuildings, null);
-		tabbedPane.setEnabledAt(0, true);
+		tabbedPlayerInteractionPane.removeTabAt(0);
+		tabbedPlayerInteractionPane.addTab("Buildings", null, buyMenuTownBuildings, null);
+		tabbedPlayerInteractionPane.setEnabledAt(0, true);
 	}
 	public void enableSelectedMenuTownHall() {
-		tabbedPane.removeTabAt(0);
-		tabbedPane.addTab("Town Hall", null, new SelectedMenuTownHall(), null);
-		tabbedPane.setEnabledAt(0, true);
+		tabbedPlayerInteractionPane.removeTabAt(0);
+		tabbedPlayerInteractionPane.addTab("Town Hall", null, new SelectedMenuTownHall(), null);
+		tabbedPlayerInteractionPane.setEnabledAt(0, true);
 	}
 	public void enableSelectedMenuLumbercamp() {
-		tabbedPane.removeTabAt(0);
-		tabbedPane.addTab("Lumbercamp", null, new SelectedMenuLumbercamp(), null);
-		tabbedPane.setEnabledAt(0, true);
+		tabbedPlayerInteractionPane.removeTabAt(0);
+		tabbedPlayerInteractionPane.addTab("Lumbercamp", null, new SelectedMenuLumbercamp(), null);
+		tabbedPlayerInteractionPane.setEnabledAt(0, true);
 	}
 	public void testForTownHall() {
 		MapTile[][] map = objectMap.getMap();
@@ -155,10 +132,10 @@ public class MainJFrame extends JFrame implements MouseListener, ActionListener 
 			for(int x = 0; x < map.length; x++) {
 				try {
 					if(map[x][y].getBuilding().getName() == "Town Hall") {
-						tabbedPane.removeTabAt(0);
-						tabbedPane.addTab("Buildings", null, buyMenuBuildings, null);
-						tabbedPane.setEnabledAt(0, true);
-						buyMenuBuildings.setEnabled(true);
+						tabbedPlayerInteractionPane.removeTabAt(0);
+						tabbedPlayerInteractionPane.addTab("Buildings", null, buyMenuTownBuildings, null);
+						tabbedPlayerInteractionPane.setEnabledAt(0, true);
+						buyMenuTownBuildings.setEnabled(true);
 						return;
 					}
 				} catch(NullPointerException e) {
@@ -186,9 +163,11 @@ public class MainJFrame extends JFrame implements MouseListener, ActionListener 
 	@Override
 	public void mouseReleased(MouseEvent evt) {
 		if(evt.getButton() == 3) {
-			buyMenuBuildings.deselect();
-			drawMapTileArray[0][0].removeSelectedFromAllTiles(getMainJFrame());
-			enableBuyMenuBuildings();
+			if(objectMap.hasTownHall()) {
+				buyMenuTownBuildings.deselect();
+				drawMapTileArray[0][0].removeSelectedFromAllTiles(getMainJFrame());
+				enableBuyMenuBuildings();				
+			}
 		}
 	}
 	@Override
@@ -215,5 +194,41 @@ public class MainJFrame extends JFrame implements MouseListener, ActionListener 
 		// TODO make Lumbercamps have a resource they create, BuildingsWithResources, abstract
 		// TODO calc new resources IDEA maybe upkeep or something?
 		System.out.println("TEST");
+	}
+	public JTextPane getResourceText() {
+		return resourceText;
+	}
+	public GameCommandHandler getCommandHandler() {
+		return commandHandler;
+	}
+	public MainJFrame getMainJFrame() {
+		return this;
+	}
+	public JTextPane getInfoTextPane() {
+		return infoTextPane;
+	}
+	public LogTextPane getLogTextPane() {
+		return logTextPane;
+	}
+	public JTabbedPane getTabbedPane() {
+		return tabbedPlayerInteractionPane;
+	}
+	public DrawMapTile[][] getDrawMapTileArray() {
+		return drawMapTileArray;
+	}
+	public DrawMap getDrawMap() {
+		return drawMap;
+	}
+	public ObjectMap getObjectMap() {
+		return objectMap;
+	}
+	public BuyMenuTownBuildings getBuyMenu() {
+		return buyMenuTownBuildings;
+	}
+	public ResourcesController getResources() {
+		return resources;
+	}
+	public CreateTownHallPanel getTownHallPanel() {
+		return townsHallPanel;
 	}
 }

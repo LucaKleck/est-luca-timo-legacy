@@ -11,16 +11,17 @@ import javax.swing.border.LineBorder;
 
 import net.miginfocom.swing.MigLayout;
 
-public class BuyMenuBuildings extends JPanel implements ActionListener {
+public class BuyMenuTownBuildings extends JPanel implements ActionListener {
 	private static final long serialVersionUID = 8222232669945381478L;
 	private int buyMenuSelected = 0;
-	@SuppressWarnings("unused")
 	private MainJFrame mainJFrame;
 	private JButton buttonSelectItemOne;
 	private JButton buttonSelectItemTwo;
+	@SuppressWarnings("unused")
+	private BuyMenuTownBuildings self;
 	
-	public BuyMenuBuildings(MainJFrame mainJFrame) {
-		super();
+	public BuyMenuTownBuildings(MainJFrame mainJFrame) {
+		this.self = this;
 		setBackground(new Color(255, 228, 181));
 		setBorder(new LineBorder(new Color(0, 0, 0), 2));
 		setLayout(new MigLayout("", "[100%]", "[10%][10%]"));
@@ -57,18 +58,19 @@ public class BuyMenuBuildings extends JPanel implements ActionListener {
 						mainJFrame.getInfoTextPane().setText("Deselected "+buttonSelectItemOne.getLabel());
 					}
 				}
-			}//IDEA make array, make 
-			if(evt.getActionCommand().contains("Two")) {
-				if(buyMenuSelected != 2) {
-					mainJFrame.getInfoTextPane().setText("Selected "+buttonSelectItemTwo.getLabel());
-					DrawMapTile[][] drawMapTileArray = mainJFrame.getDrawMapTileArray();
-					try {
-						drawMapTileArray[0][0].removeSelectedFromAllTiles(mainJFrame);
-					} catch(IndexOutOfBoundsException e){}
-					buyMenuSelected = 2;
-				} else {
-					buyMenuSelected = 0;
-					mainJFrame.getInfoTextPane().setText("Deselected "+buttonSelectItemTwo.getLabel());
+				//IDEA make array where buyMenuSelected = slot of String array which contain "one" "two"
+				if(evt.getActionCommand().contains("Two")) {
+					if(buyMenuSelected != 2) {
+						mainJFrame.getInfoTextPane().setText("Selected "+buttonSelectItemTwo.getLabel());
+						DrawMapTile[][] drawMapTileArray = mainJFrame.getDrawMapTileArray();
+						try {
+							drawMapTileArray[0][0].removeSelectedFromAllTiles(mainJFrame);
+						} catch(IndexOutOfBoundsException e){}
+						buyMenuSelected = 2;
+					} else {
+						buyMenuSelected = 0;
+						mainJFrame.getInfoTextPane().setText("Deselected "+buttonSelectItemTwo.getLabel());
+					}
 				}
 			}
 		} catch(Exception e) {

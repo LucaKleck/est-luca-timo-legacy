@@ -13,6 +13,7 @@ import mapTiles.MapTile;
 
 public class DrawMapTile extends JPanel {
 	private static final long serialVersionUID = -8785925966340775096L;
+	private DrawMapTile self;
 	private MapTile[][] map;
 	private ObjectMap objectMap;
 	private ArrayList<ActionListener> listener = null;
@@ -22,13 +23,14 @@ public class DrawMapTile extends JPanel {
 	private boolean selected = false;
 	private boolean hover = false;
 	private ActionListener drawMapTileActionListener;
-	private DrawMapTile DrawMapTile;
+	
 	// Constructor
 	public DrawMapTile(ObjectMap objectMap,int xOfTile, int yOfTile, MainJFrame mainJFrame, DrawMap drawMap) {
-		this.objectMap = objectMap;
-		this.DrawMapTile = this;
-		this.map = objectMap.getMap();
+		this.self = this;
+		this.setBackground(new Color(0,0,0,0));
 		this.drawMap = drawMap;
+		this.objectMap = objectMap;
+		this.map = objectMap.getMap();
 		this.mapTile = map[xOfTile][yOfTile];
 		this.color = mapTile.getMapTileType().getColor();
 		listener = new ArrayList<ActionListener>();
@@ -36,7 +38,7 @@ public class DrawMapTile extends JPanel {
         	@Override // Event from DrawMap, contains command from the special happenings
         	public void actionPerformed(ActionEvent evt) {
         		@SuppressWarnings("unused")
-				String result = mainJFrame.getCommandHandler().sendCommand(evt.getActionCommand(),DrawMapTile);
+				String result = mainJFrame.getCommandHandler().sendCommand(evt.getActionCommand(),self);
         		};
 		};
 		this.addActionListener(getDrawMapTileActionListener());
@@ -103,22 +105,26 @@ public class DrawMapTile extends JPanel {
 		mapTile.setHeight((double)drawMap.getHeight()/objectMap.getHeight());
 		mapTile.setWidth((double)drawMap.getWidth()/objectMap.getWidth());
 		try {
+			this.setSize((int)drawMap.getWidth()/objectMap.getWidth(), (int)drawMap.getHeight()/objectMap.getHeight());
+			double xPos = mapTile.getWidth()*mapTile.getXPos();
+			double yPos = mapTile.getHeight()*mapTile.getYPos();
 			g.setColor(color);
-			g.fillRect((int)(mapTile.getWidth()*mapTile.getXPos()), (int)(mapTile.getHeight()*mapTile.getYPos()), (int)mapTile.getWidth()+1, (int)mapTile.getHeight()+1);
+			g.fillRect((int)xPos, (int)yPos, (int)mapTile.getWidth()+1, (int)mapTile.getHeight()+1);
 			g.setColor(new Color(0,0,0,40));
-			g.drawRect((int)(mapTile.getWidth()*mapTile.getXPos()), (int)(mapTile.getHeight()*mapTile.getYPos()), (int)mapTile.getWidth()+1, (int)mapTile.getHeight()+1);
+			g.drawRect((int)xPos, (int)yPos, (int)mapTile.getWidth()+1, (int)mapTile.getHeight()+1);
 			if(selected) {
-				g.setColor(new Color(255,0,0,100));
+				g.setColor(new Color(255,0,0,100));//TODO cart to external method
 				g.fillRect((int)(mapTile.getWidth()*mapTile.getXPos()), (int)(mapTile.getHeight()*mapTile.getYPos()), (int)mapTile.getWidth()+1, (int)mapTile.getHeight()+1);
 			}
 			if(hover) {
 				g.setColor(new Color(120,100,0,100));
 				g.fillRect((int)(mapTile.getWidth()*mapTile.getXPos()), (int)(mapTile.getHeight()*mapTile.getYPos()), (int)mapTile.getWidth()+1, (int)mapTile.getHeight()+1);
 			}
-			if(mapTile.getBuilding() != null) {
+			if(mapTile.getBuilding() != null) {//TODO cart to external method
 				g.setColor(mapTile.getBuilding().getColor());
 				g.fillRect((int)(mapTile.getWidth()*mapTile.getXPos()+mapTile.getWidth()/100*10), (int)(mapTile.getHeight()*mapTile.getYPos()+mapTile.getHeight()/100*10), (int)(mapTile.getWidth()-mapTile.getWidth()/100*40), (int)(mapTile.getHeight()-mapTile.getHeight()/100*40));
 			}
+			super.paint(g);
 		} catch (NullPointerException e) {
 			
 		}

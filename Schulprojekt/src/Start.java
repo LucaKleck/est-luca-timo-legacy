@@ -10,15 +10,12 @@
 import javax.swing.JFrame;
 
 import framePackage.MainJFrame;
-import gameCore.ObjectMap;
-import gameCore.ResourcesController;
 
 public class Start {
 	@SuppressWarnings("unused")
 	public static void main(String[] args) {
-		ObjectMap objectMap = new ObjectMap();
-		ResourcesController resources = new ResourcesController();
-		JFrame f = new MainJFrame(objectMap, resources);
+		
+		JFrame f = new MainJFrame();
 		//objectMap.getTestMethod(10, 10);
 	}
 }

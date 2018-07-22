@@ -17,11 +17,11 @@ public class Item {
 	
 	public Item(String itemName) {
 		switch(itemName) {
-			case "TownHall"	: setToTownHall();
+			case "buyTownHall,Building"	: setToTownHall();
 			break;
-			case "ItemOne"	: setToLumbercamp();
+			case "buyItemOne,Building"	: setToLumbercamp();
 			break;
-			case "ItemTwo"	: setToFishingHutt();
+			case "buyItemTwo,Building"	: setToFishingHutt();
 			break;
 		}
 	}

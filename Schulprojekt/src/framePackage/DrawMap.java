@@ -14,14 +14,17 @@ public class DrawMap extends JPanel implements MouseListener, ActionListener {
 	private DrawMapTile[][] drawMapTile;
 	private ObjectMap objectMap;
 	private MainJFrame mainJFrame;
+	private DrawMap self;
 	// constructor
 	public DrawMap(ObjectMap objectMap, MainJFrame mainJFrame) {
 		super();
-		drawMapTile = mainJFrame.getDrawMapTileArray();
+		this.self = this;
+		this.setBackground(new java.awt.Color(0, 0, 0, 0));
+		this.drawMapTile = mainJFrame.getDrawMapTileArray();
 		this.mainJFrame = mainJFrame;
 		this.objectMap = objectMap;
-		this.setBackground(new java.awt.Color(0, 0, 0, 0));
         addMouseListener(this);
+        setLayout(null);
         for(int yOfTile = 0; yOfTile < objectMap.getHeight(); yOfTile++) {
 			for( int xOfTile = 0; xOfTile < objectMap.getWidth(); xOfTile++) {
 				drawMapTile[xOfTile][yOfTile] = new DrawMapTile(objectMap,xOfTile,yOfTile,mainJFrame, this);
@@ -53,27 +56,8 @@ public class DrawMap extends JPanel implements MouseListener, ActionListener {
 	}
 	@Override //This fires update if mouse button 1 was clicked, update is decided by what kind of things are going on
 	public void mouseReleased(java.awt.event.MouseEvent evt) {
-		String command = "select";
-		try {
-			if(mainJFrame.getTownHallPanel().getSelected()) { // here buy towns hall is selected as command because towns hall button is selected
-				command = "buyTownHall,Building";				
-			}
-		} catch (Exception e) {
-			System.out.println(e);
-		}
-		try {
-			if(mainJFrame.getBuyMenu().getSelected() != 0) {
-				switch(mainJFrame.getBuyMenu().getSelected()) {
-					case 1: command = "buyItemOne,Building";
-							break;
-					default:command = "ErrorWhileBuying";
-							break;
-				}
-			}
-		} catch (Exception e) {
-			System.out.println(e);
-		}
 		if(evt.getButton() == 1) { //here the command gets sent into the event handler of this object, if nothing special happened it will only end up sending "select"
+			String command=mainJFrame.getCommandHandler().sendCommand("select", self);
 			fireUpdate(new ActionEvent(this, 42, command),(int)(evt.getX()/((double)this.getWidth()/objectMap.getWidth())),(int)(evt.getY()/((double)this.getHeight()/objectMap.getHeight())));
 		}
 	}
