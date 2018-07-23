@@ -20,10 +20,20 @@ public abstract class Building {
 		buildingID = amountOfBuildings;
 		switch(buildingName) {
 			case "Lumbercamp":
-					color = Color.orange.darker();
-					break;
-			default: color = new Color(200,200,200);
-					 break;
+				color = Color.orange.darker();
+				break;
+			case "Town Hall":
+				color = new Color(255,0,0);
+				break;
+			case "Fishing Dock":
+				color = new Color(0,100,100);
+				break;
+			case "Demon Portal":
+				color = new Color(150,0,150);
+				break;
+			default: 	
+				color = new Color(200,200,200);
+				break;
 		}
 		amountOfBuildings++;
 	}

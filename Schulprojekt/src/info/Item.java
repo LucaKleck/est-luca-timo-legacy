@@ -21,7 +21,7 @@ public class Item {
 			break;
 			case "buyItemOne,Building"	: setToLumbercamp();
 			break;
-			case "buyItemTwo,Building"	: setToFishingHutt();
+			case "buyItemTwo,Building"	: setToFishingDock();
 			break;
 		}
 	}
@@ -47,9 +47,13 @@ public class Item {
 	public boolean hasResources(ResourcesController resources, MapTileWithResources mapTile) {
 		boolean hasResources = false;
 		boolean hasRequiredType = false;
-		for(int scan = 0; scan < mapTile.getResourceType().length; scan++) {
-			if(mapTile.getResourceType()[scan].getType() == requiredType.getType()) {
-				hasRequiredType = true;
+		if(requiredType == null) {
+			hasRequiredType = true;
+		} else {
+			for(int scan = 0; scan < mapTile.getResourceType().length; scan++) {
+				if(mapTile.getResourceType()[scan].getType() == requiredType.getType()) {
+					hasRequiredType = true;
+				}
 			}
 		}
 		if(hasRequiredType&&hasSingleResource(resources.getResources()[0], getCost()[0])&&hasSingleResource(resources.getResources()[1], getCost()[1])&&hasSingleResource(resources.getResources()[2], getCost()[2])&&hasSingleResource(resources.getResources()[3], getCost()[3])&&hasSingleResource(resources.getResources()[4], getCost()[4])&&hasSingleResource(resources.getResources()[5], getCost()[5])   ) {
@@ -87,15 +91,15 @@ public class Item {
 		manaStoneCost = new SingleResourceTypeWithAmount(ResourceType.ManaStones, 10);
 		requiredType = ResourceType.Wood;
 	}
-	private void setToFishingHutt() {
-		this.itemName = "Fishing Hutt";
+	private void setToFishingDock() {
+		this.itemName = "Fishing Dock";
 		moneyCost = new SingleResourceTypeWithAmount(ResourceType.Money,50);
 		foodCost = new SingleResourceTypeWithAmount(ResourceType.Food, 20);
 		woodCost = new SingleResourceTypeWithAmount(ResourceType.Wood, 10);
 		stoneCost = new SingleResourceTypeWithAmount(ResourceType.Stone, 40);
 		metalCost = new SingleResourceTypeWithAmount(ResourceType.Metal, 45);
 		manaStoneCost = new SingleResourceTypeWithAmount(ResourceType.ManaStones, 10);
-		requiredType = ResourceType.Wood;
+		requiredType = ResourceType.Food;
 	}
 	// Getter
 	public String getItemName() {

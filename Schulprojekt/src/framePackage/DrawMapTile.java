@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
 import javax.swing.JPanel;
@@ -11,7 +13,7 @@ import javax.swing.JPanel;
 import gameCore.ObjectMap;
 import mapTiles.MapTile;
 
-public class DrawMapTile extends JPanel {
+public class DrawMapTile extends JPanel implements MouseListener {
 	private static final long serialVersionUID = -8785925966340775096L;
 	private DrawMapTile self;
 	private MapTile[][] map;
@@ -106,27 +108,56 @@ public class DrawMapTile extends JPanel {
 		mapTile.setWidth((double)drawMap.getWidth()/objectMap.getWidth());
 		try {
 			this.setSize((int)drawMap.getWidth()/objectMap.getWidth(), (int)drawMap.getHeight()/objectMap.getHeight());
-			double xPos = mapTile.getWidth()*mapTile.getXPos();
-			double yPos = mapTile.getHeight()*mapTile.getYPos();
+			//TODO add width/height multiplier for zoom
+			double xPos = ( (mapTile.getWidth()	*mapTile.getXPos())+drawMap.getXDisplacement() )*drawMap.getDisplacementMultiplier();
+			double yPos = ( (mapTile.getHeight()*mapTile.getYPos())+drawMap.getYDisplacement() )*drawMap.getDisplacementMultiplier();
+			double height = (mapTile.getHeight()*drawMap.getDisplacementMultiplier() ) +1;
+			double width = (mapTile.getWidth()*drawMap.getDisplacementMultiplier() ) +1;
+			
 			g.setColor(color);
-			g.fillRect((int)xPos, (int)yPos, (int)mapTile.getWidth()+1, (int)mapTile.getHeight()+1);
+			g.fillRect((int)xPos, (int)yPos, (int)width, (int)height);
 			g.setColor(new Color(0,0,0,40));
-			g.drawRect((int)xPos, (int)yPos, (int)mapTile.getWidth()+1, (int)mapTile.getHeight()+1);
+			g.drawRect((int)xPos, (int)yPos, (int)width, (int)height);
+			if(mapTile.getBuilding() != null) {//TODO cart to external method
+				g.setColor(mapTile.getBuilding().getColor());
+				g.fillRect((int)xPos, (int)yPos, (int)width, (int)height);
+			}
 			if(selected) {
 				g.setColor(new Color(255,0,0,100));//TODO cart to external method
-				g.fillRect((int)(mapTile.getWidth()*mapTile.getXPos()), (int)(mapTile.getHeight()*mapTile.getYPos()), (int)mapTile.getWidth()+1, (int)mapTile.getHeight()+1);
+				g.fillRect((int)xPos, (int)yPos, (int)width, (int)height);
 			}
 			if(hover) {
 				g.setColor(new Color(120,100,0,100));
-				g.fillRect((int)(mapTile.getWidth()*mapTile.getXPos()), (int)(mapTile.getHeight()*mapTile.getYPos()), (int)mapTile.getWidth()+1, (int)mapTile.getHeight()+1);
-			}
-			if(mapTile.getBuilding() != null) {//TODO cart to external method
-				g.setColor(mapTile.getBuilding().getColor());
-				g.fillRect((int)(mapTile.getWidth()*mapTile.getXPos()+mapTile.getWidth()/100*10), (int)(mapTile.getHeight()*mapTile.getYPos()+mapTile.getHeight()/100*10), (int)(mapTile.getWidth()-mapTile.getWidth()/100*40), (int)(mapTile.getHeight()-mapTile.getHeight()/100*40));
+				g.fillRect( (int)xPos, (int)yPos, (int)width, (int)height );
 			}
 			super.paint(g);
 		} catch (NullPointerException e) {
 			
 		}
+	}
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 }

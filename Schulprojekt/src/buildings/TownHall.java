@@ -3,6 +3,7 @@ package buildings;
 import java.awt.Point;
 import java.util.Random;
 
+import enemyBuildings.Portal;
 import framePackage.MainJFrame;
 import info.MapTileType;
 import info.ResourceType;
@@ -15,29 +16,31 @@ public class TownHall extends Building {
 
 	public TownHall(MainJFrame mainJFrame,MapTile townHall) { 
 		super(buildingName, buildableOn, townHall);
+		MainJFrame.getLogger().info("start town hall");
 		MapTile[][] map = mainJFrame.getObjectMap().getMap();
 		if( townHall.getXPos() >= (map.length/100.0*50) && townHall.getYPos() <= (map[0].length/100.0*50) ) { // up right
-//			System.out.println("up right\nx>=: "+(map.length/100.0*50)+" y<=:"+(map[0].length/100.0*50));
+			MainJFrame.getLogger().finest("up right\nx>=: "+(map.length/100.0*50)+" y<=:"+(map[0].length/100.0*50));
 			//now start down left
 			createPathToTownHall(map,townHall,new Point(0,map[0].length-1));
-		}
+		} else 
 		if(townHall.getXPos() < (map.length/100.0*50) && townHall.getYPos() < (map[0].length/100.0*50)) { // up left
-//			System.out.println("up left\nx<: "+(map.length/100.0*50)+" y<:"+(map[0].length/100.0*50));
+			MainJFrame.getLogger().finest("up left\nx<: "+(map.length/100.0*50)+" y<:"+(map[0].length/100.0*50));
 			// now start down right
 			createPathToTownHall(map,townHall,new Point(map.length-1,map[0].length-1));
-		}
+		} else
 		if(townHall.getXPos() > (map.length/100.0*50) && townHall.getYPos() > (map[0].length/100.0*50)) { // down right
-//			System.out.println("down right\nx>: "+(map.length/100.0*50)+" y<:"+(map[0].length/100.0*50));
+			MainJFrame.getLogger().finest("down right\nx>: "+(map.length/100.0*50)+" y<:"+(map[0].length/100.0*50));
 			// now start up left
 			createPathToTownHall(map,townHall,new Point(0,0));
-		}
+		} else
 		if(townHall.getXPos() < (map.length/100.0*50) && townHall.getYPos() > (map[0].length/100.0*50)) { // down left
-//			System.out.println("down left\nx<: "+(map.length/100.0*50)+" y>:"+(map[0].length/100.0*50));
+			MainJFrame.getLogger().finest("down left\nx<: "+(map.length/100.0*50)+" y>:"+(map[0].length/100.0*50));
 			// now start up right
 			createPathToTownHall(map,townHall,new Point(map.length-1,0));
 		}
 		mainJFrame.getContentPane().remove(mainJFrame.getDrawMap());
 		mainJFrame.redoDrawMapTile();
+		MainJFrame.getLogger().info("end town hall");
 	}
 	
 	private void createPathToTownHall(MapTile[][] map, MapTile townHall, Point referencePoint) {
@@ -48,7 +51,7 @@ public class TownHall extends Building {
 		if(leftOrRight) {
 			try {
 				int xStart =xPath+r.nextInt(10);
-				map[xStart][yPath].getWidth();
+				map[xStart][yPath].getWidth();//just do anything, if this doesn't work, its out of bounds, so it wont run
 				xPath = xStart;
 			} catch(IndexOutOfBoundsException e) {
 				xPath-=r.nextInt(10);
@@ -56,15 +59,17 @@ public class TownHall extends Building {
 		} else {
 			try {
 				int yStart = yPath+r.nextInt(10);
-				map[xPath][yStart].getWidth();
+				map[xPath][yStart].getWidth(); // again just with y
 				yPath = yStart;
 			} catch(IndexOutOfBoundsException e) {
 				yPath-=r.nextInt(10);
 			}
 		}
+		changeToPath(map,xPath,yPath);
+		createPortalOnPath(map,xPath,yPath);
 		while(isNotConnected(map, townHall, xPath, yPath)) {
 //			int xRepeatCount = 0;
-//			int yRepeatCount = 0; IDEA implement this
+//			int yRepeatCount = 0; IDEA implement this (for more varied paths)
 			boolean goX= r.nextBoolean();
 			if(goX) {
 				xPath = moveX(townHall, xPath);
@@ -103,22 +108,20 @@ public class TownHall extends Building {
 		}
 		return xPath;
 	}
-	@SuppressWarnings("unused")
-	private boolean isInBounds() {
-		boolean isInBounds = true;
-		return isInBounds;
-	}
 	private boolean isNotConnected(MapTile[][] map ,MapTile townHall,int xPath, int yPath) {
 		boolean isNotConnected = true;
-//		if(townHall.getXPos()==(xPath+1) || townHall.getXPos()==(xPath-1) && townHall.getYPos()==(yPath+1) || townHall.getYPos()==(yPath-1)) {
-		try {
+		try { // TODO reverse to || logic (less resource intensive)
 			if(map[xPath-1][yPath] != townHall && map[xPath+1][yPath] != townHall  && map[xPath][yPath+1] != townHall && map[xPath][yPath-1] != townHall ) {
 			} else {
 				isNotConnected = false;
 			}			
-		} catch (Exception e) {
-//			System.out.println("isNotConnected "+e);
+		} catch (IndexOutOfBoundsException e) {
+
 		}
 		return isNotConnected;
 	}
+	private void createPortalOnPath(MapTile[][] map,int xPath, int yPath) {
+		map[xPath][yPath].setBuilding(new Portal(map[xPath][yPath],map));
+	}
+	
 }

@@ -9,8 +9,7 @@ package gameCore;
  */
 import java.util.Random;
 import java.util.logging.Level;
-
-import com.sun.istack.internal.logging.Logger;
+import java.util.logging.Logger;
 
 import info.ResourceType;
 import mapTiles.MapTile;
@@ -20,12 +19,15 @@ import mapTiles.MapTileLightForest;
 import mapTiles.MapTilePlain;
 import mapTiles.MapTileRiver;
 public class CreateMap {
-	private static final Logger log = Logger.getLogger(CreateMap.class.getName(),CreateMap.class);
+	private static Logger log;
     private static final int MAPTILERADIUSBASE = 4;
 	private static final int TYPEAMOUNT = 3;
 	private static final int MAXRIVERS = 2;
 	private static final int MINRIVERS = 2; // Could be a % of map.length 
 	private static final int MINRIVERLENGTHPERCENT = 20;
+	public static void setLogger(Logger log) {
+		CreateMap.log = log;
+	}
 	public static MapTile[][] createCustom(int x, int y) {
 		log.info("Start createCustom map");
 		MapTile[][] map = new MapTile[x][y];
@@ -99,10 +101,10 @@ public class CreateMap {
 						case 1: rivers++; log.log(Level.FINE, "Debug: ",("---------"+"\n"+"riverType: "+1+"\n"+"rivers: "+rivers)); 
 							rivers = riverWithChance(map, y, minRiverLength, rivers, 25, 25, type);
 							break;
-						case 2: rivers++; //System.err.println("---------"+"\n"+"riverType: "+2+"\n"+"rivers: "+rivers );
+						case 2: rivers++; log.log(Level.FINE, "---------"+"\n"+"riverType: "+2+"\n"+"rivers: "+rivers );
 							rivers = riverWithChance(map, y, minRiverLength, rivers, 50, 25, type);
 							break;
-						case 3: rivers++; //System.err.println("---------"+"\n"+"riverType: "+3+"\n"+"rivers: "+rivers );
+						case 3: rivers++; log.log(Level.FINE, "---------"+"\n"+"riverType: "+3+"\n"+"rivers: "+rivers );
 							rivers = riverWithChance(map, y, minRiverLength, rivers, 25, 50, type);
 							break;
 					}
@@ -117,7 +119,7 @@ public class CreateMap {
 			if(y+1 < map[0].length) map[x][y+1] = createCustomMapTile(type,x,y+1);
 			Random random = new Random();
 			int upDownOrNothing = (random.nextInt(100)+1);
-			//System.err.println("upDownOrNothing: " + upDownOrNothing +"\n"+"upChance: "+upChance+"\n"+"downChance"+downChance); 
+			log.log(Level.FINE, "upDownOrNothing: " + upDownOrNothing +"\n"+"upChance: "+upChance+"\n"+"downChance"+downChance); 
 			if(upChance > 100 || downChance > 100) return rivers;
 			if(upDownOrNothing <= downChance) {
 				if(y-1 >= 0) y--;
@@ -196,8 +198,8 @@ public class CreateMap {
 			if(resourceTypeTemp[1].getType() == resourceTypeTemp[0].getType()) {
 				resourceTypeTemp = new ResourceType[] {resourceTypeTemp[0]};
 			}
-		} catch(Exception e) {
-			log.log(Level.FINE, "checkResourceTypeLogic: ", e);
+		} catch(IndexOutOfBoundsException e) {
+			log.log(Level.FINE, "checkResourceTypeLogic: ", e.getCause());
 		}
 		return resourceTypeTemp;
 	}
@@ -213,12 +215,11 @@ public class CreateMap {
 					resourceEfficiencyTemp = new int[] {resourceEfficiencyTemp[1]};
 				}
 			}
-		} catch(Exception e) {
-			log.log(Level.FINE, "checkResourceEfficiencyLogic", e);
+		} catch(IndexOutOfBoundsException e) {
+			log.log(Level.FINE, "checkResourceEfficiencyLogic", e.getCause());
 		}
 		return resourceEfficiencyTemp;
 	}
-//	create city
-//	  
+  
 // 	createMap class end
 }
