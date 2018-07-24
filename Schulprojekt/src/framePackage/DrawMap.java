@@ -23,7 +23,6 @@ public class DrawMap extends JPanel implements MouseListener, ActionListener, Mo
 	private DrawMap self;
 	// constructor
 	public DrawMap(ObjectMap objectMap, MainJFrame mainJFrame) {
-		super();
 		this.self = this;
 		this.setBackground(new java.awt.Color(0, 0, 0, 0));
 		this.drawMapTile = mainJFrame.getDrawMapTileArray();
@@ -98,8 +97,11 @@ public class DrawMap extends JPanel implements MouseListener, ActionListener, Mo
 		return xDisplacement;
 	}
 	public void setXDisplacement(int xDisplacement) {
-		if(xDisplacement > self.getWidth()) {
-			xDisplacement = self.getWidth();
+		if(xDisplacement > self.getWidth()/5) {
+			xDisplacement = self.getWidth()/5;
+		}
+		if(xDisplacement < -1*self.getWidth()/5*displacementlMultiplier*2) {
+			xDisplacement = (int) (-1*self.getWidth()/5*displacementlMultiplier*2);
 		}
 		this.xDisplacement = xDisplacement;
 	}
@@ -107,8 +109,11 @@ public class DrawMap extends JPanel implements MouseListener, ActionListener, Mo
 		return yDisplacement;
 	}
 	public void setYDisplacement(int yDisplacement) {
-		if(yDisplacement > self.getHeight()) {
-			yDisplacement = self.getHeight();
+		if(yDisplacement > self.getHeight()/5) {
+			yDisplacement = self.getHeight()/5;
+		}
+		if(yDisplacement < -1*self.getHeight()/5*displacementlMultiplier*1.5) {
+			yDisplacement = (int) (-1*self.getHeight()/5*displacementlMultiplier*1.5);
 		}
 		this.yDisplacement = yDisplacement;
 	}
@@ -122,7 +127,18 @@ public class DrawMap extends JPanel implements MouseListener, ActionListener, Mo
 	public void mouseDragged(MouseEvent e) {
 //		setYDisplacement(getYDisplacement()+e.getY()/(self.getHeight() /3) );
 //		setXDisplacement(getXDisplacement()+e.getX()/ (self.getWidth() /3) );
-//		repaint();
+		System.out.println(e.getY()-self.getHeight()/2);
+		if( (e.getY()-self.getHeight()/2) > 0) {
+			setYDisplacement(getYDisplacement()+1);
+		} else {
+			setYDisplacement(getYDisplacement()-1);
+		}
+		if( (e.getX()-self.getWidth()/2) > 0) {
+			setXDisplacement(getXDisplacement()+1);
+		} else {
+			setXDisplacement(getXDisplacement()-1);
+		}
+		repaint();
 	}
 	@Override
 	public void mouseMoved(MouseEvent e) {

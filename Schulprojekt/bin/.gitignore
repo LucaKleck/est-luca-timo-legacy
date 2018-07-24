@@ -1,11 +1,6 @@
 /info/
-/mapTiles/
 /buildings/
-/framePackage/
-/selectedMenu/
-/framePackageSelectedMenu/
-/GameCommandHandler.class
-/gameCore/
-/staticPackage/
-/Start.class
 /enemyBuildings/
+/framePackage/
+/gameCore/
+/mapTiles/

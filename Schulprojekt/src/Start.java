@@ -7,6 +7,7 @@
  * @author Luca Kleck, Timo Bauermeister
  * 
  */
+import java.io.File;
 import java.io.IOException;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
@@ -24,8 +25,20 @@ public class Start {
 	    FileHandler fh;  
 
 	    try {  
+	    	String path = System.getProperty("user.home") + File.separator + "Documents";
+	    	path += File.separator + "EST-SCHULPROJEKT";
+	    	File customDir = new File(path);
+
+	    	if (customDir.exists()) {
+//	    	    System.out.println(customDir + " already exists");
+	    	} else if (customDir.mkdirs()) {
+//	    	    System.out.println(customDir + " was created");
+	    	} else {
+//	    	    System.out.println(customDir + " was not created");
+	    	}
 	        // This block configure the logger with handler and formatter  
-	        fh = new FileHandler("C:/Users/Markus/AppData/Roaming/Schulprojekt/gameLog.log");  
+	        fh = new FileHandler(path+File.separator+"gameLog.log");
+	       
 	        logger.addHandler(fh);
 	        SimpleFormatter formatter = new SimpleFormatter();  
 	        fh.setFormatter(formatter);  
