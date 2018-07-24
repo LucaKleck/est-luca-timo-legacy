@@ -7,12 +7,12 @@ public class Item {
 
 	private String itemName;
 	
-	private SingleResourceTypeWithAmount moneyCost;
-	private SingleResourceTypeWithAmount foodCost;
-	private SingleResourceTypeWithAmount woodCost;
-	private SingleResourceTypeWithAmount stoneCost;
-	private SingleResourceTypeWithAmount metalCost;
-	private SingleResourceTypeWithAmount manaStoneCost;
+	private Resource moneyCost;
+	private Resource foodCost;
+	private Resource woodCost;
+	private Resource stoneCost;
+	private Resource metalCost;
+	private Resource manaStoneCost;
 	private ResourceType requiredType;
 	
 	public Item(String itemName) {
@@ -34,8 +34,8 @@ public class Item {
 		}
 		return string;
 	}
-	public SingleResourceTypeWithAmount[] getCost() {
-		SingleResourceTypeWithAmount[] cost = new SingleResourceTypeWithAmount[6];
+	public Resource[] getCost() {
+		Resource[] cost = new Resource[6];
 		cost[0] = moneyCost;
 		cost[1] = foodCost;
 		cost[2] = woodCost;
@@ -61,7 +61,7 @@ public class Item {
 		}
 		return hasResources;
 	}
-	private boolean hasSingleResource(SingleResourceTypeWithAmount resource, SingleResourceTypeWithAmount cost) {
+	private boolean hasSingleResource(Resource resource, Resource cost) {
 		boolean hasSingleResource = false;
 		try {
 			if(resource.getResourceAmount() >= cost.getResourceAmount()) hasSingleResource = true;
@@ -73,54 +73,54 @@ public class Item {
 	//
 	private void setToTownHall() {
 		this.itemName = "Town Hall";
-		moneyCost = new SingleResourceTypeWithAmount(ResourceType.Money,0);
-		foodCost = new SingleResourceTypeWithAmount(ResourceType.Food, 0);
-		woodCost = new SingleResourceTypeWithAmount(ResourceType.Wood, 0);
-		stoneCost = new SingleResourceTypeWithAmount(ResourceType.Stone, 0);
-		metalCost = new SingleResourceTypeWithAmount(ResourceType.Metal, 0);
-		manaStoneCost = new SingleResourceTypeWithAmount(ResourceType.ManaStones, 0);
+		moneyCost = new Resource(ResourceType.Money,0);
+		foodCost = new Resource(ResourceType.Food, 0);
+		woodCost = new Resource(ResourceType.Wood, 0);
+		stoneCost = new Resource(ResourceType.Stone, 0);
+		metalCost = new Resource(ResourceType.Metal, 0);
+		manaStoneCost = new Resource(ResourceType.ManaStones, 0);
 		requiredType = null;	
 	}
 	private void setToLumbercamp() {
 		this.itemName = "Lumbercamp";
-		moneyCost = new SingleResourceTypeWithAmount(ResourceType.Money,50);
-		foodCost = new SingleResourceTypeWithAmount(ResourceType.Food, 20);
-		woodCost = new SingleResourceTypeWithAmount(ResourceType.Wood, 10);
-		stoneCost = new SingleResourceTypeWithAmount(ResourceType.Stone, 40);
-		metalCost = new SingleResourceTypeWithAmount(ResourceType.Metal, 45);
-		manaStoneCost = new SingleResourceTypeWithAmount(ResourceType.ManaStones, 10);
+		moneyCost = new Resource(ResourceType.Money,50);
+		foodCost = new Resource(ResourceType.Food, 20);
+		woodCost = new Resource(ResourceType.Wood, 10);
+		stoneCost = new Resource(ResourceType.Stone, 40);
+		metalCost = new Resource(ResourceType.Metal, 45);
+		manaStoneCost = new Resource(ResourceType.ManaStones, 10);
 		requiredType = ResourceType.Wood;
 	}
 	private void setToFishingDock() {
 		this.itemName = "Fishing Dock";
-		moneyCost = new SingleResourceTypeWithAmount(ResourceType.Money,50);
-		foodCost = new SingleResourceTypeWithAmount(ResourceType.Food, 20);
-		woodCost = new SingleResourceTypeWithAmount(ResourceType.Wood, 10);
-		stoneCost = new SingleResourceTypeWithAmount(ResourceType.Stone, 40);
-		metalCost = new SingleResourceTypeWithAmount(ResourceType.Metal, 45);
-		manaStoneCost = new SingleResourceTypeWithAmount(ResourceType.ManaStones, 10);
+		moneyCost = new Resource(ResourceType.Money,50);
+		foodCost = new Resource(ResourceType.Food, 20);
+		woodCost = new Resource(ResourceType.Wood, 10);
+		stoneCost = new Resource(ResourceType.Stone, 40);
+		metalCost = new Resource(ResourceType.Metal, 45);
+		manaStoneCost = new Resource(ResourceType.ManaStones, 10);
 		requiredType = ResourceType.Food;
 	}
 	// Getter
 	public String getItemName() {
 		return itemName;
 	}
-	public SingleResourceTypeWithAmount getMoneyCost() {
+	public Resource getMoneyCost() {
 		return moneyCost;
 	}
-	public SingleResourceTypeWithAmount getFoodCost() {
+	public Resource getFoodCost() {
 		return foodCost;
 	}
-	public SingleResourceTypeWithAmount getWoodCost() {
+	public Resource getWoodCost() {
 		return woodCost;
 	}
-	public SingleResourceTypeWithAmount getStoneCost() {
+	public Resource getStoneCost() {
 		return stoneCost;
 	}
-	public SingleResourceTypeWithAmount getMetalCost() {
+	public Resource getMetalCost() {
 		return metalCost;
 	}
-	public SingleResourceTypeWithAmount getManaStoneCost() {
+	public Resource getManaStoneCost() {
 		return manaStoneCost;
 	}
 }

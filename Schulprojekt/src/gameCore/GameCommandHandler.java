@@ -16,7 +16,7 @@ import framePackage.DrawMapTile;
 import framePackage.LogTextPane;
 import framePackage.MainJFrame;
 import info.Item;
-import info.SingleResourceTypeWithAmount;
+import info.Resource;
 import mapTiles.MapTile;
 import mapTiles.MapTileWithResources;
 
@@ -132,7 +132,6 @@ public class GameCommandHandler implements ActionListener {
 			//
  			if(command=="buyTownHall,Building") { 				
  				mainJFrame.getCreateTownHallPanel().toggleSelected();
-// 				mainJFrame.enableSelectedMenuTownHall();
  			}
 			mainJFrame.getBuyMenu().deselect();
 			source.toggleSelected();
@@ -170,6 +169,7 @@ public class GameCommandHandler implements ActionListener {
 				drawMap.repaintMapTile(mapTile.getXPos(), mapTile.getYPos());
 			} catch (Exception e) {
 				System.out.println("selected "+e);
+				result = e.toString();
 			}
 		}
 		return result;
@@ -181,7 +181,7 @@ public class GameCommandHandler implements ActionListener {
 	 * 
 	 * 
 	 */
-	public void nextTurn() {
+	private void nextTurn() {
 		// Here goes all the stuff that will happen
 		// Need arrays of all things, that means we need unit array!
 		// TODO create turn control item, to count rounds and so on
@@ -200,7 +200,7 @@ public class GameCommandHandler implements ActionListener {
 		MainJFrame.getLogger().fine(building+"\n"+resources);
 	}
 	private void subtracktResources(Item item) {
-		SingleResourceTypeWithAmount[] cost = item.getCost();
+		Resource[] cost = item.getCost();
 		for(int subtrackt = 0; subtrackt < resources.getResources().length; subtrackt++) {
 			resources.getResources()[subtrackt].removeResourceAmount(cost[subtrackt].getResourceAmount());
 		}
@@ -248,7 +248,7 @@ public class GameCommandHandler implements ActionListener {
 				writeToLogAndSetText("Missing Resources/Invalid Field"); return;
 			}
 		} else {
-			writeToLogAndSetText("Missing Resources/Building blocked");	return;
+			writeToLogAndSetText("Building blocked");	return;
 		}
 		
 	}

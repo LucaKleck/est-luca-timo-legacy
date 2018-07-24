@@ -103,27 +103,32 @@ public class DrawMapTile extends JPanel implements MouseListener {
 	public ArrayList<ActionListener> getListener() {
 		return listener;
 	}
-	public void drawMapTile(Graphics g) {
+	public void drawMapTile(Graphics g) { //IDEA create image of the tiles then draw that in DrawMap.
 		mapTile.setHeight((double)drawMap.getHeight()/objectMap.getHeight());
 		mapTile.setWidth((double)drawMap.getWidth()/objectMap.getWidth());
 		try {
-			this.setSize((int)drawMap.getWidth()/objectMap.getWidth(), (int)drawMap.getHeight()/objectMap.getHeight());
-			//TODO add width/height multiplier for zoom
+			
 			double xPos = ( (mapTile.getWidth()	*mapTile.getXPos())+drawMap.getXDisplacement() )*drawMap.getDisplacementMultiplier();
 			double yPos = ( (mapTile.getHeight()*mapTile.getYPos())+drawMap.getYDisplacement() )*drawMap.getDisplacementMultiplier();
 			double height = (mapTile.getHeight()*drawMap.getDisplacementMultiplier() ) +1;
 			double width = (mapTile.getWidth()*drawMap.getDisplacementMultiplier() ) +1;
+
+			this.setSize((int)width, (int)height);
 			
+			// the tile itself
 			g.setColor(color);
 			g.fillRect((int)xPos, (int)yPos, (int)width, (int)height);
+			
+			// the border of the tile
 			g.setColor(new Color(0,0,0,40));
 			g.drawRect((int)xPos, (int)yPos, (int)width, (int)height);
-			if(mapTile.getBuilding() != null) {//TODO cart to external method
+			
+			if(mapTile.getBuilding() != null) {
 				g.setColor(mapTile.getBuilding().getColor());
 				g.fillRect((int)xPos, (int)yPos, (int)width, (int)height);
 			}
 			if(selected) {
-				g.setColor(new Color(255,0,0,100));//TODO cart to external method
+				g.setColor(new Color(255,0,0,100));
 				g.fillRect((int)xPos, (int)yPos, (int)width, (int)height);
 			}
 			if(hover) {

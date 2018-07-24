@@ -1,29 +1,38 @@
 package gameCore;
 
 import info.ResourceType;
-import info.SingleResourceTypeWithAmount;
+import info.Resource;
 
 public class ResourcesController {
-	private SingleResourceTypeWithAmount money;
-	private SingleResourceTypeWithAmount food;
-	private SingleResourceTypeWithAmount wood;
-	private SingleResourceTypeWithAmount stone;
-	private SingleResourceTypeWithAmount metal;
-	private SingleResourceTypeWithAmount manaStone;
+	private Resource money;
+	private Resource food;
+	private Resource wood;
+	private Resource stone;
+	private Resource metal;
+	private Resource manaStone;
 	public ResourcesController() {
-		money = new SingleResourceTypeWithAmount(ResourceType.Money, 200);
-		food = new SingleResourceTypeWithAmount(ResourceType.Food,200);
-		wood = new SingleResourceTypeWithAmount(ResourceType.Wood, 200);
-		stone = new SingleResourceTypeWithAmount(ResourceType.Stone, 200);
-		metal = new SingleResourceTypeWithAmount(ResourceType.Metal, 200);
-		manaStone = new SingleResourceTypeWithAmount(ResourceType.ManaStones, 200);
+		money = new Resource(ResourceType.Money, 20000);
+		food = new Resource(ResourceType.Food,20000);
+		wood = new Resource(ResourceType.Wood, 20000);
+		stone = new Resource(ResourceType.Stone, 20000);
+		metal = new Resource(ResourceType.Metal, 20000);
+		manaStone = new Resource(ResourceType.ManaStones, 20000);
+	}
+	// call this method once you have loaded it from a file and converted the strings into SingleResourceTypeWithAmount's
+	public ResourcesController(Resource money, Resource food, Resource wood, Resource stone, Resource metal, Resource manaStone) {
+		this.money = money;
+		this.food = food;
+		this.wood = wood;
+		this.stone = stone;
+		this.metal = metal;
+		this.manaStone = manaStone;
 	}
 	public String toString() {
 		String string = "money: "+money+" food: "+food+" wood: "+wood+" stone: "+stone+" metal: "+metal+" manaStone: "+manaStone;
 		return string;
 	}
-	public SingleResourceTypeWithAmount[] getResources() {
-		SingleResourceTypeWithAmount[] resources = new SingleResourceTypeWithAmount[6];
+	public Resource[] getResources() {
+		Resource[] resources = new Resource[6];
 		resources[0] = money;
 		resources[1] = food;
 		resources[2] = wood;
@@ -32,22 +41,22 @@ public class ResourcesController {
 		resources[5] = manaStone;
 		return resources;
 	}
-	public SingleResourceTypeWithAmount getMoney() {
+	public Resource getMoney() {
 		return money;
 	}
-	public SingleResourceTypeWithAmount getFood() {
+	public Resource getFood() {
 		return food;
 	}
-	public SingleResourceTypeWithAmount getWood() {
+	public Resource getWood() {
 		return wood;
 	}
-	public SingleResourceTypeWithAmount getStone() {
+	public Resource getStone() {
 		return stone;
 	}
-	public SingleResourceTypeWithAmount getMetal() {
+	public Resource getMetal() {
 		return metal;
 	}
-	public SingleResourceTypeWithAmount getManaStones() {
+	public Resource getManaStones() {
 		return manaStone;
 	}
 }

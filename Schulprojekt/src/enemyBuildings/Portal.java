@@ -10,9 +10,16 @@ public class Portal extends Building {
 	public Portal(MapTile mapTile, MapTile[][] map) {
 		super(buildingName, buildableOn, mapTile);
 		createBadBoy(map);
+		createBadBoyHelpers(map);
+		createEnemieDefendingTowers(map);
 	}
 	private void createBadBoy(MapTile[][] map) {
 		
 	}
-
+	private void createBadBoyHelpers(MapTile[][] map) {
+		
+	}
+	private void createEnemieDefendingTowers(MapTile[][] map) {
+		
+	}
 }

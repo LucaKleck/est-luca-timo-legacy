@@ -16,6 +16,7 @@ import mapTiles.MapTile;
 import mapTiles.MapTileForest;
 import mapTiles.MapTileJungle;
 import mapTiles.MapTileLightForest;
+import mapTiles.MapTileMountain;
 import mapTiles.MapTilePlain;
 import mapTiles.MapTileRiver;
 public class CreateMap {
@@ -43,6 +44,8 @@ public class CreateMap {
 		}
 	}
 	private static void buildMap(MapTile[][] map) {
+		createGreatPlain(map);
+		placeX(map, 30);
 		for( int type = 0; type <= TYPEAMOUNT; type++) {
 			placeX(map, type);
 		}
@@ -50,16 +53,17 @@ public class CreateMap {
 	}
 	private static void placeX(MapTile[][] map, int type) {
 		switch(type) {
-			case 0: createGreatPlain(map);
+			case 0: placeSquareRadialType(map, type, 300, 10);
 					break;
-			case 1: placeSquareRadialType(map, type, 10, 30);
+			case 1: placeSquareRadialType(map, type, 100, 300);
 					break;
-			case 2: placeSquareRadialType(map, type, 11, 22);
+			case 2: placeSquareRadialType(map, type, 110, 220);
 					break;
-			case 3: placeSquareRadialType(map,type,10,10);
+			case 3: placeSquareRadialType(map,type,100,100);
 					break;
 			case 20:placeRiverType(map,20,3);
 					break;
+			case 30:placeSquareRadialType(map, type, 5, 700);
 			default:return;
 		}
 	}	
@@ -70,10 +74,10 @@ public class CreateMap {
 		for(int y=0; y < map[0].length; y++) {
 			for(int x=0; x < map.length; x++) {
 				int radius = MAPTILERADIUSBASE + random.nextInt(3);
-				if((x-radius) >= 0 && (y-radius) >= 0 && (x-radius) < map.length && (y-radius) < map[0].length && (random.nextInt(100)+1) <= spawnChance ) { 
+				if((x-radius) >= 0 && (y-radius) >= 0 && (x-radius) < map.length && (y-radius) < map[0].length && (random.nextInt(1000)+1) <= spawnChance ) { 
 					for(int yRadius = 0; yRadius <= radius; yRadius++) {
 						for( int xRadius = 0; xRadius <= radius; xRadius++ ) {
-							if((random.nextInt(100)+1) <= tileChance) {
+							if((random.nextInt(1000)+1) <= tileChance) {
 								map[xRadius+x-radius][yRadius+y-radius] = createCustomMapTile(type,map[xRadius+x-radius][yRadius+y-radius].getXPos(),map[xRadius+x-radius][yRadius+y-radius].getYPos());
 							}
 						}
@@ -135,41 +139,53 @@ public class CreateMap {
 		return rivers;
 	}
 	private static MapTile createCustomMapTile(int type, int x, int y) {
-		Random random = new Random();
-		ResourceType[] resourceType;
-		int[] resourceEfficiency;
-		ResourceType[] resourceTypeTemp = new ResourceType[2];
-		int[] resourceEfficiencyTemp = new int[2];
 		switch(type) {
-			case 0: resourceTypeTemp = new ResourceType[] {ResourceType.Food, createResourceTypeFromInt(random.nextInt(5)+1)};
-					resourceEfficiencyTemp = new int[] {100, random.nextInt(100+1)};
-					resourceType = checkResourceTypeLogic(resourceTypeTemp,resourceEfficiencyTemp);
-					resourceEfficiency = checkResourceEfficiencyLogic(resourceTypeTemp, resourceEfficiencyTemp);
-					return new MapTilePlain(x,y,resourceType,resourceEfficiency);
-			case 1: resourceTypeTemp = new ResourceType[] {ResourceType.Wood, createResourceTypeFromInt(random.nextInt(5)+1)};
-					resourceEfficiencyTemp = new int[] {100, random.nextInt(100+1)};
-					resourceType = checkResourceTypeLogic(resourceTypeTemp,resourceEfficiencyTemp);
-					resourceEfficiency = checkResourceEfficiencyLogic(resourceTypeTemp, resourceEfficiencyTemp);
-					return new MapTileForest(x,y,resourceType,resourceEfficiency);
-			case 2: resourceTypeTemp = new ResourceType[] {ResourceType.Wood, createResourceTypeFromInt(random.nextInt(5)+1)};
-					resourceEfficiencyTemp = new int[] {70, random.nextInt(100+1)};
-					resourceType = checkResourceTypeLogic(resourceTypeTemp,resourceEfficiencyTemp);
-					resourceEfficiency = checkResourceEfficiencyLogic(resourceTypeTemp, resourceEfficiencyTemp);
-					return new MapTileLightForest(x,y,resourceType,resourceEfficiency);
-			case 3: resourceType = new ResourceType[] {ResourceType.Wood, ResourceType.Food};
-					resourceEfficiency = new int[] {100, 100};
-					return new MapTileJungle(x,y,resourceType,resourceEfficiency);
-			case 20:resourceTypeTemp = new ResourceType[] {ResourceType.ManaStones, ResourceType.Food};
-					resourceEfficiencyTemp = new int[] {100, 100};
-					resourceType = checkResourceTypeLogic(resourceTypeTemp,resourceEfficiencyTemp);
-					resourceEfficiency = checkResourceEfficiencyLogic(resourceTypeTemp, resourceEfficiencyTemp);
-					return new MapTileRiver(x,y,resourceType,resourceEfficiency);
-			default:resourceTypeTemp = new ResourceType[] {ResourceType.Food, createResourceTypeFromInt(random.nextInt(5)+1)};
-					resourceEfficiencyTemp = new int[] {100, random.nextInt(100+1)};
-					resourceType = checkResourceTypeLogic(resourceTypeTemp,resourceEfficiencyTemp);
-					resourceEfficiency = checkResourceEfficiencyLogic(resourceTypeTemp, resourceEfficiencyTemp);
-					return new MapTilePlain(x,y,resourceType,resourceEfficiency);
+			case 0: return createMapTilePlain(x, y);
+			case 1: return createMapTileForest(x,y);
+			case 2: return createMapTileLightForest(x,y);
+			case 3: return createMapTileJungle(x, y);
+			case 20:return createMapTileRiver(x,y);
+			case 30:return new MapTileMountain(x,y);
+			default:return createMapTilePlain(x, y);
 		}
+	}
+	private static MapTile createMapTilePlain(int x, int y) {
+		Random random = new Random();
+		ResourceType[] resourceTypeTemp = new ResourceType[] {ResourceType.Food, createResourceTypeFromInt(random.nextInt(5)+1)}; 
+		int[] resourceEfficiencyTemp = new int[] {100, random.nextInt(101)};
+		ResourceType[] resourceType = checkResourceTypeLogic(resourceTypeTemp,resourceEfficiencyTemp);
+		int[] resourceEfficiency = checkResourceEfficiencyLogic(resourceTypeTemp, resourceEfficiencyTemp);
+		return new MapTilePlain(x,y,resourceType,resourceEfficiency);
+	}
+	private static MapTile createMapTileForest(int x, int y) {
+		Random random = new Random();
+		ResourceType[] resourceTypeTemp = new ResourceType[] {ResourceType.Wood, createResourceTypeFromInt(random.nextInt(5)+1)}; 
+		int[] resourceEfficiencyTemp = new int[] {100, random.nextInt(101)};
+		ResourceType[] resourceType = checkResourceTypeLogic(resourceTypeTemp,resourceEfficiencyTemp);
+		int[] resourceEfficiency = checkResourceEfficiencyLogic(resourceTypeTemp, resourceEfficiencyTemp);
+		return new MapTileForest(x,y,resourceType,resourceEfficiency);
+	}
+	private static MapTile createMapTileLightForest(int x, int y) {
+		Random random = new Random();
+		ResourceType[] resourceTypeTemp = new ResourceType[] {ResourceType.Wood, createResourceTypeFromInt(random.nextInt(5)+1)}; 
+		int[] resourceEfficiencyTemp = new int[] {70, random.nextInt(101)};
+		ResourceType[] resourceType = checkResourceTypeLogic(resourceTypeTemp,resourceEfficiencyTemp);
+		int[] resourceEfficiency = checkResourceEfficiencyLogic(resourceTypeTemp, resourceEfficiencyTemp);
+		return new MapTileLightForest(x,y,resourceType,resourceEfficiency);
+	}
+	private static MapTile createMapTileJungle(int x, int y) {
+		ResourceType[] resourceTypeTemp = new ResourceType[] {ResourceType.Wood, ResourceType.Food}; 
+		int[] resourceEfficiencyTemp = new int[] {100, 100};
+		ResourceType[] resourceType = checkResourceTypeLogic(resourceTypeTemp,resourceEfficiencyTemp);
+		int[] resourceEfficiency = checkResourceEfficiencyLogic(resourceTypeTemp, resourceEfficiencyTemp);
+		return new MapTileJungle(x,y,resourceType,resourceEfficiency);
+	}
+	private static MapTile createMapTileRiver(int x, int y) {
+		ResourceType[] resourceTypeTemp = new ResourceType[] {ResourceType.Food, ResourceType.ManaStones}; 
+		int[] resourceEfficiencyTemp = new int[] {100,100};
+		ResourceType[] resourceType = checkResourceTypeLogic(resourceTypeTemp,resourceEfficiencyTemp);
+		int[] resourceEfficiency = checkResourceEfficiencyLogic(resourceTypeTemp, resourceEfficiencyTemp);
+		return new MapTileRiver(x,y,resourceType,resourceEfficiency);
 	}
 	private static ResourceType createResourceTypeFromInt(int i) {
 		ResourceType resourceType;

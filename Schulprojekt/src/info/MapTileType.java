@@ -8,7 +8,7 @@ public enum MapTileType {
 	LightForest(2, "LightForest", new Color(10,130,10)),
 	Jungle(3, "Jungle", new Color(66,147,33)),
 	River(20, "River", new Color(0,30,255)),
-	Mountain(30, "Mountain", Color.BLACK),
+	Mountain(30, "Mountain", new Color(160,150,60)),
 	DefaultRoad(40, "Road", new Color(30,30,30)),
 	DirtRoad(41,"Dirt Road",new Color(200,150,40)),
 	Bridge(42,"Bridge",new Color(0,30,30));
@@ -16,6 +16,7 @@ public enum MapTileType {
 	private final int type;
 	private final String name;
 	private final Color color;
+	
 	MapTileType(int type, String name, Color color) {
 		this.type = type;
 		this.name= name;
