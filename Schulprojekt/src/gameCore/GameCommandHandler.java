@@ -215,7 +215,6 @@ public class GameCommandHandler implements ActionListener {
 			buyBuilding(item,mapTile);
 		}
 		resourceText.setText(resources.toString());
-		mainJFrame.repaint();
 	} 
 	public void buyBuilding(Item item, MapTile mapTile) {
 		if(mapTile.getBuilding() == null) {

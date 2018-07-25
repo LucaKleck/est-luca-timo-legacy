@@ -20,6 +20,7 @@ public class DrawMap extends JPanel implements MouseListener, ActionListener, Mo
 	private int xDisplacement = 0;
 	private int yDisplacement = 0;
 	private double displacementlMultiplier = 1;
+	private DrawnMapImage drawnMapImage;
 	private DrawMap self;
 	// constructor
 	public DrawMap(ObjectMap objectMap, MainJFrame mainJFrame) {
@@ -34,21 +35,30 @@ public class DrawMap extends JPanel implements MouseListener, ActionListener, Mo
         for(int yOfTile = 0; yOfTile < objectMap.getHeight(); yOfTile++) {
 			for( int xOfTile = 0; xOfTile < objectMap.getWidth(); xOfTile++) {
 				drawMapTile[xOfTile][yOfTile] = new DrawMapTile(objectMap,xOfTile,yOfTile,mainJFrame, this);
+				drawMapTile[xOfTile][yOfTile].drawMapImage();
+			}
+		}
+	}
+	public void repaintMapImage() {
+		drawnMapImage = new DrawnMapImage(self.getWidth(),self.getHeight());
+		DrawnMapImage.setG(drawnMapImage.createGraphics());
+		for(int yOfTile = 0; yOfTile < objectMap.getHeight(); yOfTile++) {
+			for( int xOfTile = 0; xOfTile < objectMap.getWidth(); xOfTile++) {
+				drawMapTile[xOfTile][yOfTile].drawMapImage();
 			}
 		}
 	}
 	public void paint(Graphics g) {
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, self.getWidth(), self.getHeight());
-		for(int yOfTile = 0; yOfTile < objectMap.getHeight(); yOfTile++) {
-			for( int xOfTile = 0; xOfTile < objectMap.getWidth(); xOfTile++) {				
-				drawMapTile[xOfTile][yOfTile].drawMapTile(g);
-			}
+		if(drawnMapImage == null) {		
+			repaintMapImage();
 		}
+		g.drawImage(drawnMapImage, xDisplacement, yDisplacement, (int) (self.getWidth()*displacementlMultiplier), (int) (self.getHeight()*displacementlMultiplier), mainJFrame);
 		super.paint(g);
 	}
 	public void repaintMapTile(int xOfTile, int yOfTile) {
-		drawMapTile[xOfTile][yOfTile].drawMapTile(getGraphics());
+		drawMapTile[xOfTile][yOfTile].drawMapImage();
 	}
 	@Override
 	public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -66,9 +76,11 @@ public class DrawMap extends JPanel implements MouseListener, ActionListener, Mo
 	public void mouseReleased(java.awt.event.MouseEvent evt) {
 		if(evt.getButton() == 1) { //here the command gets sent into the event handler of this object, if nothing special happened it will only end up sending "select"
 			String command=mainJFrame.getCommandHandler().sendCommand("select", self);
-			double xPos = ( (evt.getX()-( getDisplacementMultiplier()*getXDisplacement() ) ) / ((double)this.getWidth() /objectMap.getWidth() ) )/getDisplacementMultiplier();
-			double yPos = ( (evt.getY()-( getDisplacementMultiplier()*getYDisplacement() ) ) / ((double)this.getHeight()/objectMap.getHeight())	)/getDisplacementMultiplier();
+//			double xPos = ( (evt.getX()-( getDisplacementMultiplier()*getXDisplacement() ) ) / ((double)this.getWidth() /objectMap.getWidth() ) )/getDisplacementMultiplier();
+//			double yPos = ( (evt.getY()-( getDisplacementMultiplier()*getYDisplacement() ) ) / ((double)this.getHeight()/objectMap.getHeight())	)/getDisplacementMultiplier();
 			// ( x - resized displacement) / (width per tile)
+			double xPos = ( (evt.getX() - xDisplacement) / ((double)this.getWidth() /objectMap.getWidth() ) )/getDisplacementMultiplier();
+			double yPos = ( (evt.getY() - yDisplacement) / ((double)this.getHeight()/objectMap.getHeight())	)/getDisplacementMultiplier();
 			fireUpdate(new ActionEvent(this, 42, command),(int)xPos,(int)yPos);
 		}
 	}
@@ -97,23 +109,46 @@ public class DrawMap extends JPanel implements MouseListener, ActionListener, Mo
 		return xDisplacement;
 	}
 	public void setXDisplacement(int xDisplacement) {
-		if(xDisplacement > self.getWidth()/5) {
-			xDisplacement = self.getWidth()/5;
+		if(xDisplacement > 0) {
+			xDisplacement = 0;
 		}
-		if(xDisplacement < -1*self.getWidth()/5*displacementlMultiplier*2) {
-			xDisplacement = (int) (-1*self.getWidth()/5*displacementlMultiplier*2);
+		if(self.getHeight() - ( self.getWidth()*displacementlMultiplier + xDisplacement) > 0) {
+			if(xDisplacement < -self.getWidth()  && xDisplacement+14 >= -self.getWidth()) {
+				xDisplacement= -self.getWidth();
+				
+			} else {
+				xDisplacement = (int)( self.getWidth()+10 - ( self.getWidth()*displacementlMultiplier + xDisplacement) );
+			}
 		}
+//		if(xDisplacement < -1*self.getWidth() ) {
+//			xDisplacement = (int) (-1*self.getWidth());
+//		}
+//		if(xDisplacement < (-2*self.getWidth()/5)*Math.pow(2, displacementlMultiplier)) {
+//			xDisplacement = (int) (-2*self.getWidth()/5*Math.pow(2, displacementlMultiplier));
+//		}
 		this.xDisplacement = xDisplacement;
 	}
 	public int getYDisplacement() {
 		return yDisplacement;
 	}
 	public void setYDisplacement(int yDisplacement) {
-		if(yDisplacement > self.getHeight()/5) {
-			yDisplacement = self.getHeight()/5;
+//		System.out.println("y*disM"+ yDisplacement*displacementlMultiplier/2);
+//		System.out.println("laenge - displacement > 0"+ (self.getHeight()-displacementlMultiplier*yDisplacement > 0) );
+//		System.out.println(yDisplacement*displacementlMultiplier/2 <(-1*self.getHeight()) );
+		if(yDisplacement > 0) {
+			yDisplacement = 0;
 		}
-		if(yDisplacement < -1*self.getHeight()/5*displacementlMultiplier*1.5) {
-			yDisplacement = (int) (-1*self.getHeight()/5*displacementlMultiplier*1.5);
+		System.out.println("self heigth" + self.getHeight());
+		System.out.println("ydis"+ yDisplacement);
+		System.out.println(self.getHeight() - ( self.getHeight()*displacementlMultiplier + yDisplacement));
+//		TODO fix bounce back !
+		if(self.getHeight() - ( self.getHeight()*displacementlMultiplier + yDisplacement) > 0) {
+			if(yDisplacement < -self.getHeight()  && yDisplacement+14 >= -self.getHeight()) {
+				yDisplacement= -self.getHeight();
+				
+			} else {
+				yDisplacement = (int)( self.getHeight()-10 - ( self.getHeight()*displacementlMultiplier + yDisplacement) );
+			}
 		}
 		this.yDisplacement = yDisplacement;
 	}
@@ -125,20 +160,16 @@ public class DrawMap extends JPanel implements MouseListener, ActionListener, Mo
 	}
 	@Override
 	public void mouseDragged(MouseEvent e) {
-//		setYDisplacement(getYDisplacement()+e.getY()/(self.getHeight() /3) );
-//		setXDisplacement(getXDisplacement()+e.getX()/ (self.getWidth() /3) );
-		System.out.println(e.getY()-self.getHeight()/2);
 		if( (e.getY()-self.getHeight()/2) > 0) {
-			setYDisplacement(getYDisplacement()+1);
+			setYDisplacement(getYDisplacement()+5);
 		} else {
-			setYDisplacement(getYDisplacement()-1);
+			setYDisplacement(getYDisplacement()-5);
 		}
 		if( (e.getX()-self.getWidth()/2) > 0) {
-			setXDisplacement(getXDisplacement()+1);
+			setXDisplacement(getXDisplacement()+5);
 		} else {
-			setXDisplacement(getXDisplacement()-1);
+			setXDisplacement(getXDisplacement()-5);
 		}
-		repaint();
 	}
 	@Override
 	public void mouseMoved(MouseEvent e) {

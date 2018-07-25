@@ -6,11 +6,15 @@ import java.awt.KeyEventDispatcher;
 import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.logging.Logger;
 
 import javax.swing.JButton;
@@ -29,7 +33,7 @@ import gameCore.ObjectMap;
 import gameCore.ResourcesController;
 import net.miginfocom.swing.MigLayout;
 
-public class MainJFrame extends JFrame implements MouseListener, ActionListener, MouseWheelListener {
+public class MainJFrame extends JFrame implements MouseListener, ActionListener, MouseWheelListener, ComponentListener {
 	private static final long serialVersionUID = 1L;
 	private MainJFrame self;
 	private DrawMapTile[][] drawMapTileArray;
@@ -48,28 +52,76 @@ public class MainJFrame extends JFrame implements MouseListener, ActionListener,
 	private JTextPane resourceText;
 	public static Logger logger;
 	
+	private class GameFPS implements Runnable {
+		private int fps = 0;
+		
+		public void setFPS(int fps) {
+			this.fps = fps;
+		}
+		public int getFPS() {
+			return fps;
+		}
+		@Override
+		public void run() {
+				
+			Timer timer = new Timer(true);
+			timer.scheduleAtFixedRate(new Repaint(), 0, 10);
+			timer.scheduleAtFixedRate(new FPS(), 1000, 1000);
+			
+		}
+		private class Repaint extends TimerTask {
+			@Override
+			public void run() {
+				self.repaint();
+				setFPS(getFPS()+1);
+			}
+		}
+		private class FPS extends TimerTask {
+			@Override
+			public void run() {
+//				System.out.println(getFPS());
+				setFPS(0);
+			}
+		}
+	}
 	private class MyDispatcher implements KeyEventDispatcher {
         @Override
         public boolean dispatchKeyEvent(KeyEvent e) {
             if (e.getID() == KeyEvent.KEY_PRESSED) {
 //            	System.out.println(e.getKeyCode()+" key:"+e.getKeyChar());
                 switch(e.getKeyCode()) {
-                	case 40:drawMap.setYDisplacement(drawMap.getYDisplacement()-10);
-                			drawMap.repaint();
-                			break;
-                	case 39:drawMap.setXDisplacement(drawMap.getXDisplacement()-10);
-                			drawMap.repaint();
-                			break;
-                	case 38:drawMap.setYDisplacement(drawMap.getYDisplacement()+10);
-                			drawMap.repaint();
-                			break;
-                	case 37:drawMap.setXDisplacement(drawMap.getXDisplacement()+10);
-                			drawMap.repaint();
+                	case 40:
+	                	if(e.isControlDown()) {
+	                		drawMap.setYDisplacement(drawMap.getYDisplacement()-50);
+	                	} else {
+	                		drawMap.setYDisplacement(drawMap.getYDisplacement()-10);
+	                	}
+                	break;
+                	case 39:
+                		if(e.isControlDown()) {
+                			drawMap.setXDisplacement(drawMap.getXDisplacement()-50);
+                		} else {
+                			drawMap.setXDisplacement(drawMap.getXDisplacement()-10);
+                		}
+                	break;
+                	case 38:
+            			if(e.isControlDown()) {
+            				drawMap.setYDisplacement(drawMap.getYDisplacement()+50);
+            			} else {
+            				drawMap.setYDisplacement(drawMap.getYDisplacement()+10);
+            			}
+                	break;
+                	case 37:
+                		if(e.isControlDown()) {
+                			drawMap.setXDisplacement(drawMap.getXDisplacement()+50);
+                		} else {
+                			drawMap.setXDisplacement(drawMap.getXDisplacement()+10);
+                		}
                 			break;    
                 	case 8: drawMap.setXDisplacement(0);
                 			drawMap.setYDisplacement(0);
                 			drawMap.setDisplacementMultiplier(1);
-                			drawMap.repaint();
+                			drawMap.repaintMapImage();
                 			break;
             	}
             } else if (e.getID() == KeyEvent.KEY_RELEASED) {
@@ -143,7 +195,11 @@ public class MainJFrame extends JFrame implements MouseListener, ActionListener,
 		
 		commandHandler = new GameCommandHandler(this);
 
+		GameFPS gameFPS = new GameFPS();
+		gameFPS.run();
+		
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.addComponentListener(this);
 		this.addMouseListener(this);
 		this.addMouseWheelListener(this);
 		this.setVisible(true);
@@ -154,7 +210,6 @@ public class MainJFrame extends JFrame implements MouseListener, ActionListener,
 		drawMap.setBorder(new LineBorder(new Color(0, 0, 0)));
 		drawMap.addMouseListener(this);
 		getContentPane().add(drawMap, "cell 0 1,grow");
-		repaint();
 	}
 	/*
 	 * 
@@ -175,8 +230,7 @@ public class MainJFrame extends JFrame implements MouseListener, ActionListener,
 		tabbedPlayerInteractionPane.setEnabledAt(0, true);
 	}
 	/*
-	 * (non-Javadoc)
-	 * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
+	 * 
 	 */
 	@Override
 	public void mouseClicked(MouseEvent evt) {
@@ -265,16 +319,37 @@ public class MainJFrame extends JFrame implements MouseListener, ActionListener,
 	@Override
 	public void mouseWheelMoved(MouseWheelEvent evt) {
 		if(evt.getWheelRotation() < 0) {
-			if(drawMap.getDisplacementMultiplier() < 5) {				
+			if(drawMap.getDisplacementMultiplier() < 2) {				
 				drawMap.setDisplacementMultiplier(drawMap.getDisplacementMultiplier()+0.1);
-				drawMap.repaint();
 			}
 		}
 		if(evt.getWheelRotation() > 0) {
 			if(drawMap.getDisplacementMultiplier() > 1) {
 				drawMap.setDisplacementMultiplier(drawMap.getDisplacementMultiplier()-0.1);
-				drawMap.repaint();
 			}
 		}
+		System.out.println(drawMap.getDisplacementMultiplier());
+	}
+	@Override
+	public void componentHidden(ComponentEvent e) {
+		
+	}
+	@Override
+	public void componentMoved(ComponentEvent e) {
+		
+	}
+	@Override
+	public void componentResized(ComponentEvent e) {
+		try {
+			e.wait(10);
+		} catch (InterruptedException e1) {
+		} catch (IllegalMonitorStateException e2) {
+		}finally {
+			drawMap.repaintMapImage();
+		}
+	}
+	@Override
+	public void componentShown(ComponentEvent e) {
+		
 	}
 }

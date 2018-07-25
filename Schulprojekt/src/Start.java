@@ -30,11 +30,11 @@ public class Start {
 	    	File customDir = new File(path);
 
 	    	if (customDir.exists()) {
-//	    	    System.out.println(customDir + " already exists");
+
 	    	} else if (customDir.mkdirs()) {
-//	    	    System.out.println(customDir + " was created");
+
 	    	} else {
-//	    	    System.out.println(customDir + " was not created");
+
 	    	}
 	        // This block configure the logger with handler and formatter  
 	        fh = new FileHandler(path+File.separator+"gameLog.log");

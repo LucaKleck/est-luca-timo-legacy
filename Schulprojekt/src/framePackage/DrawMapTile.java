@@ -4,8 +4,6 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
 import javax.swing.JPanel;
@@ -13,7 +11,7 @@ import javax.swing.JPanel;
 import gameCore.ObjectMap;
 import mapTiles.MapTile;
 
-public class DrawMapTile extends JPanel implements MouseListener {
+public class DrawMapTile extends JPanel {
 	private static final long serialVersionUID = -8785925966340775096L;
 	private DrawMapTile self;
 	private MapTile[][] map;
@@ -25,7 +23,6 @@ public class DrawMapTile extends JPanel implements MouseListener {
 	private boolean selected = false;
 	private boolean hover = false;
 	private ActionListener drawMapTileActionListener;
-	
 	// Constructor
 	public DrawMapTile(ObjectMap objectMap,int xOfTile, int yOfTile, MainJFrame mainJFrame, DrawMap drawMap) {
 		this.self = this;
@@ -103,16 +100,22 @@ public class DrawMapTile extends JPanel implements MouseListener {
 	public ArrayList<ActionListener> getListener() {
 		return listener;
 	}
-	public void drawMapTile(Graphics g) { //IDEA create image of the tiles then draw that in DrawMap.
+	public void drawMapImage() {
+		// draws into the buffered image DrawMapImage, this image will then be used by DrawMap to change positions and so on, the timer of the MainJFrame will regularly update the image, changes to the mapTiles will now have to redirected over this function
+		Graphics g = DrawnMapImage.getG();
 		mapTile.setHeight((double)drawMap.getHeight()/objectMap.getHeight());
 		mapTile.setWidth((double)drawMap.getWidth()/objectMap.getWidth());
 		try {
 			
-			double xPos = ( (mapTile.getWidth()	*mapTile.getXPos())+drawMap.getXDisplacement() )*drawMap.getDisplacementMultiplier();
-			double yPos = ( (mapTile.getHeight()*mapTile.getYPos())+drawMap.getYDisplacement() )*drawMap.getDisplacementMultiplier();
-			double height = (mapTile.getHeight()*drawMap.getDisplacementMultiplier() ) +1;
-			double width = (mapTile.getWidth()*drawMap.getDisplacementMultiplier() ) +1;
+//			double xPos = ( (mapTile.getWidth()	*mapTile.getXPos())+drawMap.getXDisplacement() )*drawMap.getDisplacementMultiplier();
+//			double yPos = ( (mapTile.getHeight()*mapTile.getYPos())+drawMap.getYDisplacement() )*drawMap.getDisplacementMultiplier();
+//			double height = (mapTile.getHeight()*drawMap.getDisplacementMultiplier() ) +1;
+//			double width = (mapTile.getWidth()*drawMap.getDisplacementMultiplier() ) +1;
 
+			double xPos = mapTile.getWidth()*mapTile.getXPos();
+			double yPos = mapTile.getHeight()*mapTile.getYPos();
+			double height = mapTile.getHeight() +1;
+			double width = mapTile.getWidth()  +1;
 			this.setSize((int)width, (int)height);
 			
 			// the tile itself
@@ -139,30 +142,6 @@ public class DrawMapTile extends JPanel implements MouseListener {
 		} catch (NullPointerException e) {
 			
 		}
-	}
-	@Override
-	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
-	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
-	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
-	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
-	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
 		
 	}
 }
