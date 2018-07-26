@@ -1,7 +1,8 @@
-/info/
 /buildings/
 /enemyBuildings/
 /framePackage/
-/gameCore/
-/mapTiles/
 /framePackageSelectedMenu/
+/gameCore/
+/info/
+/mapTiles/
+/units/

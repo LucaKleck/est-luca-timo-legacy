@@ -7,6 +7,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.swing.JPanel;
 
@@ -22,6 +24,25 @@ public class DrawMap extends JPanel implements MouseListener, ActionListener, Mo
 	private double displacementlMultiplier = 1;
 	private DrawnMapImage drawnMapImage;
 	private DrawMap self;
+	@SuppressWarnings("unused")
+	private class DestroyMap implements Runnable {
+
+		@Override
+		public void run() {
+			Timer refreshTimer = new Timer(true);
+			refreshTimer.scheduleAtFixedRate(new RefreshTask(), 100000, 100000);
+		}
+		private class RefreshTask extends TimerTask {
+
+			@Override
+			public void run() {
+				System.out.println("DESTROY");
+				self.refreshMapImage();
+				self.repaint();
+			}
+			
+		}
+	}
 	// constructor
 	public DrawMap(ObjectMap objectMap, MainJFrame mainJFrame) {
 		this.self = this;
@@ -37,11 +58,20 @@ public class DrawMap extends JPanel implements MouseListener, ActionListener, Mo
 				drawMapTile[xOfTile][yOfTile] = new DrawMapTile(objectMap,xOfTile,yOfTile,mainJFrame, this);
 				drawMapTile[xOfTile][yOfTile].drawMapImage();
 			}
+//		DestroyMap refreshMap = new DestroyMap();
+//		refreshMap.run();
 		}
 	}
 	public void repaintMapImage() {
 		drawnMapImage = new DrawnMapImage(self.getWidth(),self.getHeight());
 		DrawnMapImage.setG(drawnMapImage.createGraphics());
+		for(int yOfTile = 0; yOfTile < objectMap.getHeight(); yOfTile++) {
+			for( int xOfTile = 0; xOfTile < objectMap.getWidth(); xOfTile++) {
+				drawMapTile[xOfTile][yOfTile].drawMapImage();
+			}
+		}
+	}
+	public void refreshMapImage() {
 		for(int yOfTile = 0; yOfTile < objectMap.getHeight(); yOfTile++) {
 			for( int xOfTile = 0; xOfTile < objectMap.getWidth(); xOfTile++) {
 				drawMapTile[xOfTile][yOfTile].drawMapImage();
@@ -76,9 +106,7 @@ public class DrawMap extends JPanel implements MouseListener, ActionListener, Mo
 	public void mouseReleased(java.awt.event.MouseEvent evt) {
 		if(evt.getButton() == 1) { //here the command gets sent into the event handler of this object, if nothing special happened it will only end up sending "select"
 			String command=mainJFrame.getCommandHandler().sendCommand("select", self);
-//			double xPos = ( (evt.getX()-( getDisplacementMultiplier()*getXDisplacement() ) ) / ((double)this.getWidth() /objectMap.getWidth() ) )/getDisplacementMultiplier();
-//			double yPos = ( (evt.getY()-( getDisplacementMultiplier()*getYDisplacement() ) ) / ((double)this.getHeight()/objectMap.getHeight())	)/getDisplacementMultiplier();
-			// ( x - resized displacement) / (width per tile)
+			// ( x - displacement) / (width per tile) / displacement multiplier
 			double xPos = ( (evt.getX() - xDisplacement) / ((double)this.getWidth() /objectMap.getWidth() ) )/getDisplacementMultiplier();
 			double yPos = ( (evt.getY() - yDisplacement) / ((double)this.getHeight()/objectMap.getHeight())	)/getDisplacementMultiplier();
 			fireUpdate(new ActionEvent(this, 42, command),(int)xPos,(int)yPos);
@@ -112,44 +140,30 @@ public class DrawMap extends JPanel implements MouseListener, ActionListener, Mo
 		if(xDisplacement > 0) {
 			xDisplacement = 0;
 		}
-		if(self.getHeight() - ( self.getWidth()*displacementlMultiplier + xDisplacement) > 0) {
-			if(xDisplacement < -self.getWidth()  && xDisplacement+14 >= -self.getWidth()) {
-				xDisplacement= -self.getWidth();
-				
-			} else {
-				xDisplacement = (int)( self.getWidth()+10 - ( self.getWidth()*displacementlMultiplier + xDisplacement) );
-			}
+		if(displacementlMultiplier == 1 && xDisplacement!=0) {
+			xDisplacement = 0;
 		}
-//		if(xDisplacement < -1*self.getWidth() ) {
-//			xDisplacement = (int) (-1*self.getWidth());
-//		}
-//		if(xDisplacement < (-2*self.getWidth()/5)*Math.pow(2, displacementlMultiplier)) {
-//			xDisplacement = (int) (-2*self.getWidth()/5*Math.pow(2, displacementlMultiplier));
-//		}
+		if(xDisplacement < -self.getWidth()/2*Math.pow(displacementlMultiplier, displacementlMultiplier)/displacementlMultiplier ) {
+			xDisplacement = (int) (-self.getWidth()/2*Math.pow(displacementlMultiplier, displacementlMultiplier)/displacementlMultiplier);
+		}
+		
 		this.xDisplacement = xDisplacement;
 	}
 	public int getYDisplacement() {
 		return yDisplacement;
 	}
 	public void setYDisplacement(int yDisplacement) {
-//		System.out.println("y*disM"+ yDisplacement*displacementlMultiplier/2);
-//		System.out.println("laenge - displacement > 0"+ (self.getHeight()-displacementlMultiplier*yDisplacement > 0) );
-//		System.out.println(yDisplacement*displacementlMultiplier/2 <(-1*self.getHeight()) );
+		
 		if(yDisplacement > 0) {
 			yDisplacement = 0;
 		}
-		System.out.println("self heigth" + self.getHeight());
-		System.out.println("ydis"+ yDisplacement);
-		System.out.println(self.getHeight() - ( self.getHeight()*displacementlMultiplier + yDisplacement));
-//		TODO fix bounce back !
-		if(self.getHeight() - ( self.getHeight()*displacementlMultiplier + yDisplacement) > 0) {
-			if(yDisplacement < -self.getHeight()  && yDisplacement+14 >= -self.getHeight()) {
-				yDisplacement= -self.getHeight();
-				
-			} else {
-				yDisplacement = (int)( self.getHeight()-10 - ( self.getHeight()*displacementlMultiplier + yDisplacement) );
-			}
+		if(displacementlMultiplier == 1 && yDisplacement!=0) {
+			yDisplacement = 0;
 		}
+		if(yDisplacement < -self.getHeight()/2*Math.pow(displacementlMultiplier, displacementlMultiplier)/displacementlMultiplier ) {
+			yDisplacement = (int) (-self.getHeight()/2*Math.pow(displacementlMultiplier, displacementlMultiplier)/displacementlMultiplier);
+		}
+		
 		this.yDisplacement = yDisplacement;
 	}
 	public double getDisplacementMultiplier() {

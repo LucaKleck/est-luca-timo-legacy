@@ -1,6 +1,6 @@
 package info;
 
-import gameCore.ResourcesController;
+import gameCore.ResourceController;
 import mapTiles.MapTileWithResources;
 
 public class Item {
@@ -44,7 +44,7 @@ public class Item {
 		cost[5] = manaStoneCost;
 		return cost;
 	}
-	public boolean hasResources(ResourcesController resources, MapTileWithResources mapTile) {
+	public boolean hasResources(ResourceController resources, MapTileWithResources mapTile) {
 		boolean hasResources = false;
 		boolean hasRequiredType = false;
 		if(requiredType == null) {

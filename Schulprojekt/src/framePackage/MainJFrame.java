@@ -29,15 +29,17 @@ import framePackageSelectedMenu.SelectedMenuLumbercamp;
 import framePackageSelectedMenu.SelectedMenuTownHall;
 import gameCore.CreateMap;
 import gameCore.GameCommandHandler;
+import gameCore.GameCoreController;
 import gameCore.ObjectMap;
-import gameCore.ResourcesController;
+import gameCore.ResourceController;
 import net.miginfocom.swing.MigLayout;
 
 public class MainJFrame extends JFrame implements MouseListener, ActionListener, MouseWheelListener, ComponentListener {
 	private static final long serialVersionUID = 1L;
 	private MainJFrame self;
+	private GameCoreController gameCoreController;
 	private DrawMapTile[][] drawMapTileArray;
-	private ResourcesController resources;
+	private ResourceController resources;
 	private DrawMap drawMap;
 	private BuyMenuTownBuildings buyMenuTownBuildings;
 	private JTextPane infoTextPane;
@@ -139,7 +141,8 @@ public class MainJFrame extends JFrame implements MouseListener, ActionListener,
         manager.addKeyEventDispatcher(new MyDispatcher());
 		this.self = this;
 		this.objectMap = new ObjectMap();
-		this.resources = new ResourcesController();
+		this.gameCoreController = new GameCoreController();
+		this.resources = gameCoreController.getResourceController();
 		setMinimumSize(new Dimension(600, 600));
 		this.setTitle("The Game");
 		this.setSize(600,600);
@@ -205,11 +208,7 @@ public class MainJFrame extends JFrame implements MouseListener, ActionListener,
 		this.setVisible(true);
 	}
 	public void redoDrawMapTile() {
-		drawMapTileArray = new DrawMapTile[objectMap.getHeight()][objectMap.getWidth()];
-		drawMap = new DrawMap(objectMap,this);
-		drawMap.setBorder(new LineBorder(new Color(0, 0, 0)));
-		drawMap.addMouseListener(this);
-		getContentPane().add(drawMap, "cell 0 1,grow");
+		drawMap.refreshMapImage();
 	}
 	/*
 	 * 
@@ -255,6 +254,8 @@ public class MainJFrame extends JFrame implements MouseListener, ActionListener,
 				buyMenuTownBuildings.deselect();
 				drawMapTileArray[0][0].removeSelectedFromAllTiles(self);
 				enableBuyMenuBuildings();				
+			} else {
+				drawMapTileArray[0][0].removeSelectedFromAllTiles(self);
 			}
 		}
 	}
@@ -297,7 +298,7 @@ public class MainJFrame extends JFrame implements MouseListener, ActionListener,
 	public BuyMenuTownBuildings getBuyMenu() {
 		return buyMenuTownBuildings;
 	}
-	public ResourcesController getResources() {
+	public ResourceController getResource() {
 		return resources;
 	}
 	public CreateTownHallPanel getCreateTownHallPanel() {
@@ -328,7 +329,6 @@ public class MainJFrame extends JFrame implements MouseListener, ActionListener,
 				drawMap.setDisplacementMultiplier(drawMap.getDisplacementMultiplier()-0.1);
 			}
 		}
-		System.out.println(drawMap.getDisplacementMultiplier());
 	}
 	@Override
 	public void componentHidden(ComponentEvent e) {
@@ -340,13 +340,8 @@ public class MainJFrame extends JFrame implements MouseListener, ActionListener,
 	}
 	@Override
 	public void componentResized(ComponentEvent e) {
-		try {
-			e.wait(10);
-		} catch (InterruptedException e1) {
-		} catch (IllegalMonitorStateException e2) {
-		}finally {
-			drawMap.repaintMapImage();
-		}
+	//TODO make this wait for the user to stop resizing, then refresh
+		drawMap.repaintMapImage();
 	}
 	@Override
 	public void componentShown(ComponentEvent e) {

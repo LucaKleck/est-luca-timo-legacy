@@ -4,6 +4,7 @@ import java.awt.Point;
 import java.util.Random;
 
 import enemyBuildings.Portal;
+import framePackage.DrawMapTile;
 import framePackage.MainJFrame;
 import info.MapTileType;
 import info.ResourceType;
@@ -13,10 +14,12 @@ import mapTiles.MapTileRoad;
 public class TownHall extends Building {
 	private static String buildingName = "Town Hall";
 	private static ResourceType[] buildableOn = {ResourceType.Money,ResourceType.Food,ResourceType.Wood,ResourceType.Stone,ResourceType.Metal,ResourceType.ManaStones};
+	private MainJFrame mainJFrame;
 
 	public TownHall(MainJFrame mainJFrame,MapTile townHall) { 
 		super(buildingName, buildableOn, townHall);
 		MainJFrame.getLogger().info("start town hall");
+		this.mainJFrame = mainJFrame;
 		MapTile[][] map = mainJFrame.getObjectMap().getMap();
 		if( townHall.getXPos() >= (map.length/100.0*50) && townHall.getYPos() <= (map[0].length/100.0*50) ) { // up right
 			MainJFrame.getLogger().finest("up right\nx>=: "+(map.length/100.0*50)+" y<=:"+(map[0].length/100.0*50));
@@ -38,7 +41,6 @@ public class TownHall extends Building {
 			// now start up right
 			createPathToTownHall(map,townHall,new Point(map.length-1,0));
 		}
-		mainJFrame.getContentPane().remove(mainJFrame.getDrawMap());
 		mainJFrame.redoDrawMapTile();
 		MainJFrame.getLogger().info("end town hall");
 	}
@@ -84,8 +86,10 @@ public class TownHall extends Building {
 		try {
 			if(map[xPath][yPath].getMapTileType().getType() == 20) {
 				map[xPath][yPath] = new MapTileRoad(MapTileType.Bridge, xPath, yPath,true);
+				mainJFrame.getDrawMapTileArray()[xPath][yPath] = new DrawMapTile(mainJFrame.getObjectMap(), xPath, yPath, mainJFrame, mainJFrame.getDrawMap());
 			} else {
-				map[xPath][yPath] = new MapTileRoad(MapTileType.DirtRoad, xPath, yPath,true);				
+				map[xPath][yPath] = new MapTileRoad(MapTileType.DirtRoad, xPath, yPath,true);
+				mainJFrame.getDrawMapTileArray()[xPath][yPath] = new DrawMapTile(mainJFrame.getObjectMap(), xPath, yPath, mainJFrame, mainJFrame.getDrawMap());
 			}
 		} catch(Exception e) {
 		}
@@ -110,11 +114,14 @@ public class TownHall extends Building {
 	}
 	private boolean isNotConnected(MapTile[][] map ,MapTile townHall,int xPath, int yPath) {
 		boolean isNotConnected = true;
-		try { // TODO reverse to || logic (less resource intensive)
-			if(map[xPath-1][yPath] != townHall && map[xPath+1][yPath] != townHall  && map[xPath][yPath+1] != townHall && map[xPath][yPath-1] != townHall ) {
-			} else {
+		try {
+			if(map[xPath-1][yPath] == townHall || map[xPath+1][yPath] == townHall || map[xPath][yPath+1] == townHall || map[xPath][yPath-1] == townHall ) {
 				isNotConnected = false;
-			}			
+			}
+//			if(map[xPath-1][yPath] != townHall && map[xPath+1][yPath] != townHall  && map[xPath][yPath+1] != townHall && map[xPath][yPath-1] != townHall ) {
+//			} else {
+//				isNotConnected = false;
+//			}			
 		} catch (IndexOutOfBoundsException e) {
 
 		}

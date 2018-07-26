@@ -23,7 +23,7 @@ import mapTiles.MapTileWithResources;
 public class GameCommandHandler implements ActionListener {
 	private MainJFrame mainJFrame;
 	private ObjectMap objectMap;
-	private ResourcesController resources;
+	private ResourceController resource;
 	private MapTile[][] map;
 	private JTextPane infoTextPane; 
 	private LogTextPane logTextPane;
@@ -36,7 +36,7 @@ public class GameCommandHandler implements ActionListener {
 	public GameCommandHandler(MainJFrame mainJFrame) {
 		this.mainJFrame = mainJFrame;
 		this.objectMap = mainJFrame.getObjectMap();
-		this.resources = mainJFrame.getResources();
+		this.resource = mainJFrame.getResource();
 		this.map = objectMap.getMap();
 		this.createTownHallPanel = mainJFrame.getCreateTownHallPanel();
 		this.resourceText = mainJFrame.getResourceText();
@@ -130,7 +130,7 @@ public class GameCommandHandler implements ActionListener {
 			// buys item(containing price) on MapTile mapTile, costs the global Resources
 			buyItem(item, isBuilding, mapTile);
 			//
- 			if(command=="buyTownHall,Building") { 				
+ 			if(command=="buyTownHall,Building") {
  				mainJFrame.getCreateTownHallPanel().toggleSelected();
  			}
 			mainJFrame.getBuyMenu().deselect();
@@ -142,23 +142,14 @@ public class GameCommandHandler implements ActionListener {
 				mainJFrame.getInfoTextPane().setText(""+mapTile);
 				source.toggleSelected();
 				source.removeSelectedFromAllTiles(mainJFrame,mapTile.getXPos(),mapTile.getYPos());
-				drawMap.repaintMapTile(mapTile.getXPos(), mapTile.getYPos());
 			} catch (Exception e) {
 				System.out.println("selected "+e);
 			}
 			if(mapTile.getBuilding() == null && objectMap.hasTownHall()) {
 				mainJFrame.enableBuyMenuBuildings();
 			}
-			try { //TODO bundle to method
-				if(mapTile.getBuilding().getName()=="Town Hall"&&source.getSelected()==true) {
-					mainJFrame.enableSelectedMenuTownHall();
-				}
-				if(mapTile.getBuilding().getName()=="Lumbercamp"&&source.getSelected()==true) {
-					mainJFrame.enableSelectedMenuLumbercamp();
-				}
-				if(source.getSelected()==false && objectMap.hasTownHall()) {
-					mainJFrame.enableBuyMenuBuildings();
-				}
+			try {
+				selectMenu(source, mapTile);
 			} catch(NullPointerException e) {
 				// No building
 			}
@@ -166,12 +157,12 @@ public class GameCommandHandler implements ActionListener {
 		if(command == "toggleHover") {
 			try {
 				source.toggleHover();
-				drawMap.repaintMapTile(mapTile.getXPos(), mapTile.getYPos());
 			} catch (Exception e) {
 				System.out.println("selected "+e);
 				result = e.toString();
 			}
 		}
+		drawMap.repaintMapTile(mapTile.getXPos(), mapTile.getYPos());
 		return result;
 	}
 	/*
@@ -181,8 +172,20 @@ public class GameCommandHandler implements ActionListener {
 	 * 
 	 * 
 	 */
+	private void selectMenu(DrawMapTile source, MapTile mapTile) {
+		if(mapTile.getBuilding().getName()=="Town Hall"&&source.getSelected()==true) {
+			mainJFrame.enableSelectedMenuTownHall();
+		}
+		if(mapTile.getBuilding().getName()=="Lumbercamp"&&source.getSelected()==true) {
+			mainJFrame.enableSelectedMenuLumbercamp();
+		}
+		if(source.getSelected()==false && objectMap.hasTownHall()) {
+			mainJFrame.enableBuyMenuBuildings();
+		}
+	}
 	private void nextTurn() {
 		// Here goes all the stuff that will happen
+		
 		// Need arrays of all things, that means we need unit array!
 		// TODO create turn control item, to count rounds and so on
 		// TODO make Lumbercamps have a resource they create, BuildingsWithResources, abstract
@@ -195,14 +198,14 @@ public class GameCommandHandler implements ActionListener {
 	}
 	private void writeToLogAndSetTextBought(Item item, Building building) {
 		logTextPane.writeToLog("bought: " + item);
-		infoTextPane.setText(building+"\n"+resources);
+		infoTextPane.setText(building+"\n"+resource);
 		MainJFrame.getLogger().fine("bought: " + item);
-		MainJFrame.getLogger().fine(building+"\n"+resources);
+		MainJFrame.getLogger().fine(building+"\n"+resource);
 	}
 	private void subtracktResources(Item item) {
 		Resource[] cost = item.getCost();
-		for(int subtrackt = 0; subtrackt < resources.getResources().length; subtrackt++) {
-			resources.getResources()[subtrackt].removeResourceAmount(cost[subtrackt].getResourceAmount());
+		for(int subtrackt = 0; subtrackt < resource.getResources().length; subtrackt++) {
+			resource.getResources()[subtrackt].removeResourceAmount(cost[subtrackt].getResourceAmount());
 		}
 	}
 	/*
@@ -214,13 +217,13 @@ public class GameCommandHandler implements ActionListener {
 		if(isBuilding) {
 			buyBuilding(item,mapTile);
 		}
-		resourceText.setText(resources.toString());
+		resourceText.setText(resource.toString());
 	} 
 	public void buyBuilding(Item item, MapTile mapTile) {
 		if(mapTile.getBuilding() == null) {
 			boolean hasResources=false;			
 			try {
-				hasResources = item.hasResources(resources, (MapTileWithResources) mapTile);
+				hasResources = item.hasResources(resource, (MapTileWithResources) mapTile);
 			} catch (ClassCastException e) {
 				
 			}

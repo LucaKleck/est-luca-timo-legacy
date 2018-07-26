@@ -40,41 +40,43 @@ public class BuyMenuTownBuildings extends JPanel implements ActionListener {
 	public void paint(Graphics g) {
 		super.paint(g);
 	}
-	@SuppressWarnings("deprecation")
 	@Override
 	public void actionPerformed(ActionEvent evt) {
 		try {
-			if(evt.getActionCommand().contains("buyItem")) {
-				if(evt.getActionCommand().contains("One")) {
-					if(buyMenuSelected != 1) {
-						mainJFrame.getInfoTextPane().setText("Selected "+buttonSelectItemOne.getLabel());
-						DrawMapTile[][] drawMapTileArray = mainJFrame.getDrawMapTileArray();
-						try {
-							drawMapTileArray[0][0].removeSelectedFromAllTiles(mainJFrame);
-						} catch(IndexOutOfBoundsException e){}
-						buyMenuSelected = 1;
-					} else {
-						buyMenuSelected = 0;
-						mainJFrame.getInfoTextPane().setText("Deselected "+buttonSelectItemOne.getLabel());
-					}
-				}
-				//IDEA make array where buyMenuSelected = slot of String array which contain "one" "two"
-				if(evt.getActionCommand().contains("Two")) {
-					if(buyMenuSelected != 2) {
-						mainJFrame.getInfoTextPane().setText("Selected "+buttonSelectItemTwo.getLabel());
-						DrawMapTile[][] drawMapTileArray = mainJFrame.getDrawMapTileArray();
-						try {
-							drawMapTileArray[0][0].removeSelectedFromAllTiles(mainJFrame);
-						} catch(IndexOutOfBoundsException e){}
-						buyMenuSelected = 2;
-					} else {
-						buyMenuSelected = 0;
-						mainJFrame.getInfoTextPane().setText("Deselected "+buttonSelectItemTwo.getLabel());
-					}
-				}
+			if(evt.getActionCommand().contains("buyItem") && evt.getActionCommand().contains("Building")) {
+				selectItemFromBuyMenuBuildings(evt);
 			}
 		} catch(Exception e) {
 			System.out.println("BMB: "+e);
+		}
+	}
+	@SuppressWarnings("deprecation")
+	private void selectItemFromBuyMenuBuildings(ActionEvent evt) {
+		if(evt.getActionCommand().contains("One")) {
+			if(buyMenuSelected != 1) {
+				mainJFrame.getInfoTextPane().setText("Selected "+buttonSelectItemOne.getLabel());
+				DrawMapTile[][] drawMapTileArray = mainJFrame.getDrawMapTileArray();
+				try {
+					drawMapTileArray[0][0].removeSelectedFromAllTiles(mainJFrame);
+				} catch(IndexOutOfBoundsException e){}
+				buyMenuSelected = 1;
+			} else {
+				buyMenuSelected = 0;
+				mainJFrame.getInfoTextPane().setText("Deselected "+buttonSelectItemOne.getLabel());
+			}
+		}
+		if(evt.getActionCommand().contains("Two")) {
+			if(buyMenuSelected != 2) {
+				mainJFrame.getInfoTextPane().setText("Selected "+buttonSelectItemTwo.getLabel());
+				DrawMapTile[][] drawMapTileArray = mainJFrame.getDrawMapTileArray();
+				try {
+					drawMapTileArray[0][0].removeSelectedFromAllTiles(mainJFrame);
+				} catch(IndexOutOfBoundsException e){}
+				buyMenuSelected = 2;
+			} else {
+				buyMenuSelected = 0;
+				mainJFrame.getInfoTextPane().setText("Deselected "+buttonSelectItemTwo.getLabel());
+			}
 		}
 	}
 	protected int getBuyMenuSelected() {

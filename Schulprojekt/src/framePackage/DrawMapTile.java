@@ -107,10 +107,6 @@ public class DrawMapTile extends JPanel {
 		mapTile.setWidth((double)drawMap.getWidth()/objectMap.getWidth());
 		try {
 			
-//			double xPos = ( (mapTile.getWidth()	*mapTile.getXPos())+drawMap.getXDisplacement() )*drawMap.getDisplacementMultiplier();
-//			double yPos = ( (mapTile.getHeight()*mapTile.getYPos())+drawMap.getYDisplacement() )*drawMap.getDisplacementMultiplier();
-//			double height = (mapTile.getHeight()*drawMap.getDisplacementMultiplier() ) +1;
-//			double width = (mapTile.getWidth()*drawMap.getDisplacementMultiplier() ) +1;
 
 			double xPos = mapTile.getWidth()*mapTile.getXPos();
 			double yPos = mapTile.getHeight()*mapTile.getYPos();
