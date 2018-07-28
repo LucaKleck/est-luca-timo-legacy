@@ -51,7 +51,7 @@ public class MainJFrame extends JFrame implements MouseListener, ActionListener,
 	private JButton btnNextTurn;
 	private GameCommandHandler commandHandler;
 	private JPanel resourceDisplayPanel;
-	private JTextPane resourceText;
+	private JTextPane resourceText; // TODO make this it's own text panel that refreshes every few seconds or so, no need to update it manually every time.
 	public static Logger logger;
 	
 	private class GameFPS implements Runnable {
@@ -141,7 +141,7 @@ public class MainJFrame extends JFrame implements MouseListener, ActionListener,
         manager.addKeyEventDispatcher(new MyDispatcher());
 		this.self = this;
 		this.objectMap = new ObjectMap();
-		this.gameCoreController = new GameCoreController();
+		this.gameCoreController = new GameCoreController(self);
 		this.resources = gameCoreController.getResourceController();
 		setMinimumSize(new Dimension(600, 600));
 		this.setTitle("The Game");
@@ -225,7 +225,7 @@ public class MainJFrame extends JFrame implements MouseListener, ActionListener,
 	}
 	public void enableSelectedMenuLumbercamp() {
 		tabbedPlayerInteractionPane.removeTabAt(0);
-		tabbedPlayerInteractionPane.addTab("Lumbercamp", null, new SelectedMenuLumbercamp(), null);
+		tabbedPlayerInteractionPane.addTab("Lumbercamp", null, new SelectedMenuLumbercamp(self), null);
 		tabbedPlayerInteractionPane.setEnabledAt(0, true);
 	}
 	/*

@@ -1,7 +1,7 @@
 package buildings;
 
 import info.ResourceType;
-import mapTiles.MapTile;
+import mapTiles.MapTileWithResources;
 
 public class Lumbercamp extends BuildingWithResources {
 	/*
@@ -15,7 +15,8 @@ public class Lumbercamp extends BuildingWithResources {
 	 */
 	private static ResourceType[] buildableOn = {ResourceType.Wood};
 	private static ResourceType resourceFromBuilding = ResourceType.Wood;
-	public Lumbercamp(MapTile mapTile) {
+	public Lumbercamp(MapTileWithResources mapTile) {
 		super("Lumbercamp", buildableOn, mapTile, resourceFromBuilding);
+		super.setBaseResourceAmount(mapTile);
 	}
 }

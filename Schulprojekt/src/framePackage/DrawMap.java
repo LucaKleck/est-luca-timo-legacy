@@ -2,6 +2,7 @@ package framePackage;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -13,6 +14,7 @@ import java.util.TimerTask;
 import javax.swing.JPanel;
 
 import gameCore.ObjectMap;
+import mapTiles.MapTile;
 
 public class DrawMap extends JPanel implements MouseListener, ActionListener, MouseMotionListener {
 	private static final long serialVersionUID = 88330795020315231L;
@@ -62,6 +64,11 @@ public class DrawMap extends JPanel implements MouseListener, ActionListener, Mo
 //		refreshMap.run();
 		}
 	}
+	/*
+	 * 
+	 * Drawing
+	 * 
+	 */
 	public void repaintMapImage() {
 		drawnMapImage = new DrawnMapImage(self.getWidth(),self.getHeight());
 		DrawnMapImage.setG(drawnMapImage.createGraphics());
@@ -90,22 +97,23 @@ public class DrawMap extends JPanel implements MouseListener, ActionListener, Mo
 	public void repaintMapTile(int xOfTile, int yOfTile) {
 		drawMapTile[xOfTile][yOfTile].drawMapImage();
 	}
+	/*
+	 * 
+	 * Events
+	 * 
+	 */
 	@Override
-	public void mouseClicked(java.awt.event.MouseEvent evt) {
-	}
+	public void mouseClicked(MouseEvent evt) {}
 	@Override
-	public void mouseEntered(java.awt.event.MouseEvent evt) {
-	}
+	public void mouseEntered(MouseEvent evt) {}
 	@Override
-	public void mouseExited(java.awt.event.MouseEvent evt) {
-	}
+	public void mouseExited(MouseEvent evt) {}
 	@Override
-	public void mousePressed(java.awt.event.MouseEvent evt) {		
-	}
+	public void mousePressed(MouseEvent evt) {}
 	@Override //This fires update if mouse button 1 was clicked, update is decided by what kind of things are going on
-	public void mouseReleased(java.awt.event.MouseEvent evt) {
+	public void mouseReleased(MouseEvent evt) {
 		if(evt.getButton() == 1) { //here the command gets sent into the event handler of this object, if nothing special happened it will only end up sending "select"
-			String command=mainJFrame.getCommandHandler().sendCommand("select", self);
+			String command=mainJFrame.getCommandHandler().sendCommand("select", self); // default is "select" so if nothig special is on that tile, the tile will just be selected
 			// ( x - displacement) / (width per tile) / displacement multiplier
 			double xPos = ( (evt.getX() - xDisplacement) / ((double)this.getWidth() /objectMap.getWidth() ) )/getDisplacementMultiplier();
 			double yPos = ( (evt.getY() - yDisplacement) / ((double)this.getHeight()/objectMap.getHeight())	)/getDisplacementMultiplier();
@@ -120,21 +128,36 @@ public class DrawMap extends JPanel implements MouseListener, ActionListener, Mo
 		}
         // note that it goes to DrawMapTile!
     }
-    public void addActionListener(ActionListener al, int xOfTile, int yOfTile) {
+	@Override
+	public void actionPerformed(ActionEvent evt) {	}	
+	@Override
+	public void mouseMoved(MouseEvent e) {	}
+	@Override
+	public void mouseDragged(MouseEvent e) {
+		if( (e.getY()-self.getHeight()/2) > 0) {
+			setYDisplacement(getYDisplacement()+5);
+		} else {
+			setYDisplacement(getYDisplacement()-5);
+		}
+		if( (e.getX()-self.getWidth()/2) > 0) {
+			setXDisplacement(getXDisplacement()+5);
+		} else {
+			setXDisplacement(getXDisplacement()-5);
+		}
+	}
+	public void addActionListener(ActionListener al, int xOfTile, int yOfTile) {
         drawMapTile[xOfTile][yOfTile].getListener().add(al);
     }
     public void removeActionListener(ActionListener al, int xOfTile, int yOfTile) {
     	drawMapTile[xOfTile][yOfTile].getListener().remove(al);
     }
-    public DrawMapTile getDrawMapTile(int xPos, int yPos) {
-    	return drawMapTile[xPos][yPos];
-    }
-	@Override
-	public void actionPerformed(ActionEvent evt) {
-		
-	}
-	public int getXDisplacement() {
-		return xDisplacement;
+	/*
+	 * 
+	 * SETTER
+	 * 
+	 */
+	public void setDisplacementMultiplier(double displacementMultiplier) {
+		this.displacementlMultiplier = displacementMultiplier;
 	}
 	public void setXDisplacement(int xDisplacement) {
 		if(xDisplacement > 0) {
@@ -148,9 +171,6 @@ public class DrawMap extends JPanel implements MouseListener, ActionListener, Mo
 		}
 		
 		this.xDisplacement = xDisplacement;
-	}
-	public int getYDisplacement() {
-		return yDisplacement;
 	}
 	public void setYDisplacement(int yDisplacement) {
 		
@@ -166,27 +186,39 @@ public class DrawMap extends JPanel implements MouseListener, ActionListener, Mo
 		
 		this.yDisplacement = yDisplacement;
 	}
+	/*
+	 * 
+	 * GETTER
+	 * 
+	 * 
+	 */
+	public DrawMapTile getDrawMapTile(int xPos, int yPos) {
+    	return drawMapTile[xPos][yPos];
+    }
+	public int getXDisplacement() {
+		return xDisplacement;
+	}
+	public int getYDisplacement() {
+		return yDisplacement;
+	}
 	public double getDisplacementMultiplier() {
 		return displacementlMultiplier;
 	}
-	public void setDisplacementMultiplier(double displacementMultiplier) {
-		this.displacementlMultiplier = displacementMultiplier;
-	}
-	@Override
-	public void mouseDragged(MouseEvent e) {
-		if( (e.getY()-self.getHeight()/2) > 0) {
-			setYDisplacement(getYDisplacement()+5);
-		} else {
-			setYDisplacement(getYDisplacement()-5);
-		}
-		if( (e.getX()-self.getWidth()/2) > 0) {
-			setXDisplacement(getXDisplacement()+5);
-		} else {
-			setXDisplacement(getXDisplacement()-5);
-		}
-	}
-	@Override
-	public void mouseMoved(MouseEvent e) {
+	public Point getSelectedMapTilePoint() {
+		Point selected = new Point(-1,-1);
 		
+		for( int x = 0; x < drawMapTile.length; x++) {
+			for( int y = 0; y < drawMapTile[0].length; y++) {
+				if(drawMapTile[x][y].getSelected() == true) {
+					return new Point(x,y);
+				}
+			}
+		}
+		
+		return selected;
+	}
+	public MapTile getSelectedMapTile() {
+		Point xy = getSelectedMapTilePoint();
+		return objectMap.getMap()[(int)xy.getX()][(int)xy.getY()];
 	}
 }

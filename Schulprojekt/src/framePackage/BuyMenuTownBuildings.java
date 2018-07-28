@@ -28,12 +28,12 @@ public class BuyMenuTownBuildings extends JPanel implements ActionListener {
 		this.mainJFrame = mainJFrame;
 		
 		buttonSelectItemOne = new JButton("Lumbercamp");
-		buttonSelectItemOne.setActionCommand("buyItemOne");
+		buttonSelectItemOne.setActionCommand("buyItemOne,Building");
 		this.add(buttonSelectItemOne, "cell 0 0,grow");
 		buttonSelectItemOne.addActionListener(this);
 		
 		buttonSelectItemTwo = new JButton("Fishing Dock");
-		buttonSelectItemTwo.setActionCommand("buyItemTwo");
+		buttonSelectItemTwo.setActionCommand("buyItemTwo,Building");
 		this.add(buttonSelectItemTwo, "cell 0 1,grow");
 		buttonSelectItemTwo.addActionListener(this);
 	}
@@ -43,7 +43,7 @@ public class BuyMenuTownBuildings extends JPanel implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent evt) {
 		try {
-			if(evt.getActionCommand().contains("buyItem") && evt.getActionCommand().contains("Building")) {
+			if(evt.getActionCommand().contains("buyItem") && evt.getActionCommand().contains("Building")) { //TODO create a BuyMenuHolder TODO bring this event to there IDEA maybe put it into the GameCommandHandler
 				selectItemFromBuyMenuBuildings(evt);
 			}
 		} catch(Exception e) {

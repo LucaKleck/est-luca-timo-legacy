@@ -214,16 +214,20 @@ public class GameCommandHandler implements ActionListener {
 	 * 
 	 */
 	public void buyItem(Item item, boolean isBuilding, MapTile mapTile) {
-		if(isBuilding) {
-			buyBuilding(item,mapTile);
+		try {			
+			if(isBuilding) {
+				buyBuilding(item,(MapTileWithResources)mapTile);
+			}
+			resourceText.setText(resource.toString());
+		} catch (Exception e) {
+			System.out.println("Buy item - GameCommandHandler.216~ - "+e);
 		}
-		resourceText.setText(resource.toString());
 	} 
-	public void buyBuilding(Item item, MapTile mapTile) {
+	public void buyBuilding(Item item, MapTileWithResources mapTile) {
 		if(mapTile.getBuilding() == null) {
 			boolean hasResources=false;			
 			try {
-				hasResources = item.hasResources(resource, (MapTileWithResources) mapTile);
+				hasResources = item.hasResources(resource, mapTile);
 			} catch (ClassCastException e) {
 				
 			}
