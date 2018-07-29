@@ -1,11 +1,13 @@
 package mapTiles;
 
-public class MapTileLightForest extends MapTile {
-	private static final int TYPE = 2;
-	private static final int[] TOWERTYPES = {0};
+import info.MapTileType;
+import info.ResourceType;
+
+public class MapTileLightForest extends MapTileWithResources {
+	private static final MapTileType TYPE = MapTileType.LightForest;
 	private static final boolean TRAVERSABLE = true;
-	public MapTileLightForest(int xPos, int yPos, int[] resourceType, int[] resourceEfficiency) {
-		super(TYPE, xPos, yPos, TOWERTYPES, TRAVERSABLE, resourceType, resourceEfficiency);
+	public MapTileLightForest(int xPos, int yPos, ResourceType[] resourceType, int[] resourceEfficiency) {
+		super(TYPE, xPos, yPos, TRAVERSABLE,resourceType,resourceEfficiency);
 	}
 
 
