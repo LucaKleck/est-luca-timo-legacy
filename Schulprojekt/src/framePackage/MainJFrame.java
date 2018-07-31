@@ -13,7 +13,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
-import java.util.Timer;
 import java.util.TimerTask;
 import java.util.logging.Logger;
 
@@ -23,8 +22,10 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextPane;
+import javax.swing.Timer;
 import javax.swing.border.LineBorder;
 
+import framePackageSelectedMenu.SelectedMenuFishingDock;
 import framePackageSelectedMenu.SelectedMenuLumbercamp;
 import framePackageSelectedMenu.SelectedMenuTownHall;
 import gameCore.CreateMap;
@@ -53,7 +54,15 @@ public class MainJFrame extends JFrame implements MouseListener, ActionListener,
 	private JPanel resourceDisplayPanel;
 	private JTextPane resourceText; // TODO make this it's own text panel that refreshes every few seconds or so, no need to update it manually every time.
 	public static Logger logger;
-	
+	private Timer recalculateTimer = new Timer( 20, new resizeListener() );
+	private class resizeListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			drawMap.repaintMapImage();
+		}
+		
+	}
 	private class GameFPS implements Runnable {
 		private int fps = 0;
 		
@@ -66,7 +75,7 @@ public class MainJFrame extends JFrame implements MouseListener, ActionListener,
 		@Override
 		public void run() {
 				
-			Timer timer = new Timer(true);
+			java.util.Timer timer = new java.util.Timer(true);
 			timer.scheduleAtFixedRate(new Repaint(), 0, 10);
 			timer.scheduleAtFixedRate(new FPS(), 1000, 1000);
 			
@@ -137,6 +146,7 @@ public class MainJFrame extends JFrame implements MouseListener, ActionListener,
 	public MainJFrame(Logger logger) {
 		MainJFrame.setLogger(logger);
 		CreateMap.setLogger(logger);
+		recalculateTimer.setRepeats( false );
 		KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
         manager.addKeyEventDispatcher(new MyDispatcher());
 		this.self = this;
@@ -206,6 +216,7 @@ public class MainJFrame extends JFrame implements MouseListener, ActionListener,
 		this.addMouseListener(this);
 		this.addMouseWheelListener(this);
 		this.setVisible(true);
+		
 	}
 	public void redoDrawMapTile() {
 		drawMap.refreshMapImage();
@@ -214,22 +225,27 @@ public class MainJFrame extends JFrame implements MouseListener, ActionListener,
 	 * 
 	 */
 	public void enableBuyMenuBuildings() {
-		tabbedPlayerInteractionPane.removeTabAt(0);
+		tabbedPlayerInteractionPane.removeAll();
 		tabbedPlayerInteractionPane.addTab("Buildings", null, buyMenuTownBuildings, null);
 		tabbedPlayerInteractionPane.setEnabledAt(0, true);
 	}
 	public void enableSelectedMenuTownHall() {
-		tabbedPlayerInteractionPane.removeTabAt(0);
-		tabbedPlayerInteractionPane.addTab("Town Hall", null, new SelectedMenuTownHall(), null);
+		tabbedPlayerInteractionPane.removeAll();
+		tabbedPlayerInteractionPane.addTab("Town Hall", null, new SelectedMenuTownHall(self), null);
 		tabbedPlayerInteractionPane.setEnabledAt(0, true);
 	}
 	public void enableSelectedMenuLumbercamp() {
-		tabbedPlayerInteractionPane.removeTabAt(0);
+		tabbedPlayerInteractionPane.removeAll();
 		tabbedPlayerInteractionPane.addTab("Lumbercamp", null, new SelectedMenuLumbercamp(self), null);
 		tabbedPlayerInteractionPane.setEnabledAt(0, true);
 	}
+	public void enableSelectedMenuFishingDock() {
+		tabbedPlayerInteractionPane.removeAll();
+		tabbedPlayerInteractionPane.addTab("Fishing Dock", null, new SelectedMenuFishingDock(self), null);
+		tabbedPlayerInteractionPane.setEnabledAt(0, true);
+	}
 	/*
-	 * 
+	 * Events
 	 */
 	@Override
 	public void mouseClicked(MouseEvent evt) {
@@ -340,8 +356,11 @@ public class MainJFrame extends JFrame implements MouseListener, ActionListener,
 	}
 	@Override
 	public void componentResized(ComponentEvent e) {
-	//TODO make this wait for the user to stop resizing, then refresh
-		drawMap.repaintMapImage();
+		if ( recalculateTimer.isRunning() ){
+		    recalculateTimer.restart();
+		  } else {
+		    recalculateTimer.start();
+		  }
 	}
 	@Override
 	public void componentShown(ComponentEvent e) {

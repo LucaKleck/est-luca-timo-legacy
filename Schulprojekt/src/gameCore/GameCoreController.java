@@ -7,6 +7,8 @@ import framePackage.MainJFrame;
 public class GameCoreController {
 	private ResourceController resourceController;
 	private MainJFrame mainJFrame;
+	
+	
 	public GameCoreController(MainJFrame mainJFrame) {
 		this.mainJFrame = mainJFrame;
 		this.resourceController = new ResourceController(this.mainJFrame);

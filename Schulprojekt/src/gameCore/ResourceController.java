@@ -62,11 +62,20 @@ public class ResourceController {
 	public Resource getManaStones() {
 		return manaStone;
 	}
-	public void removeCost(int[] costs) {
+	public boolean removeCost(int[] costs) {
+		boolean hasResources = true;
 		Resource[] resources = getResources();
-		for(int maxFive = 0; maxFive < resources.length; maxFive++) {
-			resources[maxFive].removeResourceAmount(costs[maxFive]); 
+		for( int x = 0; x < resources.length; x++) {
+			if(resources[x].getResourceAmount() < costs[x]) {
+				hasResources=false;
+			}
 		}
-		mainJFrame.getResourceText().setText(this.toString());
+		if(hasResources) {			
+			for(int maxFive = 0; maxFive < resources.length; maxFive++) {
+				resources[maxFive].removeResourceAmount(costs[maxFive]); 
+			}
+			mainJFrame.getResourceText().setText(this.toString());
+		}
+		return hasResources;
 	}
 }

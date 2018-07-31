@@ -179,6 +179,9 @@ public class GameCommandHandler implements ActionListener {
 		if(mapTile.getBuilding().getName()=="Lumbercamp"&&source.getSelected()==true) {
 			mainJFrame.enableSelectedMenuLumbercamp();
 		}
+		if(mapTile.getBuilding().getName()=="Fishing Dock"&&source.getSelected()==true) {
+			mainJFrame.enableSelectedMenuFishingDock();
+		}
 		if(source.getSelected()==false && objectMap.hasTownHall()) {
 			mainJFrame.enableBuyMenuBuildings();
 		}
@@ -234,14 +237,18 @@ public class GameCommandHandler implements ActionListener {
 			if(hasResources) {
 				Building building = null;
 				switch(item.getItemName()) {
-					case "Town Hall":	if(mapTile.getMapTileType().getName()!="River") {building = new TownHall(mainJFrame, mapTile);
-										mainJFrame.enableSelectedMenuTownHall(); }
+					case "Town Hall":	if(mapTile.getMapTileType().getName()!="River") {
+											building = new TownHall(mainJFrame, mapTile);
+											mainJFrame.enableSelectedMenuTownHall();
+										}
 										break;
-					case "Lumbercamp":	building = new Lumbercamp(mapTile);
-										mainJFrame.enableSelectedMenuLumbercamp();
+					case "Lumbercamp":		building = new Lumbercamp(mapTile);
+											mainJFrame.enableSelectedMenuLumbercamp();
 										break;
-					case "Fishing Dock":if(mapTile.getMapTileType().getName()=="River") {building = new FishingDock(mapTile);
-																				}
+					case "Fishing Dock":if(mapTile.getMapTileType().getName()=="River") {
+											building = new FishingDock(mapTile);
+											mainJFrame.enableSelectedMenuFishingDock();
+										}
 										break;
 					default: writeToLogAndSetText("Missing Resources/Building blocked + DEFAULTCASE!!! (not good, something bad happened)"); return;
 				}

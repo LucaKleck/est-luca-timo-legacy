@@ -14,8 +14,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
-import javax.swing.JFrame;
-
 import framePackage.MainJFrame;
 
 public class Start {
@@ -49,8 +47,8 @@ public class Start {
 	        e.printStackTrace();  
 	    } catch (IOException e) {  
 	        e.printStackTrace();  
-	    }  
-		JFrame f = new MainJFrame(logger);
+	    }
+		MainJFrame f = new MainJFrame(logger);
 		//objectMap.getTestMethod(10, 10);
 	}
 }

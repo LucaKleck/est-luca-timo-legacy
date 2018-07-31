@@ -219,6 +219,11 @@ public class DrawMap extends JPanel implements MouseListener, ActionListener, Mo
 	}
 	public MapTile getSelectedMapTile() {
 		Point xy = getSelectedMapTilePoint();
-		return objectMap.getMap()[(int)xy.getX()][(int)xy.getY()];
+		MapTile m = null;
+		try {	
+			m = objectMap.getMap()[(int)xy.getX()][(int)xy.getY()];
+		} catch (IndexOutOfBoundsException e) {
+		}
+		return m;
 	}
 }
