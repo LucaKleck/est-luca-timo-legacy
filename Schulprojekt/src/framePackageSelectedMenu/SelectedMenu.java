@@ -2,14 +2,14 @@ package framePackageSelectedMenu;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.Timer;
 
 import buildings.BuildingWithResources;
 import framePackage.MainJFrame;
+import gameCore.GameCoreController;
 import net.miginfocom.swing.MigLayout;
 
 public abstract class SelectedMenu extends JPanel implements ActionListener {
@@ -17,26 +17,36 @@ public abstract class SelectedMenu extends JPanel implements ActionListener {
 	protected MainJFrame mainJFrame;
 	protected static JButton btnUpgrade;
 	protected static UpdateToolTip utt;
+	protected static Timer t;
 	protected class UpdateToolTip implements Runnable {
 
 		@Override
 		public void run() {
-			Timer t = new Timer(true);
-			t.scheduleAtFixedRate(new Update(), 1000, 1000);
+			t = new Timer(1000, new UpdateAction());
+			t.start();
+			t.setRepeats(true);
 		}
-		protected class Update extends TimerTask {
+		protected class UpdateAction implements ActionListener {
 
 			@Override
-			public void run() {
+			public void actionPerformed(ActionEvent evt) {
+				try {
+					if((BuildingWithResources)mainJFrame.getDrawMap().getSelectedMapTile().getBuilding() == null) {
+						t.stop();
+						utt = null;
+					}
+				} catch (ClassCastException e) {
+					t.stop();
+					utt = null;
+				}
 				try {
 					BuildingWithResources building = (BuildingWithResources)mainJFrame.getDrawMap().getSelectedMapTile().getBuilding();
 					btnUpgrade.setToolTipText("Next Level: "+(building.getLevel()+1)+"\nCost:"+building.levelCostToString());
-					
 				} catch(NullPointerException e) {
 				} catch(ClassCastException e1) {
 				}
 			}
-
+			
 		}
 
 	}
@@ -60,7 +70,7 @@ public abstract class SelectedMenu extends JPanel implements ActionListener {
 		try {
 			if(evt.getActionCommand() == "Upgrade") {
 				BuildingWithResources building = (BuildingWithResources)mainJFrame.getDrawMap().getSelectedMapTile().getBuilding();
-				building.levelUp(mainJFrame.getResource());
+				building.levelUp(GameCoreController.resourceController);
 			}			
 		} catch (ClassCastException e) {
 		}

@@ -20,15 +20,13 @@ import mapTiles.MapTileMountain;
 import mapTiles.MapTilePlain;
 import mapTiles.MapTileRiver;
 public class CreateMap {
-	private static Logger log;
+	private static Logger log = GameCoreController.log;
     private static final int MAPTILERADIUSBASE = 4;
 	private static final int TYPEAMOUNT = 3;
 	private static final int MAXRIVERS = 2;
 	private static final int MINRIVERS = 2; // Could be a % of map.length 
 	private static final int MINRIVERLENGTHPERCENT = 20;
-	public static void setLogger(Logger log) {
-		CreateMap.log = log;
-	}
+	
 	public static MapTile[][] createCustom(int x, int y) {
 		log.info("Start createCustom map");
 		MapTile[][] map = new MapTile[x][y];

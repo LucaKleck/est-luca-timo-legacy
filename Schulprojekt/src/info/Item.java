@@ -27,7 +27,7 @@ public class Item {
 	}
 	public String toString() {
 		String string;
-		if(this.itemName != "Towns Hall") {
+		if(this.itemName != "Town Hall") {
 			string = "Name: " +itemName+"\nmoneyCost: " + moneyCost+"\nfoodCost: "+foodCost+"\nwoodCost: "+woodCost+"\nmetalCost: "+metalCost+"\nmanaStoneCost: "+manaStoneCost;
 		} else {
 			string = "Name: "+itemName;

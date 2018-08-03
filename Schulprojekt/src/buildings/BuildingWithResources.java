@@ -42,7 +42,7 @@ public abstract class BuildingWithResources extends Building {
 		if(hasResources) {
 			level++;
 			setLevelCost();
-			System.out.println("level: "+this.level);
+			//TODO add level output to info text pane
 		}
 	}
 	/*

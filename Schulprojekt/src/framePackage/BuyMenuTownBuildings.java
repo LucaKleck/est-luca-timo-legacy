@@ -54,7 +54,7 @@ public class BuyMenuTownBuildings extends JPanel implements ActionListener {
 	private void selectItemFromBuyMenuBuildings(ActionEvent evt) {
 		if(evt.getActionCommand().contains("One")) {
 			if(buyMenuSelected != 1) {
-				mainJFrame.getInfoTextPane().setText("Selected "+buttonSelectItemOne.getLabel());
+				mainJFrame.getInfoTextPane().setText("Selected "+buttonSelectItemOne.getLabel());//TODO change setText to appear less often (array or something)
 				DrawMapTile[][] drawMapTileArray = mainJFrame.getDrawMapTileArray();
 				try {
 					drawMapTileArray[0][0].removeSelectedFromAllTiles(mainJFrame);
