@@ -1,8 +1,7 @@
 package gameCore;
 
-import info.ResourceType;
-import framePackage.MainJFrame;
 import info.Resource;
+import info.ResourceType;
 
 public class ResourceController {
 	private Resource money;
@@ -11,15 +10,15 @@ public class ResourceController {
 	private Resource stone;
 	private Resource metal;
 	private Resource manaStone;
-	private MainJFrame mainJFrame;
-	public ResourceController(MainJFrame mainJFrame) {
+	
+	public ResourceController() {
 		money = new Resource(ResourceType.Money, 20000);
 		food = new Resource(ResourceType.Food,20000);
 		wood = new Resource(ResourceType.Wood, 20000);
 		stone = new Resource(ResourceType.Stone, 20000);
 		metal = new Resource(ResourceType.Metal, 20000);
 		manaStone = new Resource(ResourceType.ManaStones, 20000);
-		this.mainJFrame = mainJFrame;
+
 	}
 	// call this method once you have loaded it from a file and converted the strings into SingleResourceTypeWithAmount's
 	public ResourceController(Resource money, Resource food, Resource wood, Resource stone, Resource metal, Resource manaStone) {
@@ -62,11 +61,19 @@ public class ResourceController {
 	public Resource getManaStones() {
 		return manaStone;
 	}
-	public void removeCost(int[] costs) {
+	public boolean removeCost(int[] costs) {
+		boolean hasResources = true;
 		Resource[] resources = getResources();
-		for(int maxFive = 0; maxFive < resources.length; maxFive++) {
-			resources[maxFive].removeResourceAmount(costs[maxFive]); 
+		for( int x = 0; x < resources.length; x++) {
+			if(resources[x].getResourceAmount() < costs[x]) {
+				hasResources=false;
+			}
 		}
-		mainJFrame.getResourceText().setText(this.toString());
+		if(hasResources) {			
+			for(int maxFive = 0; maxFive < resources.length; maxFive++) {
+				resources[maxFive].removeResourceAmount(costs[maxFive]); 
+			}
+		}
+		return hasResources;
 	}
 }

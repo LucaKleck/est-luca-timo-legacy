@@ -15,8 +15,8 @@ public class Lumbercamp extends BuildingWithResources {
 	 */
 	private static ResourceType[] buildableOn = {ResourceType.Wood};
 	private static ResourceType resourceFromBuilding = ResourceType.Wood;
+	private static int[] levelCost = {100,100,100,100,100,100};
 	public Lumbercamp(MapTileWithResources mapTile) {
-		super("Lumbercamp", buildableOn, mapTile, resourceFromBuilding);
-		super.setBaseResourceAmount(mapTile);
+		super("Lumbercamp", buildableOn, mapTile, resourceFromBuilding, levelCost);
 	}
 }

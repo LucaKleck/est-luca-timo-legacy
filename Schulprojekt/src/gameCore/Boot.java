@@ -1,3 +1,4 @@
+package gameCore;
 
 /**
  * @Classname Boot
@@ -14,14 +15,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
-import javax.swing.JFrame;
-
-import framePackage.MainJFrame;
-
-public class Start {
+public class Boot {
+	public static Logger log;
 	@SuppressWarnings("unused")
 	public static void main(String[] args) {
-		Logger logger = Logger.getLogger("gameLog");  
+		log = Logger.getLogger("gameLog");  
 	    FileHandler fh;  
 
 	    try {  
@@ -39,18 +37,18 @@ public class Start {
 	        // This block configure the logger with handler and formatter  
 	        fh = new FileHandler(path+File.separator+"gameLog.log");
 	       
-	        logger.addHandler(fh);
+	        log.addHandler(fh);
 	        SimpleFormatter formatter = new SimpleFormatter();  
 	        fh.setFormatter(formatter);  
 
-	        logger.info("Log Start");  
-	        logger.setLevel(Level.ALL);
+	        log.info("Log Start");  
+	        log.setLevel(Level.WARNING);
 	    } catch (SecurityException e) {  
 	        e.printStackTrace();  
 	    } catch (IOException e) {  
 	        e.printStackTrace();  
-	    }  
-		JFrame f = new MainJFrame(logger);
+	    }
+		GameCoreController GCC = new GameCoreController();
 		//objectMap.getTestMethod(10, 10);
 	}
 }

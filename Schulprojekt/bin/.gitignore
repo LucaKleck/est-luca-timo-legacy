@@ -1,8 +1,5 @@
-/buildings/
-/enemyBuildings/
 /framePackage/
-/framePackageSelectedMenu/
+/buildings/
 /gameCore/
-/info/
-/mapTiles/
-/units/
+/framePackageSelectedMenu/
+/Boot.class

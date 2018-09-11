@@ -2,19 +2,30 @@ package buildings;
 
 import gameCore.ResourceController;
 import info.ResourceType;
-import mapTiles.MapTile;
 import mapTiles.MapTileWithResources;
 
 public abstract class BuildingWithResources extends Building {
 	private ResourceType resourceFromBuilding;
 	private int baseResourceAmount;
+	private int lastLevel = 1;
 	private int level = 1;
-	public BuildingWithResources(String buildingName, ResourceType[] buildableOn, MapTile mapTile, ResourceType resourceFromBuilding) {
+	private int[] levelCost;
+	public BuildingWithResources(String buildingName, ResourceType[] buildableOn, MapTileWithResources mapTile, ResourceType resourceFromBuilding, int[] levelBaseCost) {
 		super(buildingName, buildableOn, mapTile);
-		this.baseResourceAmount = 100;
+		setBaseResourceAmount(mapTile);
+		this.levelCost = levelBaseCost;
 		this.resourceFromBuilding = resourceFromBuilding;
 	}
-	protected void setBaseResourceAmount(MapTileWithResources mapTile) {
+	private void setLevelCost() {
+		if(lastLevel!=level) {
+			this.levelCost = new int[] {levelCost[0]*this.level,levelCost[1]*this.level,levelCost[2]*this.level,levelCost[3]*this.level,levelCost[4]*this.level,levelCost[5]*this.level};
+		}
+	}
+	public String levelCostToString() {
+		String s = "money: "+levelCost[0]+" food: "+levelCost[1]+" wood: "+levelCost[2]+" stone: "+levelCost[3]+" metal: "+levelCost[4]+" manaStone: "+levelCost[5];
+		return s;
+	}
+	private void setBaseResourceAmount(MapTileWithResources mapTile) {
 		if(mapTile.getResourceType()[0]==resourceFromBuilding) {
 			baseResourceAmount = (int)(mapTile.getResourceEfficiency()[0]/100*100+100);
 		}
@@ -24,35 +35,15 @@ public abstract class BuildingWithResources extends Building {
 			}
 		} catch(IndexOutOfBoundsException e) {
 		}
-		setBaseResourceAmount(baseResourceAmount);
-	}
-	protected void setBaseResourceAmount(int baseResourceAmount) {
-		this.baseResourceAmount = baseResourceAmount;
 	}
 	public void levelUp(ResourceController resources) {
-		switch(this.level) {
-			case 1: levelOne(resources);
-					level++;
-			break;
-			case 2: levelTwo(resources);
-					level++;
-			break;
-			case 3: levelThree(resources);
-					level++;
-			break;
-			case 4: System.out.println("Level "+this.getLevel()+" is max level");
-			break;
+		lastLevel = level;
+		boolean hasResources = resources.removeCost(levelCost);
+		if(hasResources) {
+			level++;
+			setLevelCost();
+			//TODO add level output to info text pane
 		}
-	}
-	// these methods need to be overridden by each building.
-	protected void levelThree(ResourceController resources) {
-		
-	}
-	protected void levelTwo(ResourceController resources) {
-		
-	}
-	protected void levelOne(ResourceController resources) {
-		
 	}
 	/*
 	 * 
@@ -60,7 +51,7 @@ public abstract class BuildingWithResources extends Building {
 	 * 
 	 */
 	public int getResourcePerRound() {
-		return this.level*this.baseResourceAmount;
+		return this.level*2*this.baseResourceAmount;
 	}
 	public ResourceType getResourceFromBuilding() {
 		return resourceFromBuilding;

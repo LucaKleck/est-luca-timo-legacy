@@ -13,13 +13,14 @@ import java.util.TimerTask;
 
 import javax.swing.JPanel;
 
+import gameCore.GameCoreController;
 import gameCore.ObjectMap;
 import mapTiles.MapTile;
 
 public class DrawMap extends JPanel implements MouseListener, ActionListener, MouseMotionListener {
 	private static final long serialVersionUID = 88330795020315231L;
 	private DrawMapTile[][] drawMapTile;
-	private ObjectMap objectMap;
+	private ObjectMap objectMap = GameCoreController.objectMap;
 	private MainJFrame mainJFrame;
 	private int xDisplacement = 0;
 	private int yDisplacement = 0;
@@ -46,12 +47,11 @@ public class DrawMap extends JPanel implements MouseListener, ActionListener, Mo
 		}
 	}
 	// constructor
-	public DrawMap(ObjectMap objectMap, MainJFrame mainJFrame) {
+	public DrawMap(MainJFrame mainJFrame) {
 		this.self = this;
+		this.mainJFrame = mainJFrame;
 		this.setBackground(new java.awt.Color(0, 0, 0, 0));
 		this.drawMapTile = mainJFrame.getDrawMapTileArray();
-		this.mainJFrame = mainJFrame;
-		this.objectMap = objectMap;
         addMouseListener(this);
         this.addMouseMotionListener(this);
         setLayout(null);
@@ -60,7 +60,7 @@ public class DrawMap extends JPanel implements MouseListener, ActionListener, Mo
 				drawMapTile[xOfTile][yOfTile] = new DrawMapTile(objectMap,xOfTile,yOfTile,mainJFrame, this);
 				drawMapTile[xOfTile][yOfTile].drawMapImage();
 			}
-//		DestroyMap refreshMap = new DestroyMap();
+//		DestroyMap refreshMap = new DestroyMap(); IDEA this makes the map broke af, add it to game over!
 //		refreshMap.run();
 		}
 	}
@@ -113,11 +113,11 @@ public class DrawMap extends JPanel implements MouseListener, ActionListener, Mo
 	@Override //This fires update if mouse button 1 was clicked, update is decided by what kind of things are going on
 	public void mouseReleased(MouseEvent evt) {
 		if(evt.getButton() == 1) { //here the command gets sent into the event handler of this object, if nothing special happened it will only end up sending "select"
-			String command=mainJFrame.getCommandHandler().sendCommand("select", self); // default is "select" so if nothig special is on that tile, the tile will just be selected
+			String command=GameCoreController.GCH.sendCommand("select", self); // default is "select" so if nothig special is on that tile, the tile will just be selected
 			// ( x - displacement) / (width per tile) / displacement multiplier
 			double xPos = ( (evt.getX() - xDisplacement) / ((double)this.getWidth() /objectMap.getWidth() ) )/getDisplacementMultiplier();
 			double yPos = ( (evt.getY() - yDisplacement) / ((double)this.getHeight()/objectMap.getHeight())	)/getDisplacementMultiplier();
-			fireUpdate(new ActionEvent(this, 42, command),(int)xPos,(int)yPos);
+			fireUpdate(new ActionEvent(this, 42, command),(int)xPos,(int)yPos); //TODO change it so that width and height are the same! (watch out for x and y placement!)
 		}
 	}
 	protected void fireUpdate(ActionEvent evt, int xOfTile, int yOfTile) {   // this is the method to send it to the DrawMapTile that was clicked
@@ -219,6 +219,11 @@ public class DrawMap extends JPanel implements MouseListener, ActionListener, Mo
 	}
 	public MapTile getSelectedMapTile() {
 		Point xy = getSelectedMapTilePoint();
-		return objectMap.getMap()[(int)xy.getX()][(int)xy.getY()];
+		MapTile m = null;
+		try {	
+			m = objectMap.getMap()[(int)xy.getX()][(int)xy.getY()];
+		} catch (IndexOutOfBoundsException e) {
+		}
+		return m;
 	}
 }

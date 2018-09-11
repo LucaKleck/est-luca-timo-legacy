@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
+import gameCore.GameCoreController;
 import gameCore.ObjectMap;
 import mapTiles.MapTile;
 
@@ -37,7 +38,7 @@ public class DrawMapTile extends JPanel {
         	@Override // Event from DrawMap, contains command from the special happenings
         	public void actionPerformed(ActionEvent evt) {
         		@SuppressWarnings("unused")
-				String result = mainJFrame.getCommandHandler().sendCommand(evt.getActionCommand(),self);
+				String result = GameCoreController.GCH.sendCommand(evt.getActionCommand(),self);
         		};
 		};
 		this.addActionListener(getDrawMapTileActionListener());

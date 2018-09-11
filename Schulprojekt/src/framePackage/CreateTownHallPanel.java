@@ -16,8 +16,8 @@ public class CreateTownHallPanel extends JPanel {
 	public CreateTownHallPanel(MainJFrame mainJFrame) {
 		this.mainJFrame = mainJFrame;
 		setLayout(new MigLayout("", "[100%]", "[100%]"));
-		btnTownsHall = new JButton("Towns Hall");
-		btnTownsHall.setActionCommand("townsHallToggle");
+		btnTownsHall = new JButton("Town Hall");
+		btnTownsHall.setActionCommand("townHallToggle");
 		btnTownsHall.addActionListener(mainJFrame);
 		this.add(btnTownsHall, "cell 0 0,grow");
 	}

@@ -2,6 +2,8 @@ package gameCore;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.JTabbedPane;
 import javax.swing.JTextPane;
@@ -21,32 +23,27 @@ import mapTiles.MapTile;
 import mapTiles.MapTileWithResources;
 
 public class GameCommandHandler implements ActionListener {
-	private MainJFrame mainJFrame;
-	private ObjectMap objectMap;
-	private ResourceController resource;
+	private MainJFrame mainJFrame = GameCoreController.mainJFrame;
+	private ObjectMap objectMap = GameCoreController.objectMap;
+	private Logger log = GameCoreController.log;
+	private ResourceController resourceController = GameCoreController.resourceController;
 	private MapTile[][] map;
 	private JTextPane infoTextPane; 
 	private LogTextPane logTextPane;
 	private JTabbedPane tabbedPane;
 	private DrawMapTile[][] drawMapTileArray;
-	private JTextPane resourceText;
 	private DrawMap drawMap;
 	private CreateTownHallPanel createTownHallPanel;
 	
-	public GameCommandHandler(MainJFrame mainJFrame) {
-		this.mainJFrame = mainJFrame;
-		this.objectMap = mainJFrame.getObjectMap();
-		this.resource = mainJFrame.getResource();
+	public GameCommandHandler() {	
 		this.map = objectMap.getMap();
 		this.createTownHallPanel = mainJFrame.getCreateTownHallPanel();
-		this.resourceText = mainJFrame.getResourceText();
 		this.infoTextPane = mainJFrame.getInfoTextPane();
 		this.logTextPane = mainJFrame.getLogTextPane();
 		this.tabbedPane = mainJFrame.getTabbedPane();
 		this.drawMapTileArray = mainJFrame.getDrawMapTileArray();
 		this.drawMap = mainJFrame.getDrawMap();
 	}
-
 	// Methods
 	
 	/*
@@ -74,11 +71,11 @@ public class GameCommandHandler implements ActionListener {
 	 */
 	public String sendCommand(String command, DrawMap source) {
 		try {
-			if(mainJFrame.getCreateTownHallPanel().getSelected()) { // here buy towns hall is selected as command because towns hall button is selected
+			if(mainJFrame.getCreateTownHallPanel().getSelected()) { // here buy town hall is selected as command because town hall button is selected
 				command = "buyTownHall,Building";
 			}
 		} catch (Exception e) {
-			System.out.println(e);
+			log.log(Level.SEVERE, "EXEPTION SEND COMMAND DRAW MAP TOWN HALL: ", e);
 		}
 		try {
 			if(mainJFrame.getBuyMenu().getSelected() != 0) {
@@ -92,7 +89,7 @@ public class GameCommandHandler implements ActionListener {
 				}
 			}
 		} catch (Exception e) {
-			System.out.println(e);
+			log.log(Level.SEVERE, "EXEPTION SEND COMMAND DRAW MAP ITEMS: ", e);
 		}
 		return command;
 	}
@@ -101,17 +98,17 @@ public class GameCommandHandler implements ActionListener {
 	 */
 	public String sendCommand(String command, MainJFrame source) {
 		try {
-			if(command.toString() == "townsHallToggle") {
+			if(command.toString() == "townHallToggle") {
 				createTownHallPanel.toggleSelected();
 				drawMapTileArray[0][0].removeSelectedFromAllTiles(mainJFrame);
-				if(createTownHallPanel.getSelected()) this.getInfoTextPane().setText("Selected Towns Hall");
-				else this.getInfoTextPane().setText("Deselected Towns Hall");
+				if(createTownHallPanel.getSelected()) this.getInfoTextPane().setText("Selected Town Hall");
+				else this.getInfoTextPane().setText("Deselected Town Hall");
 			}
 			if(command == "NextTurn" && objectMap.hasTownHall()) {
 				nextTurn();
 			}
 		} catch(Exception e) {
-			System.out.println("MJF: Action Performed: "+e);
+			log.log(Level.SEVERE, "MJF: Action Performed: ", e);
 		}
 		return command;
 	}
@@ -179,6 +176,9 @@ public class GameCommandHandler implements ActionListener {
 		if(mapTile.getBuilding().getName()=="Lumbercamp"&&source.getSelected()==true) {
 			mainJFrame.enableSelectedMenuLumbercamp();
 		}
+		if(mapTile.getBuilding().getName()=="Fishing Dock"&&source.getSelected()==true) {
+			mainJFrame.enableSelectedMenuFishingDock();
+		}
 		if(source.getSelected()==false && objectMap.hasTownHall()) {
 			mainJFrame.enableBuyMenuBuildings();
 		}
@@ -188,24 +188,23 @@ public class GameCommandHandler implements ActionListener {
 		
 		// Need arrays of all things, that means we need unit array!
 		// TODO create turn control item, to count rounds and so on
-		// TODO make Lumbercamps have a resource they create, BuildingsWithResources, abstract
 		// TODO calc new resources IDEA maybe upkeep or something?
 	}
 	private void writeToLogAndSetText(String textToSet) {
 		logTextPane.writeToLog(textToSet);		
 		infoTextPane.setText(textToSet);
-		MainJFrame.getLogger().fine(textToSet);
+		log.fine(textToSet);
 	}
 	private void writeToLogAndSetTextBought(Item item, Building building) {
 		logTextPane.writeToLog("bought: " + item);
-		infoTextPane.setText(building+"\n"+resource);
-		MainJFrame.getLogger().fine("bought: " + item);
-		MainJFrame.getLogger().fine(building+"\n"+resource);
+		infoTextPane.setText(building+"\n"+resourceController);
+		log.fine("bought: " + item);
+		log.fine(building+"\n"+resourceController);
 	}
 	private void subtracktResources(Item item) {
 		Resource[] cost = item.getCost();
-		for(int subtrackt = 0; subtrackt < resource.getResources().length; subtrackt++) {
-			resource.getResources()[subtrackt].removeResourceAmount(cost[subtrackt].getResourceAmount());
+		for(int subtrackt = 0; subtrackt < resourceController.getResources().length; subtrackt++) {
+			resourceController.getResources()[subtrackt].removeResourceAmount(cost[subtrackt].getResourceAmount());
 		}
 	}
 	/*
@@ -218,7 +217,6 @@ public class GameCommandHandler implements ActionListener {
 			if(isBuilding) {
 				buyBuilding(item,(MapTileWithResources)mapTile);
 			}
-			resourceText.setText(resource.toString());
 		} catch (Exception e) {
 			System.out.println("Buy item - GameCommandHandler.216~ - "+e);
 		}
@@ -227,21 +225,25 @@ public class GameCommandHandler implements ActionListener {
 		if(mapTile.getBuilding() == null) {
 			boolean hasResources=false;			
 			try {
-				hasResources = item.hasResources(resource, mapTile);
+				hasResources = item.hasResources(resourceController, mapTile);
 			} catch (ClassCastException e) {
 				
 			}
 			if(hasResources) {
 				Building building = null;
 				switch(item.getItemName()) {
-					case "Town Hall":	if(mapTile.getMapTileType().getName()!="River") {building = new TownHall(mainJFrame, mapTile);
-										mainJFrame.enableSelectedMenuTownHall(); }
+					case "Town Hall":	if(mapTile.getMapTileType().getName()!="River") {
+											building = new TownHall(mainJFrame, mapTile);
+											mainJFrame.enableSelectedMenuTownHall();
+										}
 										break;
-					case "Lumbercamp":	building = new Lumbercamp(mapTile);
-										mainJFrame.enableSelectedMenuLumbercamp();
+					case "Lumbercamp":		building = new Lumbercamp(mapTile);
+											mainJFrame.enableSelectedMenuLumbercamp();
 										break;
-					case "Fishing Dock":if(mapTile.getMapTileType().getName()=="River") {building = new FishingDock(mapTile);
-																				}
+					case "Fishing Dock":if(mapTile.getMapTileType().getName()=="River") {
+											building = new FishingDock(mapTile);
+											mainJFrame.enableSelectedMenuFishingDock();
+										}
 										break;
 					default: writeToLogAndSetText("Missing Resources/Building blocked + DEFAULTCASE!!! (not good, something bad happened)"); return;
 				}

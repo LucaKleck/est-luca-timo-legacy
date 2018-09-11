@@ -2,10 +2,12 @@ package buildings;
 
 import java.awt.Point;
 import java.util.Random;
+import java.util.logging.Logger;
 
 import enemyBuildings.Portal;
 import framePackage.DrawMapTile;
 import framePackage.MainJFrame;
+import gameCore.GameCoreController;
 import info.MapTileType;
 import info.ResourceType;
 import mapTiles.MapTile;
@@ -18,31 +20,32 @@ public class TownHall extends Building {
 
 	public TownHall(MainJFrame mainJFrame,MapTile townHall) { 
 		super(buildingName, buildableOn, townHall);
-		MainJFrame.getLogger().info("start town hall");
+		Logger l = GameCoreController.log;
+		l.info("start town hall");
 		this.mainJFrame = mainJFrame;
-		MapTile[][] map = mainJFrame.getObjectMap().getMap();
+		MapTile[][] map = GameCoreController.objectMap.getMap(); //TODO change all references from mainJFrame to GameCoreController then remove getters from MainJFrame, addin them to GameCoreController's contstuctor
 		if( townHall.getXPos() >= (map.length/100.0*50) && townHall.getYPos() <= (map[0].length/100.0*50) ) { // up right
-			MainJFrame.getLogger().finest("up right\nx>=: "+(map.length/100.0*50)+" y<=:"+(map[0].length/100.0*50));
+			l.finest("up right\nx>=: "+(map.length/100.0*50)+" y<=:"+(map[0].length/100.0*50));
 			//now start down left
 			createPathToTownHall(map,townHall,new Point(0,map[0].length-1));
 		} else 
 		if(townHall.getXPos() < (map.length/100.0*50) && townHall.getYPos() < (map[0].length/100.0*50)) { // up left
-			MainJFrame.getLogger().finest("up left\nx<: "+(map.length/100.0*50)+" y<:"+(map[0].length/100.0*50));
+			l.finest("up left\nx<: "+(map.length/100.0*50)+" y<:"+(map[0].length/100.0*50));
 			// now start down right
 			createPathToTownHall(map,townHall,new Point(map.length-1,map[0].length-1));
 		} else
 		if(townHall.getXPos() > (map.length/100.0*50) && townHall.getYPos() > (map[0].length/100.0*50)) { // down right
-			MainJFrame.getLogger().finest("down right\nx>: "+(map.length/100.0*50)+" y<:"+(map[0].length/100.0*50));
+			l.finest("down right\nx>: "+(map.length/100.0*50)+" y<:"+(map[0].length/100.0*50));
 			// now start up left
 			createPathToTownHall(map,townHall,new Point(0,0));
 		} else
 		if(townHall.getXPos() < (map.length/100.0*50) && townHall.getYPos() > (map[0].length/100.0*50)) { // down left
-			MainJFrame.getLogger().finest("down left\nx<: "+(map.length/100.0*50)+" y>:"+(map[0].length/100.0*50));
+			l.finest("down left\nx<: "+(map.length/100.0*50)+" y>:"+(map[0].length/100.0*50));
 			// now start up right
 			createPathToTownHall(map,townHall,new Point(map.length-1,0));
 		}
 		mainJFrame.redoDrawMapTile();
-		MainJFrame.getLogger().info("end town hall");
+		l.info("end town hall");
 	}
 	
 	private void createPathToTownHall(MapTile[][] map, MapTile townHall, Point referencePoint) {
@@ -86,10 +89,10 @@ public class TownHall extends Building {
 		try {
 			if(map[xPath][yPath].getMapTileType().getType() == 20) {
 				map[xPath][yPath] = new MapTileRoad(MapTileType.Bridge, xPath, yPath,true);
-				mainJFrame.getDrawMapTileArray()[xPath][yPath] = new DrawMapTile(mainJFrame.getObjectMap(), xPath, yPath, mainJFrame, mainJFrame.getDrawMap());
+				mainJFrame.getDrawMapTileArray()[xPath][yPath] = new DrawMapTile(GameCoreController.objectMap, xPath, yPath, mainJFrame, mainJFrame.getDrawMap());
 			} else {
 				map[xPath][yPath] = new MapTileRoad(MapTileType.DirtRoad, xPath, yPath,true);
-				mainJFrame.getDrawMapTileArray()[xPath][yPath] = new DrawMapTile(mainJFrame.getObjectMap(), xPath, yPath, mainJFrame, mainJFrame.getDrawMap());
+				mainJFrame.getDrawMapTileArray()[xPath][yPath] = new DrawMapTile(GameCoreController.objectMap, xPath, yPath, mainJFrame, mainJFrame.getDrawMap());
 			}
 		} catch(Exception e) {
 		}
